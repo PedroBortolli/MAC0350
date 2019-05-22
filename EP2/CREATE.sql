@@ -1,5 +1,6 @@
 -- COLOCANDO OS DROP TABLE AQUI POR SIMPLICIDADE, DEPOIS TEM QUE DEIXAR ELAS NUM ARQUIVO SEPARADO DE CLEAN
 
+DROP TABLE IF EXISTS rel_pf_se; 
 DROP TABLE IF EXISTS aluno;
 DROP TABLE IF EXISTS professor;
 DROP TABLE IF EXISTS usuario;
@@ -8,7 +9,11 @@ DROP TABLE IF EXISTS pessoa;
 DROP TABLE IF EXISTS curriculo;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS servico;
+DROP TABLE IF EXISTS modulo;
 DROP TABLE IF EXISTS trilha;
+-- DROP TABLE IF EXISTS oferecimento;
+DROP TABLE IF EXISTS disciplina;
+-- DROP TABLE IF EXISTS rel_us_pf;
 
 
 -- CREATE MESMO A PARTIR DAQUI
@@ -19,11 +24,13 @@ CREATE TABLE pessoa (
 	CONSTRAINT pk_pessoa PRIMARY KEY (id_pessoa)
 );
 
+
 CREATE TABLE aluno (
 	id_aluno integer,
 	ano_ingresso integer,
 	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE professor (
 	id_professor integer,
@@ -31,6 +38,7 @@ CREATE TABLE professor (
 	--instituto varchar(50),
 	CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE usuario (
 	id_usuario integer,
@@ -43,6 +51,7 @@ CREATE TABLE usuario (
 	CONSTRAINT sec_key UNIQUE (email)
 );
 
+
 CREATE TABLE administrador (
 	id_adm integer,
 	inicio date,
@@ -50,11 +59,13 @@ CREATE TABLE administrador (
 	CONSTRAINT fk_adm FOREIGN KEY (id_adm) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
 CREATE TABLE curriculo (
 	codigo integer not NULL,
 	nome varchar(50),
 	CONSTRAINT prim_key PRIMARY KEY (codigo)
 );
+
 
 CREATE TABLE perfil (
 	id_perfil SERIAL,
@@ -64,6 +75,7 @@ CREATE TABLE perfil (
 	CONSTRAINT sk_perfil UNIQUE (papel)
 );
 
+
 CREATE TABLE servico (
 	id_servico SERIAL,
 	tipo varchar(50) not NULL,
@@ -72,6 +84,7 @@ CREATE TABLE servico (
 	CONSTRAINT sk_servico UNIQUE (tipo),
 	CONSTRAINT check_tipo check (tipo='visualizacao' OR tipo='remocao' OR tipo='alteracao')
 );
+
 
 CREATE TABLE trilha (
 	id_trilha SERIAL,
@@ -83,22 +96,19 @@ CREATE TABLE trilha (
 	CONSTRAINT check_quant_disc check (quant_disc > 0)
 );
 
-/* REVIEW FROM DOWN HERE ==========>
 
 CREATE TABLE modulo (
-	id integer not NULL,
+	id_modulo SERIAL,
+	id_trilha integer,
 	nome varchar(50) not NULL,
 	descricao varchar(255),
 	quant_disc integer,
-	id_trilha integer,
-	CONSTRAINT prim_key PRIMARY KEY (id),
-	CONSTRAINT sec_key UNIQUE (nome),
-	CONSTRAINT check_quant_disc check (quant_disc >= 0),
-	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha)
-		references trilha(id_trilha)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	CONSTRAINT pk_modulo PRIMARY KEY (id_modulo),
+	CONSTRAINT sk_modulo UNIQUE (nome),
+	CONSTRAINT check_quant_disc check (quant_disc > 0),
+	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha) references trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE disciplina (
 	codigo varchar(7) not NULL,
@@ -106,59 +116,49 @@ CREATE TABLE disciplina (
 	creditos_aula integer,
 	creditos_trabalho integer,
 	instituto varchar(50),
+	CONSTRAINT pk_disciplina PRIMARY KEY (codigo),
 	CONSTRAINT check_codigo check (char_length(codigo)=7 AND codigo ~ '^[A-Z]{3}[0-9]{4}$'),
-	CONSTRAINT prim_key PRIMARY KEY (codigo),
 	CONSTRAINT check_creditos check (creditos_aula >= 0 AND creditos_trabalho >= 0)
 );
 
+
+/*
+TODO: Fix below's create commands:
+
 CREATE TABLE oferecimento (
-	CPF_prof varchar(11),
-	CPF_aluno varchar(11),
+	id_professor integer,
+	id_aluno integer,
 	codigo varchar(7),
 	ano integer,
 	duracao integer,
+	instituto varchar(50),
 	periodo integer,
-	CONSTRAINT fk_prof FOREIGN KEY (CPF_prof)
-		references professor(CPF_prof)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	CONSTRAINT fk_aluno FOREIGN KEY (CPF_aluno)
-		references aluno(CPF_aluno)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	CONSTRAINT fk_disciplina FOREIGN KEY (codigo)
-		references disciplina(codigo)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	CONSTRAINT fk_professor FOREIGN KEY (id_professor) references professor(id_professor) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) references aluno(id_professor) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) references disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT check_ano check (ano > 0),
-	CONSTRAINT check_duracao_periodo check (periodo>0 AND (duracao=6 AND periodo<=2 OR duracao=3 AND periodo<=4))
+	CONSTRAINT check_duracao_periodo check (periodo>0 AND ((duracao=6 AND periodo<=2) OR (duracao=3 AND periodo<=4)))
 );
 
+
 CREATE TABLE rel_us_pf (
-	id integer,
+	id_usuario integer,
 	login varchar(20),
-	CONSTRAINT fk_usuario FOREIGN KEY (id)
-		REFERENCES usuario(id)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	CONSTRAINT fk_usuario FOREIGN KEY (login)
-		REFERENCES perfil(login)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	CONSTRAINT fk_usuario_1 FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_usuario_2 FOREIGN KEY (login) REFERENCES perfil(login) ON DELETE CASCADE ON UPDATE CASCADE
 );
+*/
+
 
 CREATE TABLE rel_pf_se (
 	login varchar(20),
-	id integer,
-	CONSTRAINT fk_usuario FOREIGN KEY (login)
-		REFERENCES usuario(login)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	CONSTRAINT fk_servico FOREIGN KEY (id)
-		REFERENCES servico(id)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	id_servico integer,
+	CONSTRAINT fk_usuario FOREIGN KEY (login) REFERENCES usuario(login) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_servico FOREIGN KEY (id_servico) REFERENCES servico(id_servico) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+/* REVIEW FROM DOWN HERE ==========>
 
 CREATE TABLE planeja (
 	CPF varchar(11),
@@ -174,6 +174,7 @@ CREATE TABLE planeja (
 		ON UPDATE CASCADE
 );
 
+
 CREATE TABLE rel_cur_tri (
 	codigo integer,
 	id integer,
@@ -186,6 +187,7 @@ CREATE TABLE rel_cur_tri (
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
+
 
 CREATE TABLE rel_mod_dis (
 	id integer,

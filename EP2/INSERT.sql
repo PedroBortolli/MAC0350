@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 INSERT INTO pessoa(nome) VALUES
 	('Bortolli'),
 	('Teotonio'),
@@ -28,6 +30,10 @@ INSERT INTO professor(id_professor, formacao_area) VALUES
 	(10, 'Sistemas');
 
 
+INSERT INTO usuario(id_usuario, login, email, senha) VALUES
+	(1, 'bortolli', 'bortolli@ime.usp.br', crypt('bortollipassword', gen_salt('bf')));
+
+
 INSERT INTO administrador(id_adm, inicio, fim) VALUES
 	(11, '20-05-2019', '20-05-2020');
 
@@ -49,3 +55,39 @@ INSERT INTO trilha(nome, descricao, quant_disc) VALUES
 	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 12), -- checar numero de disciplinas
 	('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 16), -- checar numero de disciplinas
 	('ia', 'Inteligência artificial, machine learning, etc.', 6); -- checar numero de disciplinas
+
+
+INSERT INTO modulo(id_trilha, nome, descricao, quant_disc) VALUES
+	(1, 'matematica discreta', 'Matérias de matemática discreta', 6), -- checar numero de disciplinas
+	(1, 'algoritmos', 'Matérias de algoritmos e estruturas de dados', 5), -- checar numero de disciplinas
+	(2, 'banco de dados', 'Matérias relacionadas a banco de dados', 3), -- chegar numero de disciplinas
+	(3, 'machine learning', 'Matérias de machine learning', 3);
+
+
+INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto) VALUES
+	('MAC0350', 'Introdução ao Desenvolvimento de Sistemas de Software', 4, 2, 'IME'),
+	('MAC0470', 'Desenvolvimento de Software Livre', 4, 2, 'IME'),
+	('MAC0105', 'Fundamentos de Matemática para a Computação', 4, 0, 'IME'),
+	('MAC0110', 'Introdução à Computação', 4, 0, 'IME'),
+	('MAC0121', 'Algoritmo e Estruturas de Dados I', 4, 0, 'IME'),
+	('MAC0323', 'Algoritmo e Estruturas de Dados II', 4, 0, 'IME'),
+	('MAT0122', 'Álgebra Linear I', 4, 0, 'IME'),
+	('MAT2453', 'Cálculo Diferencial e Integral I', 6, 0, 'IME'),
+	('MAT2454', 'Cálculo Diferencial e Integral II', 4, 0, 'IME'),
+	('MAT0236', 'Funções Diferenciáveis e Séries', 4, 0, 'IME');
+
+
+-- TODO: Insert rows on table 'oferecimento' once its Create query is properly working
+
+-- INSERT INTO oferecimento(id_professor, 	id_aluno, codigo, ano, duracao, instituto, periodo) VALUES
+
+
+-- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
+
+-- INSERT INTO rel_us_pf(id_usuario, login) VALUES
+
+
+INSERT INTO rel_pf_se(login, id_servico) VALUES
+	('bortolli', 1),
+	('bortolli', 2),
+	('bortolli', 3);
