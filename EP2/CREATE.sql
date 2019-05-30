@@ -164,28 +164,16 @@ CREATE TABLE planeja (
 	id_aluno integer,
 	codigo varchar(7),
 	semestre integer,
-	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno)
-		REFERENCES aluno(id_aluno)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	CONSTRAINT fk_disciplina FOREIGN KEY (codigo)
-		REFERENCES disciplina(codigo)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE rel_cur_tri (
 	codigo integer,
 	id_trilha integer,
-	CONSTRAINT fk_curriculo FOREIGN KEY (codigo)
-		REFERENCES curriculo(codigo)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha)
-		REFERENCES trilha(id_trilha)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
+	CONSTRAINT fk_curriculo FOREIGN KEY (codigo) REFERENCES curriculo(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha) REFERENCES trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -193,13 +181,7 @@ CREATE TABLE rel_mod_dis (
 	id_modulo integer,
 	codigo varchar(7),
 	obrigatoria integer,
-	CONSTRAINT fk_modulo FOREIGN KEY (id_modulo)
-		REFERENCES modulo(id_modulo)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	CONSTRAINT fk_disciplina FOREIGN KEY (codigo)
-		REFERENCES disciplina(codigo)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE,
+	CONSTRAINT fk_modulo FOREIGN KEY (id_modulo) REFERENCES modulo(id_modulo) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT check_obrigatoria check (obrigatoria=0 OR obrigatoria=1)
 );
