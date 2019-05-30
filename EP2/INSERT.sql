@@ -79,13 +79,13 @@ INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto
 
 -- TODO: Insert rows on table 'oferecimento' once its Create query is properly working
 
--- INSERT INTO oferecimento(id_professor, 	id_aluno, codigo, ano, duracao, instituto, periodo) VALUES
-
+INSERT INTO oferecimento(id_professor, 	id_aluno, codigo, ano, duracao, instituto, periodo) VALUES
+    (7, 1, 'MAC0121', 2016, 6, 'IME', 2);
 
 -- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
 
--- INSERT INTO rel_us_pf(id_usuario, login) VALUES
-
+INSERT INTO rel_us_pf(id_usuario, login) VALUES
+    (1, 'bortolli');
 
 INSERT INTO rel_pf_se(login, id_servico) VALUES
 	('bortolli', 1),
