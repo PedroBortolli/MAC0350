@@ -6,6 +6,7 @@ DROP FUNCTION IF EXISTS seleciona_administrador(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_curriculo(integer);
 DROP FUNCTION IF EXISTS seleciona_perfil(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_servico(varchar(50));
+DROP FUNCTION IF EXISTS seleciona_trilha(varchar(50));
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
@@ -15,6 +16,7 @@ DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS cria_perfil(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS cria_servico(varchar(50), varchar(255));
+DROP FUNCTION IF EXISTS cria_trilha(varchar(50), varchar(255), integer);
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -24,6 +26,7 @@ DROP FUNCTION IF EXISTS deleta_administrador(varchar(100));
 DROP FUNCTION IF EXISTS deleta_curriculo(integer);
 DROP FUNCTION IF EXISTS deleta_perfil(varchar(50));
 DROP FUNCTION IF EXISTS deleta_servico(varchar(50));
+DROP FUNCTION IF EXISTS deleta_trilha(varchar(50));
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -35,6 +38,8 @@ DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS atualiza_perfil(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS atualiza_servico(varchar(50), varchar(255));
+DROP FUNCTION IF EXISTS atualiza_disc_trilha(varchar(50), integer);
+DROP FUNCTION IF EXISTS atualiza_descricao_trilha(varchar(50), varchar(255));
 
 -------------------------------------------------------------------------
 
@@ -345,6 +350,47 @@ CREATE OR REPLACE FUNCTION atualiza_servico(_tipo varchar(50), _descricao varcha
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_trilha(_nome varchar(50), _descricao varchar(255), _quant_disc integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO trilha(nome, descricao, quant_disc) VALUES (_nome, _descricao, _quant_disc);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_trilha(_nome varchar(50)) RETURNS TABLE(id integer, nome_ varchar(50), descricao varchar(255), quant_disc integer) AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_trilha FROM trilha WHERE nome = _nome);
+		RETURN QUERY SELECT * FROM trilha WHERE id_trilha = _id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_trilha(_nome varchar(50)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM trilha WHERE nome=_nome;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_descricao_trilha(_nome varchar(50), _descricao varchar(255)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE trilha
+        SET descricao=_descricao
+        WHERE nome=_nome;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_disc_trilha(_nome varchar(50), _quant_disc integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE trilha
+        SET quant_disc=_quant_disc
+        WHERE nome=_nome;
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -420,4 +466,12 @@ SELECT * FROM seleciona_servico('visualizacao');
 SELECT atualiza_servico('visualizacao', 'vizualiza as paradas');
 SELECT * FROM seleciona_servico('visualizacao');
 SELECT deleta_servico('visualizacao');
-SELECT * FROM seleciona_servico('serv1');
+SELECT * FROM seleciona_servico('visualizacao');
+
+SELECT cria_trilha('teoria', 'so materia nabo', 8);
+SELECT * FROM seleciona_trilha('teoria');
+SELECT atualiza_descricao_trilha('teoria', 'so materia legal');
+SELECT atualiza_disc_trilha('teoria', 6);
+SELECT * FROM seleciona_trilha('teoria');
+SELECT deleta_trilha('teoria');
+SELECT * FROM seleciona_trilha('teoria');
