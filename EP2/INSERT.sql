@@ -51,10 +51,10 @@ INSERT INTO servico(tipo, descricao) VALUES
 	('alteracao', 'Permite que um usuário faça alterações em matérias escolhidas');
 
 
-INSERT INTO trilha(nome, descricao, quant_disc) VALUES
-	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 12), -- checar numero de disciplinas
-	('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 16), -- checar numero de disciplinas
-	('ia', 'Inteligência artificial, machine learning, etc.', 6); -- checar numero de disciplinas
+INSERT INTO trilha(nome, descricao, quant_mod) VALUES
+	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 3), -- checar numero de modulos
+	('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 3), -- checar numero de modulos
+	('ia', 'Inteligência artificial, machine learning, etc.', 4); -- checar numero de modulos
 
 
 INSERT INTO modulo(id_trilha, nome, descricao, quant_disc) VALUES

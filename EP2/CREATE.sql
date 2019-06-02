@@ -85,8 +85,8 @@ CREATE TABLE trilha (
 	id_trilha SERIAL PRIMARY KEY,
 	nome varchar(50) not NULL UNIQUE,
 	descricao varchar(255),
-	quant_disc integer,
-	CONSTRAINT check_quant_disc check (quant_disc > 0)
+	quant_mod integer,
+	CONSTRAINT check_quant_mod check (quant_mod > 0)
 );
 
 

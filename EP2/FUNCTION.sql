@@ -369,14 +369,14 @@ CREATE OR REPLACE FUNCTION atualiza_servico(_tipo varchar(50), _descricao varcha
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION cria_trilha(_nome varchar(50), _descricao varchar(255), _quant_disc integer) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION cria_trilha(_nome varchar(50), _descricao varchar(255), _quant_mod integer) RETURNS VOID AS $$
 	BEGIN
-		INSERT INTO trilha(nome, descricao, quant_disc) VALUES (_nome, _descricao, _quant_disc);
+		INSERT INTO trilha(nome, descricao, quant_mod) VALUES (_nome, _descricao, _quant_mod);
 	END
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION seleciona_trilha(_nome varchar(50)) RETURNS TABLE(id integer, nome_ varchar(50), descricao varchar(255), quant_disc integer) AS $$
+CREATE OR REPLACE FUNCTION seleciona_trilha(_nome varchar(50)) RETURNS TABLE(id integer, nome_ varchar(50), descricao varchar(255), quant_mod integer) AS $$
 	DECLARE _id integer;
 	BEGIN
 	    _id := (SELECT id_trilha FROM trilha WHERE nome = _nome);
@@ -401,10 +401,10 @@ CREATE OR REPLACE FUNCTION atualiza_descricao_trilha(_nome varchar(50), _descric
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION atualiza_disc_trilha(_nome varchar(50), _quant_disc integer) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION atualiza_disc_trilha(_nome varchar(50), _quant_mod integer) RETURNS VOID AS $$
 	BEGIN
 	    UPDATE trilha
-        SET quant_disc=_quant_disc
+        SET quant_mod=_quant_mod
         WHERE nome=_nome;
 	END
 $$ LANGUAGE plpgsql;
