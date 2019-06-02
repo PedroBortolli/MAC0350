@@ -1,4 +1,4 @@
--- COLOCANDO OS DROP TABLE AQUI POR SIMPLICIDADE, DEPOIS TEM QUE DEIXAR ELAS NUM ARQUIVO SEPARADO DE CLEAN
+-- TODO: move drops to a separate 'CLEAN' file
 
 DROP TABLE IF EXISTS rel_mod_dis;
 DROP TABLE IF EXISTS rel_cur_tri;
@@ -18,9 +18,6 @@ DROP TABLE IF EXISTS modulo;
 DROP TABLE IF EXISTS trilha;
 DROP TABLE IF EXISTS disciplina;
 
-
--- CREATE MESMO A PARTIR DAQUI
-
 CREATE TABLE pessoa (
 	id_pessoa SERIAL,
 	nome varchar(100),
@@ -32,16 +29,15 @@ CREATE TABLE aluno (
 	id_aluno integer,
 	ano_ingresso integer,
 	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_aluno PRIMARY KEY (id_aluno) -- nao sei se ta certo, talvez tenha so que colocar como unique
+	CONSTRAINT pk_aluno PRIMARY KEY (id_aluno)
 );
 
 
 CREATE TABLE professor (
 	id_professor integer,
-	formacao_area varchar(50),  -- not sure disso tbm, deixei aqui so por deixar, q q nois faz? acho que melhor tirar
-	--instituto varchar(50), acho melhor tirar tambem
+	formacao_area varchar(50),
 	CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_professor PRIMARY KEY (id_professor) --ditto
+	CONSTRAINT pk_professor PRIMARY KEY (id_professor)
 );
 
 
@@ -51,7 +47,7 @@ CREATE TABLE usuario (
 	email varchar(50) not NULL,
 	senha varchar(64),
 	CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_usuario PRIMARY KEY (login), --ditto
+	CONSTRAINT pk_usuario PRIMARY KEY (login),
 	CONSTRAINT check_email check (email ~ '^.+\@.+\..+$'),
 	CONSTRAINT sec_key UNIQUE (email),
 	CONSTRAINT cand_key UNIQUE (id_usuario)
@@ -76,7 +72,7 @@ CREATE TABLE curriculo (
 CREATE TABLE perfil (
 	id_perfil SERIAL,
 	papel varchar(50) not NULL,
-	descricao varchar(255), --talvez tirar? nao parece necessario
+	descricao varchar(255),
 	CONSTRAINT pk_perfil PRIMARY KEY (id_perfil),
 	CONSTRAINT sk_perfil UNIQUE (papel)
 );
