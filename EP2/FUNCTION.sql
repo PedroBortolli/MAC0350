@@ -5,6 +5,7 @@ DROP FUNCTION IF EXISTS seleciona_usuario(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_administrador(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_curriculo(integer);
 DROP FUNCTION IF EXISTS seleciona_perfil(varchar(50));
+DROP FUNCTION IF EXISTS seleciona_servico(varchar(50));
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
@@ -13,6 +14,7 @@ DROP FUNCTION IF EXISTS cria_usuario(varchar(100), varchar(20), varchar(50), var
 DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS cria_perfil(varchar(50), varchar(255));
+DROP FUNCTION IF EXISTS cria_servico(varchar(50), varchar(255));
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -21,6 +23,7 @@ DROP FUNCTION IF EXISTS deleta_usuario(varchar(100));
 DROP FUNCTION IF EXISTS deleta_administrador(varchar(100));
 DROP FUNCTION IF EXISTS deleta_curriculo(integer);
 DROP FUNCTION IF EXISTS deleta_perfil(varchar(50));
+DROP FUNCTION IF EXISTS deleta_servico(varchar(50));
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -31,7 +34,7 @@ DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varcha
 DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS atualiza_perfil(varchar(50), varchar(255));
-
+DROP FUNCTION IF EXISTS atualiza_servico(varchar(50), varchar(255));
 
 -------------------------------------------------------------------------
 
@@ -306,6 +309,42 @@ CREATE OR REPLACE FUNCTION atualiza_perfil(_papel varchar(50), _descricao varcha
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_servico(_tipo varchar(50), _descricao varchar(255)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO servico(tipo, descricao) VALUES (_tipo, _descricao);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_servico(_tipo varchar(50)) RETURNS TABLE(id integer, tipo_ varchar(50), descricao varchar(255)) AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_servico FROM servico WHERE tipo = _tipo);
+		RETURN QUERY SELECT * FROM servico WHERE id_servico = _id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_servico(_tipo varchar(50)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_servico FROM servico WHERE tipo = _tipo);
+		DELETE FROM servico WHERE id_servico=_id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_servico(_tipo varchar(50), _descricao varchar(255)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_servico FROM servico WHERE tipo = _tipo);
+	    UPDATE servico
+        SET descricao=_descricao
+        WHERE id_servico=_id;
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -375,3 +414,10 @@ SELECT atualiza_perfil('adm', 'administra as paradas');
 SELECT * FROM seleciona_perfil('adm');
 SELECT deleta_perfil('adm');
 SELECT * FROM seleciona_perfil('adm');
+
+SELECT cria_servico('visualizacao', 'vizualiza as parada');
+SELECT * FROM seleciona_servico('visualizacao');
+SELECT atualiza_servico('visualizacao', 'vizualiza as paradas');
+SELECT * FROM seleciona_servico('visualizacao');
+SELECT deleta_servico('visualizacao');
+SELECT * FROM seleciona_servico('serv1');
