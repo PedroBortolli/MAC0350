@@ -19,35 +19,31 @@ DROP TABLE IF EXISTS trilha;
 DROP TABLE IF EXISTS disciplina;
 
 CREATE TABLE pessoa (
-	id_pessoa SERIAL,
-	nome varchar(100),
-	CONSTRAINT pk_pessoa PRIMARY KEY (id_pessoa)
+	id_pessoa SERIAL PRIMARY KEY,
+	nome varchar(100)
 );
 
 
 CREATE TABLE aluno (
-	id_aluno integer,
+	id_aluno integer PRIMARY KEY,
 	ano_ingresso integer,
-	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_aluno PRIMARY KEY (id_aluno)
+	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE professor (
-	id_professor integer,
+	id_professor integer PRIMARY KEY,
 	formacao_area varchar(50),
-	CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_professor PRIMARY KEY (id_professor)
+	CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE usuario (
 	id_usuario integer,
-	login varchar(20) not NULL,
+	login varchar(20) PRIMARY KEY,
 	email varchar(50) not NULL,
 	senha varchar(64),
 	CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT pk_usuario PRIMARY KEY (login),
 	CONSTRAINT check_email check (email ~ '^.+\@.+\..+$'),
 	CONSTRAINT sec_key UNIQUE (email),
 	CONSTRAINT cand_key UNIQUE (id_usuario)
@@ -55,7 +51,7 @@ CREATE TABLE usuario (
 
 
 CREATE TABLE administrador (
-	id_adm integer,
+	id_adm integer PRIMARY KEY,
 	inicio date,
 	fim date,
 	CONSTRAINT fk_adm FOREIGN KEY (id_adm) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
@@ -63,62 +59,52 @@ CREATE TABLE administrador (
 
 
 CREATE TABLE curriculo (
-	codigo integer not NULL,
-	nome varchar(50),
-	CONSTRAINT prim_key PRIMARY KEY (codigo)
+	codigo integer PRIMARY KEY,
+	nome varchar(50)
 );
 
 
 CREATE TABLE perfil (
-	id_perfil SERIAL,
-	papel varchar(50) not NULL,
-	descricao varchar(255),
-	CONSTRAINT pk_perfil PRIMARY KEY (id_perfil),
-	CONSTRAINT sk_perfil UNIQUE (papel)
+	id_perfil SERIAL PRIMARY KEY,
+	papel varchar(50) not NULL UNIQUE,
+	descricao varchar(255)
 );
 
 
 CREATE TABLE servico (
-	id_servico SERIAL,
-	tipo varchar(50) not NULL,
+	id_servico SERIAL PRIMARY KEY,
+	tipo varchar(50) not NULL UNIQUE,
 	descricao varchar(255),
-	CONSTRAINT pk_servico PRIMARY KEY (id_servico),
-	CONSTRAINT sk_servico UNIQUE (tipo),
 	CONSTRAINT check_tipo check (tipo='visualizacao' OR tipo='remocao' OR tipo='alteracao')
 );
 
 
 CREATE TABLE trilha (
-	id_trilha SERIAL,
-	nome varchar(50) not NULL,
+	id_trilha SERIAL PRIMARY KEY,
+	nome varchar(50) not NULL UNIQUE,
 	descricao varchar(255),
 	quant_disc integer,
-	CONSTRAINT pk_trilha PRIMARY KEY (id_trilha),
-	CONSTRAINT sk_trilha UNIQUE (nome),
 	CONSTRAINT check_quant_disc check (quant_disc > 0)
 );
 
 
 CREATE TABLE modulo (
-	id_modulo SERIAL,
+	id_modulo SERIAL PRIMARY KEY,
 	id_trilha integer,
-	nome varchar(50) not NULL,
+	nome varchar(50) not NULL UNIQUE,
 	descricao varchar(255),
 	quant_disc integer,
-	CONSTRAINT pk_modulo PRIMARY KEY (id_modulo),
-	CONSTRAINT sk_modulo UNIQUE (nome),
 	CONSTRAINT check_quant_disc check (quant_disc > 0),
 	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha) references trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE disciplina (
-	codigo varchar(7) not NULL,
+	codigo varchar(7) PRIMARY KEY,
 	nome varchar(100),
 	creditos_aula integer,
 	creditos_trabalho integer,
 	instituto varchar(50),
-	CONSTRAINT pk_disciplina PRIMARY KEY (codigo),
 	CONSTRAINT check_codigo check (char_length(codigo)=7 AND codigo ~ '^[A-Z]{3}[0-9]{4}$'),
 	CONSTRAINT check_creditos check (creditos_aula >= 0 AND creditos_trabalho >= 0)
 );
