@@ -79,15 +79,11 @@ INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto
 	('MAT0236', 'Funções Diferenciáveis e Séries', 4, 0, 'IME');
 
 
--- TODO: Insert rows on table 'oferecimento' once its Create query is properly working
-
 INSERT INTO oferecimento(id_professor, codigo, ano, duracao, instituto, periodo) VALUES
     (7, 'MAC0121', 2016, 6, 'IME', 2);
 
 INSERT INTO cursa(id_aluno, id_professor, codigo, status, media_final) VALUES
 	(1, 7, 'MAC0121', 'MA', NULL);
-
--- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
 
 INSERT INTO rel_us_pf(login, id_perfil) VALUES
     ('bortolli', 2);
