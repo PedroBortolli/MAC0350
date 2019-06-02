@@ -2,20 +2,24 @@ DROP FUNCTION IF EXISTS seleciona_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_aluno(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_professor(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_usuario(varchar(100));
+DROP FUNCTION IF EXISTS seleciona_administrador(varchar(100));
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS cria_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS cria_usuario(varchar(100), varchar(20), varchar(50), varchar(64));
+DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
 DROP FUNCTION IF EXISTS deleta_professor(varchar(100));
 DROP FUNCTION IF EXISTS deleta_usuario(varchar(100));
+DROP FUNCTION IF EXISTS deleta_administrador(varchar(100));
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS atualiza_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_login_usuario( varchar(100), varchar(20));
 DROP FUNCTION IF EXISTS atualiza_email_usuario(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varchar(50));
+DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
 
 -------------------------------------------------------------------------
 
@@ -165,6 +169,7 @@ CREATE OR REPLACE FUNCTION atualiza_login_usuario(_nome varchar(100), _login var
 	END
 $$ LANGUAGE plpgsql;
 
+
 CREATE OR REPLACE FUNCTION atualiza_email_usuario(_nome varchar(100), _email varchar(50)) RETURNS VOID AS $$
 	DECLARE _id integer;
 	BEGIN
@@ -175,6 +180,7 @@ CREATE OR REPLACE FUNCTION atualiza_email_usuario(_nome varchar(100), _email var
 	END
 $$ LANGUAGE plpgsql;
 
+
 CREATE OR REPLACE FUNCTION atualiza_senha_usuario(_nome varchar(100), _senha_antiga varchar(50), _senha_nova varchar(50)) RETURNS VOID AS $$
 	DECLARE _id integer;
 	BEGIN
@@ -182,6 +188,44 @@ CREATE OR REPLACE FUNCTION atualiza_senha_usuario(_nome varchar(100), _senha_ant
 		UPDATE usuario
         SET senha=crypt(_senha_nova, gen_salt('bf'))
         WHERE id_usuario=_id and senha=crypt(_senha_antiga, senha);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_administrador(_nome varchar(100), _inicio date, _fim date) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+		_id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		INSERT INTO administrador(id_adm, inicio, fim) VALUES (_id, _inicio, _fim);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_administrador(_nome varchar(100)) RETURNS TABLE(id integer, inicio date, fim date) AS $$
+	DECLARE _id integer;
+	BEGIN
+		_id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		RETURN QUERY SELECT * FROM administrador WHERE id_adm = _id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_administrador(_nome varchar(100)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+		_id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		DELETE FROM administrador WHERE id_adm = _id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_administrador(_nome varchar(100), _inicio date, _fim date) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		UPDATE administrador
+        SET inicio=_inicio, fim=_fim
+        WHERE id_adm=_id;
 	END
 $$ LANGUAGE plpgsql;
 
@@ -231,5 +275,12 @@ SELECT atualiza_login_usuario('teotonio', 'pteos');
 SELECT atualiza_email_usuario('teotonio', 'pteos@email.com');
 SELECT atualiza_senha_usuario('teotonio', '123456', 'novasenha');
 SELECT * FROM seleciona_usuario('teotonio');
-SELECT deleta_usuario('teotonio');
-SELECT * FROM seleciona_usuario('teotonio');
+--SELECT deleta_usuario('teotonio');
+--SELECT * FROM seleciona_usuario('teotonio');
+
+SELECT cria_administrador('teotonio', '01-01-2019', '31-12-2019');
+SELECT * FROM seleciona_administrador('teotonio');
+SELECT atualiza_administrador('teotonio', '02-02-2019', '20-10-2020');
+SELECT * FROM seleciona_administrador('teotonio');
+SELECT deleta_administrador('teotonio');
+SELECT * FROM seleciona_administrador('teotonio');
