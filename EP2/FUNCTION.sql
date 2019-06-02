@@ -14,6 +14,8 @@ DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS atualiza_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_login_usuario( varchar(100), varchar(20));
+DROP FUNCTION IF EXISTS atualiza_email_usuario(varchar(100), varchar(50));
+DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varchar(50));
 
 -------------------------------------------------------------------------
 
@@ -163,6 +165,26 @@ CREATE OR REPLACE FUNCTION atualiza_login_usuario(_nome varchar(100), _login var
 	END
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION atualiza_email_usuario(_nome varchar(100), _email varchar(50)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+		_id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		UPDATE usuario
+        SET email=_email
+        WHERE id_usuario=_id;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION atualiza_senha_usuario(_nome varchar(100), _senha_antiga varchar(50), _senha_nova varchar(50)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+		_id := (SELECT id_pessoa FROM pessoa WHERE nome = _nome);
+		UPDATE usuario
+        SET senha=crypt(_senha_nova, gen_salt('bf'))
+        WHERE id_usuario=_id and senha=crypt(_senha_antiga, senha);
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -204,7 +226,10 @@ SELECT deleta_professor('cef');
 SELECT * FROM seleciona_professor('cef');
 
 SELECT cria_usuario('teotonio', 'teo', 'teo@mailismagic.com', '123456');
+SELECT * FROM seleciona_usuario('teotonio');
 SELECT atualiza_login_usuario('teotonio', 'pteos');
+SELECT atualiza_email_usuario('teotonio', 'pteos@email.com');
+SELECT atualiza_senha_usuario('teotonio', '123456', 'novasenha');
 SELECT * FROM seleciona_usuario('teotonio');
 SELECT deleta_usuario('teotonio');
 SELECT * FROM seleciona_usuario('teotonio');
