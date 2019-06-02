@@ -4,18 +4,24 @@ DROP FUNCTION IF EXISTS seleciona_professor(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_usuario(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_administrador(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_curriculo(integer);
+DROP FUNCTION IF EXISTS seleciona_perfil(varchar(50));
+
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS cria_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS cria_usuario(varchar(100), varchar(20), varchar(50), varchar(64));
 DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
+DROP FUNCTION IF EXISTS cria_perfil(varchar(50), varchar(255));
+
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
 DROP FUNCTION IF EXISTS deleta_professor(varchar(100));
 DROP FUNCTION IF EXISTS deleta_usuario(varchar(100));
 DROP FUNCTION IF EXISTS deleta_administrador(varchar(100));
 DROP FUNCTION IF EXISTS deleta_curriculo(integer);
+DROP FUNCTION IF EXISTS deleta_perfil(varchar(50));
+
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS atualiza_professor(varchar(100), varchar(50));
@@ -24,6 +30,8 @@ DROP FUNCTION IF EXISTS atualiza_email_usuario(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
 DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50));
+DROP FUNCTION IF EXISTS atualiza_perfil(varchar(50), varchar(255));
+
 
 -------------------------------------------------------------------------
 
@@ -262,6 +270,42 @@ CREATE OR REPLACE FUNCTION atualiza_curriculo(_codigo integer, _nome varchar(50)
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_perfil(_papel varchar(50), _descricao varchar(255)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO perfil(papel, descricao) VALUES (_papel, _descricao);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_perfil(_papel varchar(50)) RETURNS TABLE(id integer, papel_ varchar(50), descricao varchar(255)) AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_perfil FROM perfil WHERE papel = _papel);
+		RETURN QUERY SELECT * FROM perfil WHERE id_perfil=_id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_perfil(_papel varchar(50)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_perfil FROM perfil WHERE papel = _papel);
+		DELETE FROM perfil WHERE id_perfil=_id;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_perfil(_papel varchar(50), _descricao varchar(255)) RETURNS VOID AS $$
+	DECLARE _id integer;
+	BEGIN
+	    _id := (SELECT id_perfil FROM perfil WHERE papel = _papel);
+	    UPDATE perfil
+        SET descricao=_descricao
+        WHERE id_perfil=_id;
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -324,3 +368,10 @@ SELECT atualiza_curriculo(1, 'bacharelado cc');
 SELECT * FROM seleciona_curriculo(1);
 SELECT deleta_curriculo(1);
 SELECT * FROM seleciona_curriculo(1);
+
+SELECT cria_perfil('adm', 'administra as parada');
+SELECT * FROM seleciona_perfil('adm');
+SELECT atualiza_perfil('adm', 'administra as paradas');
+SELECT * FROM seleciona_perfil('adm');
+SELECT deleta_perfil('adm');
+SELECT * FROM seleciona_perfil('adm');
