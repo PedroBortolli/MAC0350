@@ -79,8 +79,11 @@ INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto
 
 -- TODO: Insert rows on table 'oferecimento' once its Create query is properly working
 
-INSERT INTO oferecimento(id_professor, 	id_aluno, codigo, ano, duracao, instituto, periodo) VALUES
-    (7, 1, 'MAC0121', 2016, 6, 'IME', 2);
+INSERT INTO oferecimento(id_professor, codigo, ano, duracao, instituto, periodo) VALUES
+    (7, 'MAC0121', 2016, 6, 'IME', 2);
+
+INSERT INTO cursa(id_aluno, id_professor, codigo, status, media_final) VALUES
+	(1, 7, 'MAC0121', 'MA', NULL);
 
 -- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
 
