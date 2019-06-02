@@ -3,16 +3,19 @@ DROP FUNCTION IF EXISTS seleciona_aluno(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_professor(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_usuario(varchar(100));
 DROP FUNCTION IF EXISTS seleciona_administrador(varchar(100));
+DROP FUNCTION IF EXISTS seleciona_curriculo(integer);
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS cria_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS cria_usuario(varchar(100), varchar(20), varchar(50), varchar(64));
 DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
+DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
 DROP FUNCTION IF EXISTS deleta_professor(varchar(100));
 DROP FUNCTION IF EXISTS deleta_usuario(varchar(100));
 DROP FUNCTION IF EXISTS deleta_administrador(varchar(100));
+DROP FUNCTION IF EXISTS deleta_curriculo(integer);
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS atualiza_professor(varchar(100), varchar(50));
@@ -20,6 +23,7 @@ DROP FUNCTION IF EXISTS atualiza_login_usuario( varchar(100), varchar(20));
 DROP FUNCTION IF EXISTS atualiza_email_usuario(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
+DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50));
 
 -------------------------------------------------------------------------
 
@@ -229,6 +233,35 @@ CREATE OR REPLACE FUNCTION atualiza_administrador(_nome varchar(100), _inicio da
 	END
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION cria_curriculo(_codigo integer, _nome varchar(50)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO curriculo(codigo, nome) VALUES (_codigo, _nome);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_curriculo(_codigo integer) RETURNS TABLE(cod integer, nome varchar(50)) AS $$
+	BEGIN
+		RETURN QUERY SELECT * FROM curriculo WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_curriculo(_codigo integer) RETURNS VOID AS $$
+	BEGIN
+		DELETE FROM curriculo WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_curriculo(_codigo integer, _nome varchar(50)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE curriculo
+        SET nome=_nome
+        WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -284,3 +317,10 @@ SELECT atualiza_administrador('teotonio', '02-02-2019', '20-10-2020');
 SELECT * FROM seleciona_administrador('teotonio');
 SELECT deleta_administrador('teotonio');
 SELECT * FROM seleciona_administrador('teotonio');
+
+SELECT cria_curriculo(01, 'bcc');
+SELECT * FROM seleciona_curriculo(1);
+SELECT atualiza_curriculo(1, 'bacharelado cc');
+SELECT * FROM seleciona_curriculo(1);
+SELECT deleta_curriculo(1);
+SELECT * FROM seleciona_curriculo(1);
