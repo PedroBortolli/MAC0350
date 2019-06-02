@@ -8,6 +8,8 @@ DROP FUNCTION IF EXISTS seleciona_perfil(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_servico(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_trilha(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_modulo(varchar(50));
+DROP FUNCTION IF EXISTS seleciona_disciplina(varchar(7));
+DROP FUNCTION IF EXISTS seleciona_oferecimento(integer, integer, varchar(7));
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
@@ -18,7 +20,9 @@ DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
 DROP FUNCTION IF EXISTS cria_perfil(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS cria_servico(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS cria_trilha(varchar(50), varchar(255), integer);
-DROP FUNCTION IF EXISTS cria_modulo(varchar(50), varchar(255), integer);
+DROP FUNCTION IF EXISTS cria_modulo(integer, varchar(50), varchar(255), integer);
+DROP FUNCTION IF EXISTS cria_disciplina(varchar(7), varchar(100), integer, integer, varchar(50));
+DROP FUNCTION IF EXISTS cria_oferecimento(integer, integer, varchar(7), integer, integer, varchar(50), integer);
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -30,6 +34,8 @@ DROP FUNCTION IF EXISTS deleta_perfil(varchar(50));
 DROP FUNCTION IF EXISTS deleta_servico(varchar(50));
 DROP FUNCTION IF EXISTS deleta_trilha(varchar(50));
 DROP FUNCTION IF EXISTS deleta_modulo(varchar(50));
+DROP FUNCTION IF EXISTS deleta_disciplina(varchar(7));
+DROP FUNCTION IF EXISTS deleta_oferecimento(integer, integer, varchar(7));
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -45,6 +51,13 @@ DROP FUNCTION IF EXISTS atualiza_disc_trilha(varchar(50), integer);
 DROP FUNCTION IF EXISTS atualiza_descricao_trilha(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS atualiza_disc_modulo(varchar(50), integer);
 DROP FUNCTION IF EXISTS atualiza_descricao_modulo(varchar(50), varchar(255));
+DROP FUNCTION IF EXISTS atualiza_instituto_disciplina(varchar(7), varchar(50));
+DROP FUNCTION IF EXISTS atualiza_creds_trabalho_disciplina(varchar(7), integer);
+DROP FUNCTION IF EXISTS atualiza_creds_aula_disciplina(varchar(7), integer);
+DROP FUNCTION IF EXISTS atualiza_nome_disciplina(varchar(7), varchar(100));
+DROP FUNCTION IF EXISTS atualiza_ano_oferecimento(integer, integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(integer, integer, varchar(7), integer, integer);
+DROP FUNCTION IF EXISTS atualiza_instituto_oferecimento(integer, integer, varchar(7), varchar(50));
 
 -------------------------------------------------------------------------
 
@@ -435,6 +448,111 @@ CREATE OR REPLACE FUNCTION atualiza_disc_modulo(_nome varchar(50), _quant_disc i
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_disciplina(_codigo varchar(7), _nome varchar(100), _creditos_aula integer, _creditos_trabalho integer, _instituto varchar(50)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto) VALUES (_codigo, _nome, _creditos_aula, _creditos_trabalho, _instituto);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_disciplina(_codigo varchar(7)) RETURNS TABLE(cod varchar(7), nome varchar(100), creditos_aula integer, creditos_trabalho integer, instituto varchar(50)) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM disciplina WHERE codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_disciplina(_codigo varchar(7)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM disciplina WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_nome_disciplina(_codigo varchar(7), _nome varchar(100)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE disciplina
+        SET nome=_nome
+        WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_creds_aula_disciplina(_codigo varchar(7), _creditos_aula integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE disciplina
+        SET creditos_aula=_creditos_aula
+        WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_creds_trabalho_disciplina(_codigo varchar(7), _creditos_trabalho integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE disciplina
+        SET creditos_trabalho = _creditos_trabalho
+        WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_instituto_disciplina(_codigo varchar(7), _instituto varchar(50)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE disciplina
+        SET instituto=_instituto
+        WHERE codigo=_codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7), _ano integer, _duracao integer, _instituto varchar(50), _periodo integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO oferecimento(id_professor, id_aluno, codigo, ano, duracao, instituto, periodo) VALUES (_id_professor, _id_aluno, _codigo, _ano, _duracao, _instituto, _periodo);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7)) RETURNS TABLE(id_professor_ integer, id_aluno_ integer, codigo_ varchar(7), ano integer, duracao integer, instituto varchar(50), periodo integer) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM oferecimento WHERE id_professor = _id_professor and id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_ano_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7), _ano integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE oferecimento
+        SET ano = _ano
+        WHERE id_professor = _id_professor and id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_duracao_periodo_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7), _duracao integer, _periodo integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE oferecimento
+        SET duracao = _duracao, periodo = _periodo
+        WHERE id_professor = _id_professor and id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_instituto_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7), _instituto varchar(50)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE oferecimento
+        SET instituto = _instituto
+        WHERE id_professor = _id_professor and id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_oferecimento(_id_professor integer, _id_aluno integer, _codigo varchar(7)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM oferecimento WHERE id_professor = _id_professor and id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
 -------------------------------------------------------------------------
 
 
@@ -472,7 +590,7 @@ SELECT cria_pessoa('cef');
 SELECT cria_professor('cef', 'teoria');
 SELECT atualiza_professor('cef', 'A e EDs');
 SELECT * FROM seleciona_professor('cef');
-SELECT deleta_professor('cef');
+--SELECT deleta_professor('cef');
 SELECT * FROM seleciona_professor('cef');
 
 SELECT cria_usuario('teotonio', 'teo', 'teo@mailismagic.com', '123456');
@@ -527,3 +645,22 @@ SELECT atualiza_disc_modulo('mat dis', 6);
 SELECT * FROM seleciona_modulo('mat dis');
 SELECT deleta_modulo('mat dis');
 SELECT * FROM seleciona_modulo('mat dis');
+
+SELECT cria_disciplina('MAC0666', 'topicos em satanas', 6, 6, 'dcc');
+SELECT * FROM seleciona_disciplina('MAC0666');
+SELECT atualiza_nome_disciplina('MAC0666', 'topicos no mochila de crinca');
+SELECT atualiza_creds_aula_disciplina('MAC0666', 8);
+SELECT atualiza_creds_trabalho_disciplina('MAC0666', 4);
+SELECT atualiza_instituto_disciplina('MAC0666', 'depart comp');
+SELECT * FROM seleciona_disciplina('MAC0666');
+--SELECT deleta_disciplina('MAC0666');
+SELECT * FROM seleciona_disciplina('MAC0666');
+
+SELECT cria_oferecimento(4, 1, 'MAC0666', 2019, 6, 'IME', 2);
+SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+SELECT atualiza_ano_oferecimento(4, 1, 'MAC0666', 2018);
+SELECT atualiza_duracao_periodo_oferecimento(4, 1, 'MAC0666', 3, 4);
+SELECT atualiza_instituto_oferecimento(4, 1, 'MAC0666', 'FEA');
+SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+SELECT deleta_oferecimento(4, 1, 'MAC0666');
+SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
