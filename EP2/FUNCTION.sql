@@ -10,6 +10,7 @@ DROP FUNCTION IF EXISTS seleciona_trilha(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_modulo(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_disciplina(varchar(7));
 DROP FUNCTION IF EXISTS seleciona_oferecimento(integer, integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_rel_us_pf(integer, varchar(20));
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
@@ -23,6 +24,7 @@ DROP FUNCTION IF EXISTS cria_trilha(varchar(50), varchar(255), integer);
 DROP FUNCTION IF EXISTS cria_modulo(integer, varchar(50), varchar(255), integer);
 DROP FUNCTION IF EXISTS cria_disciplina(varchar(7), varchar(100), integer, integer, varchar(50));
 DROP FUNCTION IF EXISTS cria_oferecimento(integer, integer, varchar(7), integer, integer, varchar(50), integer);
+DROP FUNCTION IF EXISTS cria_rel_us_pf(integer, _login varchar(20));
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -36,6 +38,7 @@ DROP FUNCTION IF EXISTS deleta_trilha(varchar(50));
 DROP FUNCTION IF EXISTS deleta_modulo(varchar(50));
 DROP FUNCTION IF EXISTS deleta_disciplina(varchar(7));
 DROP FUNCTION IF EXISTS deleta_oferecimento(integer, integer, varchar(7));
+DROP FUNCTION IF EXISTS deleta_rel_us_pf(integer, varchar(20));
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -553,6 +556,26 @@ CREATE OR REPLACE FUNCTION deleta_oferecimento(_id_professor integer, _id_aluno 
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO rel_us_pf(id_usuario, login) VALUES (_id_usuario, _login);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS TABLE(id_usuario_ integer, login_ varchar(20)) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	END
+$$ LANGUAGE plpgsql;
 -------------------------------------------------------------------------
 
 
@@ -602,65 +625,70 @@ SELECT * FROM seleciona_usuario('teotonio');
 --SELECT deleta_usuario('teotonio');
 --SELECT * FROM seleciona_usuario('teotonio');
 
-SELECT cria_administrador('teotonio', '01-01-2019', '31-12-2019');
-SELECT * FROM seleciona_administrador('teotonio');
-SELECT atualiza_administrador('teotonio', '02-02-2019', '20-10-2020');
-SELECT * FROM seleciona_administrador('teotonio');
-SELECT deleta_administrador('teotonio');
-SELECT * FROM seleciona_administrador('teotonio');
+--SELECT cria_administrador('teotonio', '01-01-2019', '31-12-2019');
+--SELECT * FROM seleciona_administrador('teotonio');
+--SELECT atualiza_administrador('teotonio', '02-02-2019', '20-10-2020');
+--SELECT * FROM seleciona_administrador('teotonio');
+--SELECT deleta_administrador('teotonio');
+--SELECT * FROM seleciona_administrador('teotonio');
 
-SELECT cria_curriculo(01, 'bcc');
-SELECT * FROM seleciona_curriculo(1);
-SELECT atualiza_curriculo(1, 'bacharelado cc');
-SELECT * FROM seleciona_curriculo(1);
-SELECT deleta_curriculo(1);
-SELECT * FROM seleciona_curriculo(1);
+--SELECT cria_curriculo(01, 'bcc');
+--SELECT * FROM seleciona_curriculo(1);
+--SELECT atualiza_curriculo(1, 'bacharelado cc');
+--SELECT * FROM seleciona_curriculo(1);
+--SELECT deleta_curriculo(1);
+--SELECT * FROM seleciona_curriculo(1);
 
-SELECT cria_perfil('adm', 'administra as parada');
-SELECT * FROM seleciona_perfil('adm');
-SELECT atualiza_perfil('adm', 'administra as paradas');
-SELECT * FROM seleciona_perfil('adm');
-SELECT deleta_perfil('adm');
-SELECT * FROM seleciona_perfil('adm');
+--SELECT cria_perfil('adm', 'administra as parada');
+--SELECT * FROM seleciona_perfil('adm');
+--SELECT atualiza_perfil('adm', 'administra as paradas');
+--SELECT * FROM seleciona_perfil('adm');
+--SELECT deleta_perfil('adm');
+--SELECT * FROM seleciona_perfil('adm');
 
-SELECT cria_servico('visualizacao', 'vizualiza as parada');
-SELECT * FROM seleciona_servico('visualizacao');
-SELECT atualiza_servico('visualizacao', 'vizualiza as paradas');
-SELECT * FROM seleciona_servico('visualizacao');
-SELECT deleta_servico('visualizacao');
-SELECT * FROM seleciona_servico('visualizacao');
+--SELECT cria_servico('visualizacao', 'vizualiza as parada');
+--SELECT * FROM seleciona_servico('visualizacao');
+--SELECT atualiza_servico('visualizacao', 'vizualiza as paradas');
+--SELECT * FROM seleciona_servico('visualizacao');
+--SELECT deleta_servico('visualizacao');
+--SELECT * FROM seleciona_servico('visualizacao');
 
-SELECT cria_trilha('teoria', 'so materia nabo', 8);
-SELECT * FROM seleciona_trilha('teoria');
-SELECT atualiza_descricao_trilha('teoria', 'so materia legal');
-SELECT atualiza_disc_trilha('teoria', 6);
-SELECT * FROM seleciona_trilha('teoria');
+--SELECT cria_trilha('teoria', 'so materia nabo', 8);
+--SELECT * FROM seleciona_trilha('teoria');
+--SELECT atualiza_descricao_trilha('teoria', 'so materia legal');
+--SELECT atualiza_disc_trilha('teoria', 6);
+--SELECT * FROM seleciona_trilha('teoria');
 --SELECT deleta_trilha('teoria');
-SELECT * FROM seleciona_trilha('teoria');
+--SELECT * FROM seleciona_trilha('teoria');
 
-SELECT cria_modulo(1, 'mat dis', 'so materia nabo', 8);
-SELECT * FROM seleciona_modulo('mat dis');
-SELECT atualiza_descricao_modulo('mat dis', 'so materia legal');
-SELECT atualiza_disc_modulo('mat dis', 6);
-SELECT * FROM seleciona_modulo('mat dis');
-SELECT deleta_modulo('mat dis');
-SELECT * FROM seleciona_modulo('mat dis');
+--SELECT cria_modulo(1, 'mat dis', 'so materia nabo', 8);
+--SELECT * FROM seleciona_modulo('mat dis');
+--SELECT atualiza_descricao_modulo('mat dis', 'so materia legal');
+--SELECT atualiza_disc_modulo('mat dis', 6);
+--SELECT * FROM seleciona_modulo('mat dis');
+--SELECT deleta_modulo('mat dis');
+--SELECT * FROM seleciona_modulo('mat dis');
 
-SELECT cria_disciplina('MAC0666', 'topicos em satanas', 6, 6, 'dcc');
-SELECT * FROM seleciona_disciplina('MAC0666');
-SELECT atualiza_nome_disciplina('MAC0666', 'topicos no mochila de crinca');
-SELECT atualiza_creds_aula_disciplina('MAC0666', 8);
-SELECT atualiza_creds_trabalho_disciplina('MAC0666', 4);
-SELECT atualiza_instituto_disciplina('MAC0666', 'depart comp');
-SELECT * FROM seleciona_disciplina('MAC0666');
+--SELECT cria_disciplina('MAC0666', 'topicos em satanas', 6, 6, 'dcc');
+--SELECT * FROM seleciona_disciplina('MAC0666');
+--SELECT atualiza_nome_disciplina('MAC0666', 'topicos no mochila de crinca');
+--SELECT atualiza_creds_aula_disciplina('MAC0666', 8);
+--SELECT atualiza_creds_trabalho_disciplina('MAC0666', 4);
+--SELECT atualiza_instituto_disciplina('MAC0666', 'depart comp');
+--SELECT * FROM seleciona_disciplina('MAC0666');
 --SELECT deleta_disciplina('MAC0666');
-SELECT * FROM seleciona_disciplina('MAC0666');
+--SELECT * FROM seleciona_disciplina('MAC0666');
 
-SELECT cria_oferecimento(4, 1, 'MAC0666', 2019, 6, 'IME', 2);
-SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
-SELECT atualiza_ano_oferecimento(4, 1, 'MAC0666', 2018);
-SELECT atualiza_duracao_periodo_oferecimento(4, 1, 'MAC0666', 3, 4);
-SELECT atualiza_instituto_oferecimento(4, 1, 'MAC0666', 'FEA');
-SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
-SELECT deleta_oferecimento(4, 1, 'MAC0666');
-SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+--SELECT cria_oferecimento(4, 1, 'MAC0666', 2019, 6, 'IME', 2);
+--SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+--SELECT atualiza_ano_oferecimento(4, 1, 'MAC0666', 2018);
+--SELECT atualiza_duracao_periodo_oferecimento(4, 1, 'MAC0666', 3, 4);
+--SELECT atualiza_instituto_oferecimento(4, 1, 'MAC0666', 'FEA');
+--SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+--SELECT deleta_oferecimento(4, 1, 'MAC0666');
+--SELECT * FROM seleciona_oferecimento(4, 1, 'MAC0666');
+
+SELECT cria_rel_us_pf(2, 'pteos');
+SELECT * FROM seleciona_rel_us_pf(2, 'pteos');
+SELECT deleta_rel_us_pf(2, 'pteos');
+SELECT * FROM seleciona_rel_us_pf(2, 'pteos');
