@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS servico;
 DROP TABLE IF EXISTS modulo;
 DROP TABLE IF EXISTS trilha;
+DROP TABLE IF EXISTS requisito;
 DROP TABLE IF EXISTS disciplina;
 
 CREATE TABLE pessoa (
@@ -110,6 +111,15 @@ CREATE TABLE disciplina (
 	instituto varchar(50),
 	CONSTRAINT check_codigo check (char_length(codigo)=7 AND codigo ~ '^[A-Z]{3}[0-9]{4}$'),
 	CONSTRAINT check_creditos check (creditos_aula >= 0 AND creditos_trabalho >= 0)
+);
+
+
+CREATE TABLE requisito (
+	codigo_disc varchar(7),
+	codigo_req varchar(7),
+	PRIMARY KEY (codigo_disc, codigo_req),
+	CONSTRAINT fk_codigo_disc FOREIGN KEY (codigo_disc) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_codigo_req FOREIGN KEY (codigo_req) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
