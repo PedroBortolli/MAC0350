@@ -143,17 +143,19 @@ CREATE TABLE cursa (
 
 
 CREATE TABLE rel_us_pf (
-	id_usuario integer,
 	login varchar(20),
-	CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_login FOREIGN KEY (login) REFERENCES usuario(login) ON DELETE CASCADE ON UPDATE CASCADE
+	id_perfil integer,
+	PRIMARY KEY (login, id_perfil),
+	CONSTRAINT fk_usuario FOREIGN KEY (login) REFERENCES usuario(login) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_perfil FOREIGN KEY (id_perfil) REFERENCES perfil(id_perfil) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE rel_pf_se (
-	login varchar(20),
+	id_perfil integer,
 	id_servico integer,
-	CONSTRAINT fk_usuario FOREIGN KEY (login) REFERENCES usuario(login) ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY (id_perfil, id_servico),
+	CONSTRAINT fk_perfil FOREIGN KEY (id_perfil) REFERENCES perfil(id_perfil) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_servico FOREIGN KEY (id_servico) REFERENCES servico(id_servico) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -162,6 +164,7 @@ CREATE TABLE planeja (
 	id_aluno integer,
 	codigo varchar(7),
 	semestre integer,
+	PRIMARY KEY (id_aluno, codigo),
 	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -170,6 +173,7 @@ CREATE TABLE planeja (
 CREATE TABLE rel_cur_tri (
 	codigo integer,
 	id_trilha integer,
+	PRIMARY KEY (codigo, id_trilha),
 	CONSTRAINT fk_curriculo FOREIGN KEY (codigo) REFERENCES curriculo(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha) REFERENCES trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -178,8 +182,8 @@ CREATE TABLE rel_cur_tri (
 CREATE TABLE rel_mod_dis (
 	id_modulo integer,
 	codigo varchar(7),
-	obrigatoria integer,
+	obrigatoria BIT NOT NULL,
+	PRIMARY KEY (id_modulo, codigo),
 	CONSTRAINT fk_modulo FOREIGN KEY (id_modulo) REFERENCES modulo(id_modulo) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT check_obrigatoria check (obrigatoria=0 OR obrigatoria=1)
+	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -42,7 +42,9 @@ INSERT INTO curriculo(codigo, nome) VALUES
 	(45, 'Bacharelado em Ciência da Computação');  -- usando utf8... pode? aqui deu bom
 
 
--- INSERT INTO perfil(papel, descricao) VALUES  -- nao sei o que inserir aqui
+INSERT INTO perfil(papel, descricao) VALUES
+	('Professor', 'Tem total acesso ao sistema'),
+	('Aluno', 'Tem acesso apenas a visualização');
 
 
 INSERT INTO servico(tipo, descricao) VALUES
@@ -87,10 +89,11 @@ INSERT INTO cursa(id_aluno, id_professor, codigo, status, media_final) VALUES
 
 -- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
 
-INSERT INTO rel_us_pf(id_usuario, login) VALUES
-    (1, 'bortolli');
+INSERT INTO rel_us_pf(login, id_perfil) VALUES
+    ('bortolli', 2);
 
-INSERT INTO rel_pf_se(login, id_servico) VALUES
-	('bortolli', 1),
-	('bortolli', 2),
-	('bortolli', 3);
+INSERT INTO rel_pf_se(id_perfil, id_servico) VALUES
+	(1, 1),
+	(1, 2),
+	(1, 3),
+	(2, 1);
