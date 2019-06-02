@@ -9,9 +9,9 @@ DROP TABLE IF EXISTS oferecimento;
 DROP TABLE IF EXISTS aluno;
 DROP TABLE IF EXISTS professor;
 DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS curriculo;
 DROP TABLE IF EXISTS administrador;
 DROP TABLE IF EXISTS pessoa;
-DROP TABLE IF EXISTS curriculo;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS servico;
 DROP TABLE IF EXISTS modulo;
@@ -60,7 +60,9 @@ CREATE TABLE administrador (
 
 CREATE TABLE curriculo (
 	codigo integer PRIMARY KEY,
-	nome varchar(50)
+	nome varchar(50),
+	id_adm integer,
+	CONSTRAINT fk_curriculo FOREIGN KEY (id_adm) REFERENCES administrador(id_adm) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
