@@ -576,23 +576,23 @@ CREATE OR REPLACE FUNCTION deleta_oferecimento(_id_professor integer, _codigo va
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION cria_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION cria_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS VOID AS $$
 	BEGIN
-		INSERT INTO rel_us_pf(id_usuario, login) VALUES (_id_usuario, _login);
+		INSERT INTO rel_us_pf(login, id_perfil) VALUES (_login, _id_perfil);
 	END
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION seleciona_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS TABLE(id_usuario_ integer, login_ varchar(20)) AS $$
+CREATE OR REPLACE FUNCTION seleciona_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS TABLE(login_ varchar(20), id_usuario_ integer) AS $$
 	BEGIN
-	    RETURN QUERY SELECT * FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	    RETURN QUERY SELECT * FROM rel_us_pf WHERE id_perfil = _id_perfil and login = _login;
 	END
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION deleta_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION deleta_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS VOID AS $$
 	BEGIN
-	    DELETE FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	    DELETE FROM rel_us_pf WHERE id_perfil = _id_perfil and login = _login;
 	END
 $$ LANGUAGE plpgsql;
 
@@ -630,7 +630,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION atualiza_status_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer, _status varchar(2)) RETURNS VOID AS $$
 	BEGIN
 	    UPDATE cursa
-	    SET status=status
+	    SET status=_status
 	    WHERE id_professor = _id_professor and codigo = _codigo and id_aluno = _id_aluno;
 	END
 $$ LANGUAGE plpgsql;
@@ -802,8 +802,8 @@ SELECT cria_perfil('adm', 'administra as parada');
 SELECT * FROM seleciona_perfil('adm');
 SELECT atualiza_perfil('adm', 'administra as paradas');
 SELECT * FROM seleciona_perfil('adm');
-SELECT deleta_perfil('adm');
-SELECT * FROM seleciona_perfil('adm');
+--SELECT deleta_perfil('adm');
+--SELECT * FROM seleciona_perfil('adm');
 
 SELECT cria_servico('visualizacao', 'vizualiza as parada');
 SELECT * FROM seleciona_servico('visualizacao');
@@ -844,5 +844,18 @@ SELECT atualiza_ano_oferecimento(4, 'MAC0666', 2018);
 SELECT atualiza_duracao_periodo_oferecimento(4, 'MAC0666', 3, 4);
 SELECT atualiza_instituto_oferecimento(4, 'MAC0666', 'FEA');
 SELECT * FROM seleciona_oferecimento(4, 'MAC0666');
-SELECT deleta_oferecimento(4, 'MAC0666');
-SELECT * FROM seleciona_oferecimento(4, 'MAC0666');
+--SELECT deleta_oferecimento(4, 'MAC0666');
+--SELECT * FROM seleciona_oferecimento(4, 'MAC0666');
+
+SELECT cria_rel_us_pf(1, 'pteos');
+SELECT * FROM seleciona_rel_us_pf(1, 'pteos');
+SELECT deleta_rel_us_pf(1, 'pteos');
+SELECT * FROM seleciona_rel_us_pf(1, 'pteos');
+
+SELECT cria_cursa(4, 'MAC0666', 2, 'MA', 49);
+SELECT * FROM seleciona_cursa(4, 'MAC0666', 2);
+SELECT atualiza_media_cursa(4, 'MAC0666', 2, 50);
+SELECT atualiza_status_cursa(4, 'MAC0666', 2, 'A');
+SELECT * FROM seleciona_cursa(4, 'MAC0666', 2);
+SELECT deleta_cursa(4, 'MAC0666', 2);
+SELECT * FROM seleciona_cursa(4, 'MAC0666', 2);
