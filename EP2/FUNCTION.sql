@@ -12,7 +12,10 @@ DROP FUNCTION IF EXISTS seleciona_disciplina(varchar(7));
 DROP FUNCTION IF EXISTS seleciona_oferecimento(integer, varchar(7));
 DROP FUNCTION IF EXISTS seleciona_rel_us_pf(integer, varchar(20));
 DROP FUNCTION IF EXISTS seleciona_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS seleciona_rel_cur_tri(integer, integer);
 DROP FUNCTION IF EXISTS seleciona_cursa(integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS seleciona_rel_mod_dis(integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_planeja(integer, varchar(7));
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
@@ -28,7 +31,10 @@ DROP FUNCTION IF EXISTS cria_disciplina(varchar(7), varchar(100), integer, integ
 DROP FUNCTION IF EXISTS cria_oferecimento(integer, varchar(7), integer, integer, varchar(50), integer);
 DROP FUNCTION IF EXISTS cria_rel_us_pf(integer, varchar(20));
 DROP FUNCTION IF EXISTS cria_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS cria_rel_cur_tri(integer, integer);
 DROP FUNCTION IF EXISTS cria_cursa(integer, varchar(7), integer, varchar(2), integer);
+DROP FUNCTION IF EXISTS cria_rel_mod_dis(integer, varchar(7), BIT);
+DROP FUNCTION IF EXISTS cria_planeja(integer, varchar(7), integer);
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -44,7 +50,10 @@ DROP FUNCTION IF EXISTS deleta_disciplina(varchar(7));
 DROP FUNCTION IF EXISTS deleta_oferecimento(integer, varchar(7));
 DROP FUNCTION IF EXISTS deleta_rel_us_pf(integer, varchar(20));
 DROP FUNCTION IF EXISTS deleta_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS deleta_rel_cur_tri(integer, integer);
 DROP FUNCTION IF EXISTS deleta_cursa(integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS deleta_rel_mod_dis(integer, varchar(7));
+DROP FUNCTION IF EXISTS deleta_planeja(integer, varchar(7));
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -69,6 +78,8 @@ DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(integer, varchar(7
 DROP FUNCTION IF EXISTS atualiza_instituto_oferecimento(integer, varchar(7), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_status_cursa(integer, varchar(7), integer, varchar(2));
 DROP FUNCTION IF EXISTS atualiza_media_cursa(integer, varchar(7), integer, integer);
+DROP FUNCTION IF EXISTS atualiza_rel_mod_dis(integer, varchar(7), BIT);
+DROP FUNCTION IF EXISTS atualiza_planeja(integer, varchar(7), integer);
 
 -------------------------------------------------------------------------
 
@@ -642,6 +653,85 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION deleta_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS VOID AS $$
 	BEGIN
 	    DELETE FROM rel_pf_se WHERE id_perfil = _id_perfil and id_servico = _id_servico;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_rel_cur_tri(_codigo integer, _id_trilha integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO rel_cur_tri(codigo, id_trilha) VALUES (_codigo, _id_trilha);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_rel_cur_tri(_codigo integer, _id_trilha integer) RETURNS TABLE(codigo_ integer, id_trilha_ integer) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM rel_cru_tri WHERE codigo = _codig and id_trilha = _id_trilha;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_rel_cur_tri(_codigo integer, _id_trilha integer) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM rel_cur_tri WHERE codigo = _codigo and id_trilha = _id_trilha;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_rel_mod_dis(_id_modulo integer, _codigo varchar(7), _obrigatoria BIT) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO rel_mod_dis(id_modulo, codigo, obrigatoria) VALUES (_id_modulo, _codigo, _obrigatoria);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_rel_mod_dis(_id_modulo integer, _codigo varchar(7)) RETURNS TABLE(id_modulo_ integer, codigo_ varchar(7), obrigatoria_ BIT) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM rel_mod_dis WHERE id_modulo = _id_modulo and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION deleta_rel_mod_dis(_id_modulo integer, _codigo varchar(7)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM rel_mod_dis WHERE id_modulo = _id_modulo and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_rel_mod_dis(_id_modulo integer, _codigo varchar(7), _obrigatoria BIT) RETURNS VOID AS $$
+	BEGIN
+		UPDATE rel_mod_dis
+		SET obrigatoria = _obrigatoria
+		WHERE id_modulo = _id_modulo and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_planeja(_id_aluno integer, _codigo varchar(7), _semestre integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO planeja(id_aluno, codigo, semestre) VALUES (_id_aluno, _codigo, _semestre);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_planeja(_id_aluno integer, _codigo varchar(7)) RETURNS TABLE(id_aluno_ integer, codigo_ varchar(7), semestre_ integer) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM planeja WHERE id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION deleta_planeja(_id_aluno integer, _codigo varchar(7)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM planeja WHERE id_aluno = _id_aluno and codigo = _codigo;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_planeja(_id_aluno integer, _codigo varchar(7), _semestre integer) RETURNS VOID AS $$
+	BEGIN
+		UPDATE planeja
+		SET semestre = _semestre
+		WHERE id_aluno = _id_aluno and codigo = _codigo;
 	END
 $$ LANGUAGE plpgsql;
 -------------------------------------------------------------------------
