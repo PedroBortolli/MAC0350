@@ -643,7 +643,7 @@ CREATE OR REPLACE FUNCTION cria_rel_pf_se(_id_perfil integer, _id_servico intege
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION seleciona_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS TABLE(id_perfil_ integer, id_servico_ varchar(20)) AS $$
+CREATE OR REPLACE FUNCTION seleciona_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS TABLE(id_perfil_ integer, id_servico_ integer) AS $$
 	BEGIN
 	    RETURN QUERY SELECT * FROM rel_pf_se WHERE id_perfil = _id_perfil and id_servico = _id_servico;
 	END
@@ -666,7 +666,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION seleciona_rel_cur_tri(_codigo integer, _id_trilha integer) RETURNS TABLE(codigo_ integer, id_trilha_ integer) AS $$
 	BEGIN
-	    RETURN QUERY SELECT * FROM rel_cru_tri WHERE codigo = _codig and id_trilha = _id_trilha;
+	    RETURN QUERY SELECT * FROM rel_cur_tri WHERE codigo = _codigo and id_trilha = _id_trilha;
 	END
 $$ LANGUAGE plpgsql;
 
@@ -795,8 +795,8 @@ SELECT cria_curriculo(1, 'bcc', 2);
 SELECT * FROM seleciona_curriculo(1);
 SELECT atualiza_curriculo(1, 'bacharelado cc', 2);
 SELECT * FROM seleciona_curriculo(1);
-SELECT deleta_curriculo(1);
-SELECT * FROM seleciona_curriculo(1);
+--SELECT deleta_curriculo(1);
+--SELECT * FROM seleciona_curriculo(1);
 
 SELECT cria_perfil('adm', 'administra as parada');
 SELECT * FROM seleciona_perfil('adm');
@@ -809,8 +809,8 @@ SELECT cria_servico('visualizacao', 'vizualiza as parada');
 SELECT * FROM seleciona_servico('visualizacao');
 SELECT atualiza_servico('visualizacao', 'vizualiza as paradas');
 SELECT * FROM seleciona_servico('visualizacao');
-SELECT deleta_servico('visualizacao');
-SELECT * FROM seleciona_servico('visualizacao');
+--SELECT deleta_servico('visualizacao');
+--SELECT * FROM seleciona_servico('visualizacao');
 
 SELECT cria_trilha('teoria', 'so materia nabo', 8);
 SELECT * FROM seleciona_trilha('teoria');
@@ -818,15 +818,15 @@ SELECT atualiza_descricao_trilha('teoria', 'so materia legal');
 SELECT atualiza_disc_trilha('teoria', 6);
 SELECT * FROM seleciona_trilha('teoria');
 --SELECT deleta_trilha('teoria');
-SELECT * FROM seleciona_trilha('teoria');
+--SELECT * FROM seleciona_trilha('teoria');
 
 SELECT cria_modulo(1, 'mat dis', 'so materia nabo', 8);
 SELECT * FROM seleciona_modulo('mat dis');
 SELECT atualiza_descricao_modulo('mat dis', 'so materia legal');
 SELECT atualiza_disc_modulo('mat dis', 6);
 SELECT * FROM seleciona_modulo('mat dis');
-SELECT deleta_modulo('mat dis');
-SELECT * FROM seleciona_modulo('mat dis');
+--SELECT deleta_modulo('mat dis');
+--SELECT * FROM seleciona_modulo('mat dis');
 
 SELECT cria_disciplina('MAC0666', 'topicos em satanas', 6, 6, 'dcc');
 SELECT * FROM seleciona_disciplina('MAC0666');
@@ -859,3 +859,27 @@ SELECT atualiza_status_cursa(4, 'MAC0666', 2, 'A');
 SELECT * FROM seleciona_cursa(4, 'MAC0666', 2);
 SELECT deleta_cursa(4, 'MAC0666', 2);
 SELECT * FROM seleciona_cursa(4, 'MAC0666', 2);
+
+SELECT cria_rel_pf_se(1, 1);
+SELECT * FROM seleciona_rel_pf_se(1, 1);
+SELECT deleta_rel_pf_se(1, 1);
+SELECT * FROM seleciona_rel_pf_se(1, 1);
+
+SELECT cria_planeja(2, 'MAC0666', 5);
+SELECT * FROM seleciona_planeja(2, 'MAC0666');
+SELECT atualiza_planeja(2, 'MAC0666', 7);
+SELECT * FROM seleciona_planeja(2, 'MAC0666');
+SELECT deleta_planeja(2, 'MAC0666');
+SELECT * FROM seleciona_planeja(2, 'MAC0666');
+
+SELECT cria_rel_cur_tri(1, 1);
+SELECT * FROM seleciona_rel_cur_tri(1, 1);
+SELECT deleta_rel_cur_tri(1, 1);
+SELECT * FROM seleciona_rel_cur_tri(1, 1);
+
+SELECT cria_rel_mod_dis(1, 'MAC0666', '1');
+SELECT * FROM seleciona_rel_mod_dis(1, 'MAC0666');
+SELECT atualiza_rel_mod_dis(1, 'MAC0666', '0');
+SELECT * FROM seleciona_rel_mod_dis(1, 'MAC0666');
+SELECT deleta_rel_mod_dis(1, 'MAC0666');
+SELECT * FROM seleciona_rel_mod_dis(1, 'MAC0666');
