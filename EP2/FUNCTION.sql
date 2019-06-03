@@ -9,20 +9,26 @@ DROP FUNCTION IF EXISTS seleciona_servico(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_trilha(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_modulo(varchar(50));
 DROP FUNCTION IF EXISTS seleciona_disciplina(varchar(7));
-DROP FUNCTION IF EXISTS seleciona_oferecimento(integer, integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_oferecimento(integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_rel_us_pf(integer, varchar(20));
+DROP FUNCTION IF EXISTS seleciona_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS seleciona_cursa(integer, varchar(7), integer);
 
 DROP FUNCTION IF EXISTS cria_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS cria_aluno(varchar(100), integer);
 DROP FUNCTION IF EXISTS cria_professor(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS cria_usuario(varchar(100), varchar(20), varchar(50), varchar(64));
 DROP FUNCTION IF EXISTS cria_administrador(varchar(100), date, date);
-DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50));
+DROP FUNCTION IF EXISTS cria_curriculo(integer, varchar(50), integer);
 DROP FUNCTION IF EXISTS cria_perfil(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS cria_servico(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS cria_trilha(varchar(50), varchar(255), integer);
 DROP FUNCTION IF EXISTS cria_modulo(integer, varchar(50), varchar(255), integer);
 DROP FUNCTION IF EXISTS cria_disciplina(varchar(7), varchar(100), integer, integer, varchar(50));
-DROP FUNCTION IF EXISTS cria_oferecimento(integer, integer, varchar(7), integer, integer, varchar(50), integer);
+DROP FUNCTION IF EXISTS cria_oferecimento(integer, varchar(7), integer, integer, varchar(50), integer);
+DROP FUNCTION IF EXISTS cria_rel_us_pf(integer, varchar(20));
+DROP FUNCTION IF EXISTS cria_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS cria_cursa(integer, varchar(7), integer, varchar(2), integer);
 
 DROP FUNCTION IF EXISTS deleta_pessoa(varchar(100));
 DROP FUNCTION IF EXISTS deleta_aluno(varchar(100));
@@ -35,7 +41,10 @@ DROP FUNCTION IF EXISTS deleta_servico(varchar(50));
 DROP FUNCTION IF EXISTS deleta_trilha(varchar(50));
 DROP FUNCTION IF EXISTS deleta_modulo(varchar(50));
 DROP FUNCTION IF EXISTS deleta_disciplina(varchar(7));
-DROP FUNCTION IF EXISTS deleta_oferecimento(integer, integer, varchar(7));
+DROP FUNCTION IF EXISTS deleta_oferecimento(integer, varchar(7));
+DROP FUNCTION IF EXISTS deleta_rel_us_pf(integer, varchar(20));
+DROP FUNCTION IF EXISTS deleta_rel_pf_se(integer, integer);
+DROP FUNCTION IF EXISTS deleta_cursa(integer, varchar(7), integer);
 
 DROP FUNCTION IF EXISTS atualiza_pessoa(varchar(100), varchar(100));
 DROP FUNCTION IF EXISTS atualiza_aluno(varchar(100), integer);
@@ -44,7 +53,7 @@ DROP FUNCTION IF EXISTS atualiza_login_usuario( varchar(100), varchar(20));
 DROP FUNCTION IF EXISTS atualiza_email_usuario(varchar(100), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_senha_usuario(varchar(100), varchar(50), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_administrador(varchar(100), date, date);
-DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50));
+DROP FUNCTION IF EXISTS atualiza_curriculo(integer, varchar(50), int);
 DROP FUNCTION IF EXISTS atualiza_perfil(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS atualiza_servico(varchar(50), varchar(255));
 DROP FUNCTION IF EXISTS atualiza_disc_trilha(varchar(50), integer);
@@ -55,9 +64,11 @@ DROP FUNCTION IF EXISTS atualiza_instituto_disciplina(varchar(7), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_creds_trabalho_disciplina(varchar(7), integer);
 DROP FUNCTION IF EXISTS atualiza_creds_aula_disciplina(varchar(7), integer);
 DROP FUNCTION IF EXISTS atualiza_nome_disciplina(varchar(7), varchar(100));
-DROP FUNCTION IF EXISTS atualiza_ano_oferecimento(integer, integer, varchar(7), integer);
-DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(integer, integer, varchar(7), integer, integer);
-DROP FUNCTION IF EXISTS atualiza_instituto_oferecimento(integer, integer, varchar(7), varchar(50));
+DROP FUNCTION IF EXISTS atualiza_ano_oferecimento(integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(integer, varchar(7), integer, integer);
+DROP FUNCTION IF EXISTS atualiza_instituto_oferecimento(integer, varchar(7), varchar(50));
+DROP FUNCTION IF EXISTS atualiza_status_cursa(integer, varchar(7), integer, varchar(2));
+DROP FUNCTION IF EXISTS atualiza_media_cursa(integer, varchar(7), integer, integer);
 
 -------------------------------------------------------------------------
 
@@ -553,6 +564,86 @@ CREATE OR REPLACE FUNCTION deleta_oferecimento(_id_professor integer, _codigo va
 	END
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION cria_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO rel_us_pf(id_usuario, login) VALUES (_id_usuario, _login);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS TABLE(id_usuario_ integer, login_ varchar(20)) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_rel_us_pf(_id_usuario integer, _login varchar(20)) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM rel_us_pf WHERE id_usuario = _id_usuario and login = _login;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer, _status varchar(2), _media_final integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO cursa(id_professor, codigo, id_aluno, status, media_final) VALUES (_id_professor, _codigo, _id_aluno, _status, _media_final);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer) RETURNS TABLE(id_professor_ integer, codigo_ varchar(7), id_aluno_ integer, status varchar(2), media_final integer) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM cursa WHERE id_professor = _id_professor and codigo = _codigo and id_aluno = _id_aluno;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM cursa WHERE id_professor = _id_professor and codigo = _codigo and id_aluno = _id_aluno;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_media_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer, _media integer) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE cursa
+	    SET media_final=_media
+	    WHERE id_professor = _id_professor and codigo = _codigo and id_aluno = _id_aluno;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION atualiza_status_cursa(_id_professor integer, _codigo varchar(7), _id_aluno integer, _status varchar(2)) RETURNS VOID AS $$
+	BEGIN
+	    UPDATE cursa
+	    SET status=status
+	    WHERE id_professor = _id_professor and codigo = _codigo and id_aluno = _id_aluno;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION cria_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS VOID AS $$
+	BEGIN
+		INSERT INTO rel_pf_se(id_perfil, id_servico) VALUES (_id_perfil, _id_servico);
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION seleciona_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS TABLE(id_perfil_ integer, id_servico_ varchar(20)) AS $$
+	BEGIN
+	    RETURN QUERY SELECT * FROM rel_pf_se WHERE id_perfil = _id_perfil and id_servico = _id_servico;
+	END
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION deleta_rel_pf_se(_id_perfil integer, _id_servico integer) RETURNS VOID AS $$
+	BEGIN
+	    DELETE FROM rel_pf_se WHERE id_perfil = _id_perfil and id_servico = _id_servico;
+	END
+$$ LANGUAGE plpgsql;
 -------------------------------------------------------------------------
 
 
