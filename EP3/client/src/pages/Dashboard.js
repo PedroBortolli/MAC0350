@@ -1,7 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+    padding-top: 50px;
+`
 
 function Dashboard() {
-    return <h1>Dashboard com as matérias aqui</h1>
+    return <Container>
+        <h1>Dashboard com as matérias aqui</h1>
+    </Container>
 }
 
 export default Dashboard
