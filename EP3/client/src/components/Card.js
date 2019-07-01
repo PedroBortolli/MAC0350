@@ -10,9 +10,13 @@ const Course = styled.div`
                          "ca  .  ct";
     border: 1px solid rgb(0, 0, 0, 0.25);
     border-radius: 8px;
+    transition: transform 0.15s;
     > div {
         display: flex;
         justify-content: center;
+    }
+    :hover {
+        transform: scale(1.15);
     }
 `
 const Code = styled.div`
