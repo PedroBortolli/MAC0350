@@ -17,6 +17,7 @@ const Course = styled.div`
     }
     :hover {
         transform: scale(1.15);
+        cursor: pointer;
     }
 `
 const Code = styled.div`
