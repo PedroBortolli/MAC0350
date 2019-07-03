@@ -40,11 +40,11 @@ const CT = styled.div`
     color: #4298f5;
 `
 
-function Card({code, title, addCourse}) {
+function Card({course, addCourse}) {
     return (
-        <Course onClick={() => addCourse(code)}>
-            <Code>{code}</Code>
-            <Name>{title}</Name>
+        <Course onClick={() => addCourse(course)}>
+            <Code>{course.code}</Code>
+            <Name>{course.title}</Name>
             <CA>+4 CA</CA>
             <CT>+2 CT</CT>
         </Course>
