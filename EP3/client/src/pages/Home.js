@@ -26,7 +26,7 @@ function App() {
             <h1>Bem vindo ao sistema de gerenciamento de matérias!</h1>
             {auth ?
                 <div>
-                    <h2>Você está atualmente logado como <span style={{color: 'red'}}>{auth.login.login}</span></h2>
+                    <h2>Você está atualmente logado como <span style={{color: 'red'}}>{auth.login}</span></h2>
                     <h2 style={{paddingTop: 0}}>Utilizando o menu superior, clique em
                     <span style={{color: 'red'}}> Matérias</span> para começar.</h2>
                 </div>

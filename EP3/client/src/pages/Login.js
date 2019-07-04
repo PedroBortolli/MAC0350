@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import fetchApi from '../utils/fetchApi'
 
 const Container = styled.form`
     display: flex;
@@ -30,14 +31,19 @@ function Login() {
     const [password, changePassword] = useState(null)
     useEffect(() => {
         const session = sessionStorage.getItem('auth')
-        if (session) {
-            //const auth = JSON.parse(sessionStorage.getItem('auth'))
-            window.location = '/dashboard'
-        }
+        if (session) window.location = '/dashboard'
     }, [])
-    const attemptLogin = () => {
-        // TODO: call api to login
-        const auth = {login: {login}, password: {password}}
+    const attemptLogin = async () => {
+        const response = await fetchApi('POST', 'http://localhost:5000/api/auth/login', 
+            {login: {
+                username: login,
+                password: password
+            }
+        })
+        console.log("response")
+        console.log(response)
+        console.log("response")
+        const auth = {login: login, password: password}
         sessionStorage.setItem('auth', JSON.stringify(auth))
         window.location = '/dashboard'
     }
