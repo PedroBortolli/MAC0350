@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div`
+const Container = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,10 +28,27 @@ const Field = styled.div`
 function Login() {
     const [login, changeLogin] = useState(null)
     const [password, changePassword] = useState(null)
-    const attemptLogin = () => console.log(login, password)
+    useEffect(() => {
+        const session = sessionStorage.getItem('auth')
+        if (session) {
+            //const auth = JSON.parse(sessionStorage.getItem('auth'))
+            window.location = '/dashboard'
+        }
+    }, [])
+    const attemptLogin = () => {
+        // TODO: call api to login
+        const auth = {login: {login}, password: {password}}
+        sessionStorage.setItem('auth', JSON.stringify(auth))
+        window.location = '/dashboard'
+    }
 
     return (
+        sessionStorage.getItem('auth') ?
         <Container>
+            <p>Você já está logado. Redirecionando...</p>
+        </Container>
+        :
+        <Container onKeyDown={e => e.key === 'Enter' && attemptLogin}>
             <Field>
                 <div>Login</div>
                 <input type="text" onChange={e => changeLogin(e.target.value)} />
