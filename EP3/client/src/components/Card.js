@@ -40,13 +40,14 @@ const CT = styled.div`
     color: #4298f5;
 `
 
-function Card({course, addCourse}) {
+function Card({course, status, set}) {
+    const setModal = () => set({course, status, open: true, type: 'default'})
     return (
-        <Course onClick={() => addCourse(course)}>
+        <Course onClick={setModal}>
             <Code>{course.code}</Code>
             <Name>{course.title}</Name>
-            <CA>+4 CA</CA>
-            <CT>+2 CT</CT>
+            <CA>+{course.ca || 4} CA</CA>
+            <CT>+{course.ct || 2} CT</CT>
         </Course>
     )
 }
