@@ -136,7 +136,7 @@ function Dashboard() {
                     <CardsContainer columns={columns}>
                         {temp.map(course => {
                             if (!display(course)) return null
-                            return <Card course={course} status="available" set={changeModal}  />
+                            return <Card key={course.code} course={course} status="available" set={changeModal}  />
                         })}
                     </CardsContainer>
                 </AvailableCourses>
