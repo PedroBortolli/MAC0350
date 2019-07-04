@@ -58,7 +58,7 @@ function CustomModal({close, info, addCurrent, remove, addScheduled, addDone, sc
     const performAction = (fun, course) => {
         if (!course) course = info.course
         fun(course)
-        close()
+        if (info.status === 'available') close()
     }
 
     switch(info.status) {
