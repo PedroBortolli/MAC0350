@@ -14,14 +14,28 @@ const Container = styled.div`
     justify-content: space-around;
     > a {
         font-size: 20px;
+        color: rgb(85, 26, 139);
+        cursor: pointer;
+        text-decoration: underline;
     }
 `
 
 function Header() {
+    const session = sessionStorage.getItem('auth')
+
+    const logoff = () => {
+        sessionStorage.removeItem('auth')
+        window.location = '/'
+    }
+
     return <Container>
         <Link to='/'>Home</Link>
         <Link to='/dashboard'>Dashboard</Link>
-        <Link to='/login'>Login</Link>
+        {session ?
+            <a onClick={logoff}>Logout</a>
+            :
+            <Link to='/login'>Login</Link>
+        }
     </Container>
 }
 
