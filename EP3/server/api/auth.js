@@ -5,8 +5,8 @@ const client = require('../database')
 router.post('/login', (req, res) => {
     client.query({
         name: 'get user',
-        text: 'SELECT * FROM test WHERE username=$1 AND password=$2;',
-        values: [req.body.login.username, req.body.login.password],
+        text: 'SELECT * FROM usuario WHERE login=$1 AND senha=$2;',
+        values: [req.body.auth.login, req.body.auth.senha],
     }).then(({ rows }) => {
         if (rows.length === 0) {
             res.sendStatus(403)
