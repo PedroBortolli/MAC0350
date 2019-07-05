@@ -5,6 +5,7 @@ import Progress from '../components/Progress'
 import useScreenSize from '../hooks/useScreenSize'
 import Modal from '../components/Modal'
 import fetchApi from '../utils/fetchApi'
+import loadingGif from '../assets/loading.gif'
 
 const Container = styled.div`
     padding-top: 76px;
@@ -92,7 +93,9 @@ function Dashboard() {
             setCourses((await fetchApi('GET', 'http://localhost:5000/api/disciplinas')).data)
         }
 
-        fetchDisciplinas()
+        const session = sessionStorage.getItem('auth')
+        if (!session) window.location = '/login'
+        else fetchDisciplinas()
     }, [])
 
     const display = (course) => {
@@ -127,6 +130,9 @@ function Dashboard() {
     const ele = doneCourses.length * 4
     const liv = doneCourses.length * 2
     return (
+        !courses.length ?
+        <Container><img src={loadingGif} width={120} height={120} /></Container>
+        :
         <Container style={{opacity: modalInfo.open ? 0.25 : 1}}>
             <Progress title="Obrigatórias" done={obg} total={111} color="green" />
             <Progress title="Eletivas" done={ele} total={52} color="blue" />
