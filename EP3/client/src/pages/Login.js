@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import fetchApi from '../utils/fetchApi'
 
-const Container = styled.form`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,14 +54,14 @@ function Login() {
             <p>Você já está logado. Redirecionando...</p>
         </Container>
         :
-        <Container onKeyDown={e => e.key === 'Enter' && attemptLogin}>
+        <Container>
             <Field>
                 <div>Login</div>
-                <input type="text" onChange={e => changeLogin(e.target.value)} />
+                <input type="text" onChange={e => changeLogin(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin} />
             </Field>
             <Field>
                 <div>Password</div>
-                <input type="password" onChange={e => changePassword(e.target.value)} />
+                <input type="password" onChange={e => changePassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin} />
             </Field>
             <button onClick={attemptLogin}>Login</button>
         </Container>
