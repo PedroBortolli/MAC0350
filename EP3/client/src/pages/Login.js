@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import fetchApi from '../utils/fetchApi'
+import loadingGif from '../assets/loading.gif'
 
 const Container = styled.div`
     display: flex;
@@ -25,27 +26,44 @@ const Field = styled.div`
     }
     margin-bottom: 20px;
 `
+const Response = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92px;
+    width: 92px;
+    > img {
+        height: 100%;
+        width: 100%;
+    }
+    > p {color: red}
+`
 
 function Login() {
     const [login, changeLogin] = useState(null)
+    const [success, changeSuccess] = useState(true)
     const [password, changePassword] = useState(null)
+    const [loading, changeLoading] = useState(false)
     useEffect(() => {
         const session = sessionStorage.getItem('auth')
         if (session) window.location = '/dashboard'
     }, [])
     const attemptLogin = async () => {
+        changeSuccess(true)
+        changeLoading(true)
         const response = await fetchApi('POST', 'http://localhost:5000/api/auth/login', 
             {login: {
                 username: login,
                 password: password
             }
         })
-        console.log("response")
-        console.log(response)
-        console.log("response")
-        const auth = {login: login, password: password}
-        sessionStorage.setItem('auth', JSON.stringify(auth))
-        window.location = '/dashboard'
+        if (response.ok) {
+            const auth = {login: login, password: password}
+            sessionStorage.setItem('auth', JSON.stringify(auth))
+            window.location = '/dashboard'
+        }
+        else changeSuccess(false)
+        changeLoading(false)
     }
 
     return (
@@ -57,13 +75,17 @@ function Login() {
         <Container>
             <Field>
                 <div>Login</div>
-                <input type="text" onChange={e => changeLogin(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin} />
+                <input type="text" onChange={e => changeLogin(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin()} />
             </Field>
             <Field>
                 <div>Password</div>
-                <input type="password" onChange={e => changePassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin} />
+                <input type="password" onChange={e => changePassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && attemptLogin()} />
             </Field>
             <button onClick={attemptLogin}>Login</button>
+            <Response>
+                {loading && <img src={loadingGif} />}
+                {!success && <p style={{color: 'red'}}>Login falhou</p>}
+            </Response>
         </Container>
     )
 }
