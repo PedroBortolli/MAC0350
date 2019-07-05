@@ -90,7 +90,7 @@ function CustomModal({close, info, addCurrent, remove, addScheduled, addDone, sc
             {info.type === 'default' ?
                 <div>
                     <Title>
-                        {info.course.code} - {info.course.title}
+                        {info.course.codigo} - {info.course.titulo}
                     </Title>
                     <Info>
                         <p>Disciplina <b>{info.course.categoria || 'obrigatória'}</b></p>
@@ -107,7 +107,7 @@ function CustomModal({close, info, addCurrent, remove, addScheduled, addDone, sc
                             {!done.length && <Center>Nenhuma matéria feita</Center>}
                             {done.map(course => {
                                 return <Course>
-                                    <span><b>{course.code}</b> - {course.title}</span>
+                                    <span><b>{course.codigo}</b> - {course.titulo}</span>
                                     <span onClick={() => performAction(remove, course)}>x</span>
                                 </Course>
                             })}
@@ -117,7 +117,7 @@ function CustomModal({close, info, addCurrent, remove, addScheduled, addDone, sc
                             {!scheduled.length && <Center>Nenhuma matéria planejada</Center>}
                             {scheduled.map(course => {
                                 return <Course>
-                                    <span><b>{course.code}</b> - {course.title}</span>
+                                    <span><b>{course.codigo}</b> - {course.titulo}</span>
                                     <span onClick={() => performAction(remove, course)}>x</span>
                                 </Course>
                             })}

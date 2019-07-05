@@ -44,10 +44,10 @@ function Card({course, status, set}) {
     const setModal = () => set({course, status, open: true, type: 'default'})
     return (
         <Course onClick={setModal}>
-            <Code>{course.code}</Code>
-            <Name>{course.title}</Name>
-            <CA>+{course.ca || 4} CA</CA>
-            <CT>+{course.ct || 2} CT</CT>
+            <Code>{course.codigo}</Code>
+            <Name>{course.titulo}</Name>
+            <CA>+{course.creditos.aula || 0} CA</CA>
+            <CT>+{course.creditos.trabalho || 0} CT</CT>
         </Course>
     )
 }

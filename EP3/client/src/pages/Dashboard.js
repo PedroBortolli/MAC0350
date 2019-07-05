@@ -99,11 +99,11 @@ function Dashboard() {
     }, [])
 
     const display = (course) => {
-        if (currentCourses.some(c => c.code === course.code) ||
-            doneCourses.some(c => c.code === course.code) ||
-            scheduledCourses.some(c => c.code === course.code)) return false
-        if (!filter || course.code.toLowerCase().indexOf(filter.toLowerCase()) > -1 ||
-            course.title.toLowerCase().indexOf(filter.toLowerCase()) > -1) return true
+        if (currentCourses.some(c => c.codigo === course.codigo) ||
+            doneCourses.some(c => c.codigo === course.codigo) ||
+            scheduledCourses.some(c => c.codigo === course.codigo)) return false
+        if (!filter || course.codigo.toLowerCase().indexOf(filter.toLowerCase()) > -1 ||
+            course.titulo.toLowerCase().indexOf(filter.toLowerCase()) > -1) return true
         return false
     }
 
@@ -111,16 +111,16 @@ function Dashboard() {
     const addScheduled = (course) => changeScheduledCourses([...scheduledCourses, course])
     const addDone = (course) => changeDoneCourses([...doneCourses, course])
     const removeCourse = (course) => {
-        if (currentCourses.some(c => c.code === course.code)) {
-            let pos = currentCourses.findIndex(c => c.code === course.code)
+        if (currentCourses.some(c => c.codigo === course.codigo)) {
+            let pos = currentCourses.findIndex(c => c.codigo === course.codigo)
             changeCurrentCourses([...currentCourses.slice(0, pos), ...currentCourses.slice(pos+1, currentCourses.length)])
         }
-        if (doneCourses.some(c => c.code === course.code)) {
-            let pos = doneCourses.findIndex(c => c.code === course.code)
+        if (doneCourses.some(c => c.codigo === course.codigo)) {
+            let pos = doneCourses.findIndex(c => c.codigo === course.codigo)
             changeDoneCourses([...doneCourses.slice(0, pos), ...doneCourses.slice(pos+1, doneCourses.length)])
         }
-        if (scheduledCourses.some(c => c.code === course.code)) {
-            let pos = scheduledCourses.findIndex(c => c.code === course.code)
+        if (scheduledCourses.some(c => c.codigo === course.codigo)) {
+            let pos = scheduledCourses.findIndex(c => c.codigo === course.codigo)
             changeScheduledCourses([...scheduledCourses.slice(0, pos), ...scheduledCourses.slice(pos+1, scheduledCourses.length)])
         }
     }
@@ -150,7 +150,7 @@ function Dashboard() {
                     <CardsContainer columns={columns}>
                         {courses.map(course => {
                             if (!display(course)) return null
-                            return <Card key={course.code} course={course} status="available" set={changeModal}  />
+                            return <Card key={course.codigo} course={course} status="available" set={changeModal}  />
                         })}
                     </CardsContainer>
                 </AvailableCourses>

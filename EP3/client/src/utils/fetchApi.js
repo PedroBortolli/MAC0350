@@ -7,10 +7,8 @@ export default async (method, url, body) => {
         },
         body: JSON.stringify(body)
     })
-    console.log(response)
     try {
         const content = await response.json()
-        console.log(content)
         return {
             ...content,
             ok: response.ok,
