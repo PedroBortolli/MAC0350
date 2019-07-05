@@ -52,13 +52,13 @@ function Login() {
         changeSuccess(true)
         changeLoading(true)
         const response = await fetchApi('POST', 'http://localhost:5000/api/auth/login', 
-            {login: {
-                username: login,
-                password: password
+            {auth: {
+                login: login,
+                senha: password
             }
         })
         if (response.ok) {
-            const auth = {login: login, password: password}
+            const auth = {username: login, senha: password}
             sessionStorage.setItem('auth', JSON.stringify(auth))
             window.location = '/dashboard'
         }
