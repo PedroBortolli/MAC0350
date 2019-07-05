@@ -7,7 +7,7 @@ import Modal from '../components/Modal'
 import fetchApi from '../utils/fetchApi'
 
 const Container = styled.div`
-    padding-top: 60px;
+    padding-top: 76px;
     display: flex;
     flex-direction: column;
     width: 100%;

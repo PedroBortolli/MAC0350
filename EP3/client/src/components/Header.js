@@ -8,15 +8,17 @@ const Container = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #bcd6ff;
+    background-color: #0d4091;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-bottom: 5px solid black;
     > a {
-        font-size: 20px;
-        color: rgb(85, 26, 139);
+        font-size: 22px;
+        color: #ffffff;
         cursor: pointer;
-        text-decoration: underline;
+        text-decoration: none;
+        :hover {text-decoration: underline}
     }
 `
 
