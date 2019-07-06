@@ -20,7 +20,7 @@ router.post('/create', (req, res) => {
             res.sendStatus(400)
         }
         client.query({
-            text: 'INSERT INTO servico (tipo, descricao) VALUES ($1, $2);',
+            text: 'SELECT cria_servico ($1, $2);',
             values: [tipo, descricao],
         }).then(() => {
             res.sendStatus(200)
