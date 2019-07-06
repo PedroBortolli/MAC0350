@@ -1,4 +1,14 @@
 export default async (method, url, body) => {
+    const session = sessionStorage.getItem('auth')
+    if (session && method === 'POST') {
+        const auth = JSON.parse(sessionStorage.getItem('auth'))
+        body = {...body, ...{
+            auth: {
+                login: auth.login,
+                password: auth.password
+            }
+        }}
+    }
     const response = await fetch(url, {
         method: method,
         headers: {
