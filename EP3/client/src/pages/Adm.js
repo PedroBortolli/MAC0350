@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -28,6 +28,28 @@ const Container = styled.div`
 `
 
 function Adm() {
+    const [newCourse, updNewCourse] = useState({})
+    const [updateCourse, updUpdateCourse] = useState({})
+    const [newTrilha, updNewTrilha] = useState({})
+    const [updateTrilha, updUpdateTrilha] = useState({})
+
+    const addCourse = () => {
+        // TODO - api request
+        console.log("Adicionando disciplina: ", newCourse)
+    }
+    const updCourse = () => {
+        // TODO - api request
+        console.log("Atualizando disciplina: ", updateCourse)
+    }
+    const addTrilha = () => {
+        // TODO - api request
+        console.log("Adicionando trilha: ", newTrilha)
+    }
+    const updTrilha = () => {
+        // TODO - api request
+        console.log("Atualizando trilha: ", updateTrilha)
+    }
+
     return (
         <Container>
             <h1>Administrar sistema</h1>
@@ -35,50 +57,50 @@ function Adm() {
                 <div>
                     <h2>Adicionar disciplina</h2>
                     <p>Sigla</p>
-                    <input />
+                    <input onChange={e => updNewCourse({...newCourse, sigla: e.target.value})}/>
                     <p>Nome</p>
-                    <input />
+                    <input onChange={e => updNewCourse({...newCourse, nome: e.target.value})}/>
                     <p>Créditos-aula</p>
-                    <input />
+                    <input type="number" onChange={e => updNewCourse({...newCourse, creditosAula: Number(e.target.value)})}/>
                     <p>Créditos-trabalho</p>
-                    <input />
+                    <input type="number" onChange={e => updNewCourse({...newCourse, creditosTrabalho: Number(e.target.value)})}/>
                     <br/>
-                    <button>Adicionar disciplina</button>
+                    <button onClick={addCourse}>Adicionar disciplina</button>
                 </div>
                 <div>
                     <h2>Atualizar disciplina</h2>
                     <p>Sigla</p>
-                    <input />
+                    <input onChange={e => updUpdateCourse({...updateCourse, sigla: e.target.value})} />
                     <p>Nova sigla</p>
-                    <input />
+                    <input onChange={e => updUpdateCourse({...updateCourse, novaSigla: e.target.value})} />
                     <p>Novo nome</p>
-                    <input />
+                    <input onChange={e => updUpdateCourse({...updateCourse, novoNome: e.target.value})} />
                     <p>Novo créditos-aula</p>
-                    <input />
+                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, novoCreditosAula: Number(e.target.value)})} />
                     <p>Novo créditos-trabalho</p>
-                    <input />
+                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, novoCreditosTrabalho: Number(e.target.value)})} />
                     <br/>
-                    <button>Atualizar disciplina</button>
+                    <button onClick={updCourse}>Atualizar disciplina</button>
                 </div>
                 <div>
                     <h2>Adicionar trilha</h2>
                     <p>Nome</p>
-                    <input />
+                    <input onChange={e => updNewTrilha({...newTrilha, nome: e.target.value})} />
                     <p>Quantidade de disciplinas</p>
-                    <input />
+                    <input type="number" onChange={e => updNewTrilha({...newTrilha, qntdDisciplinas: Number(e.target.value)})} />
                     <br/>
-                    <button>Adicionar trilha</button>
+                    <button onClick={addTrilha}>Adicionar trilha</button>
                 </div>
                 <div>
                     <h2>Atualizar trilha</h2>
                     <p>Nome</p>
-                    <input />
+                    <input onChange={e => updUpdateTrilha({...updateTrilha, nome: e.target.value})} />
                     <p>Novo nome</p>
-                    <input />
+                    <input onChange={e => updUpdateTrilha({...updateTrilha, novoNome: e.target.value})} />
                     <p>Quantidade de disciplinas</p>
-                    <input />
+                    <input onChange={e => updUpdateTrilha({...updateTrilha, novaQntdDisciplinas: Number(e.target.value)})} />
                     <br/>
-                    <button>Atualizar trilha</button>
+                    <button onClick={updTrilha}>Atualizar trilha</button>
                 </div>
             </div>
         </Container>
