@@ -55,35 +55,48 @@ const Center = styled.div`
 `
 
 function Profile() {
-    const [oldPassword, changeOldPassword] = useState(null)
-    const [newPassword, changeNewPassword] = useState(null)
-    const [newPasswordCheck, changeNewPasswordCheck] = useState(null)
-    const [oldEmail, changeOldEmail] = useState(null)
-    const [newEmail, changeNewEmail] = useState(null)
-    const [newEmailCheck, changeNewEmailCheck] = useState(null)
-    const [perfil, changePerfil] = useState(null)
-    const [description, changeDescription] = useState(null)
+    const [password, changePassword] = useState({})
+    const [email, changeEmail] = useState({})
+    const [profile, changeProfile] = useState({
+        modificarDisciplina: false,
+        removerUsuario: false,
+        modificarTrilha: false
+    })
+
+    const updPassword = () => {
+        // TODO - api request
+        console.log("Atualizando senha: ", password)
+    }
+    const updEmail = () => {
+        // TODO - api request
+        console.log("Atualizando email: ", email)
+    }
+    const createProfile = () => {
+        // TODO - api request
+        console.log("Criando perfil: ", profile)
+    }
+
     return (
         <Container>
             <h1>Perfil</h1>
             <Info>
                 <div>
                     <span>Senha antiga</span>
-                    <input type="text" onChange={e => changeOldPassword(e.target.value)} />
+                    <input type="text" onChange={e => changePassword({...password, senhaAntiga: e.target.value})} />
                     <span>Senha nova</span>
-                    <input type="text" onChange={e => changeNewPassword(e.target.value)} />
+                    <input type="text" onChange={e => changePassword({...password, senhaNova: e.target.value})} />
                     <span>Confirme a senha nova</span>
-                    <input type="text" onChange={e => changeNewPasswordCheck(e.target.value)} />
-                    <button>Atualizar senha</button>
+                    <input type="text" onChange={e => changePassword({...password, senhaNovaCheck: e.target.value})} />
+                    <button onClick={updPassword}>Atualizar senha</button>
                 </div>
                 <div>
                     <span>E-mail antigo</span>
-                    <input type="text" onChange={e => changeOldEmail(e.target.value)} />
+                    <input type="text" onChange={e => changeEmail({...email, emailAntigo: e.target.value})} />
                     <span>E-mail novo</span>
-                    <input type="text" onChange={e => changeNewEmail(e.target.value)} />
+                    <input type="text" onChange={e => changeEmail({...email, emailNovo: e.target.value})} />
                     <span>Confirme o e-mail novo</span>
-                    <input type="text" onChange={e => changeNewEmailCheck(e.target.value)} />
-                    <button>Atualizar e-mail</button>
+                    <input type="text" onChange={e => changeEmail({...email, emailNovoCheck: e.target.value})} />
+                    <button onClick={updEmail}>Atualizar e-mail</button>
                 </div>
             </Info>
 
@@ -92,32 +105,32 @@ function Profile() {
 
                 <div>
                     <span>Nome do perfil: </span>
-                    <input type="text" onChange={e => changePerfil(e.target.value)} />
+                    <input type="text" onChange={e => changeProfile({...profile, nome: e.target.value})} />
                 </div>
                 
                 <div>
                     <span>Descrição: </span>
-                    <input type="text" onChange={e => changeDescription(e.target.value)} style={{marginLeft: 45.8}} />
+                    <input type="text" onChange={e => changeProfile({...profile, descricao: e.target.value})} style={{marginLeft: 45.8}} />
                 </div>
 
                 <Center style={{marginTop: 32}}>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={e => changeProfile({...profile, modificarDisciplina: e.target.checked})} />
                     <span>Modificar disciplina</span>
                 </Center>
 
                 <Center>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={e => changeProfile({...profile, removerUsuario: e.target.checked})} />
                     <span>Remover usuário</span>
                 </Center>
 
                 <Center>
-                    <input type="checkbox" />
-                    <span>Modificar disciplina</span>
+                    <input type="checkbox" onClick={e => changeProfile({...profile, modificarTrilha: e.target.checked})} />
+                    <span>Modificar trilha</span>
                 </Center>
                 
                 
                 <Center style={{marginTop: 32}}>
-                <button>Criar perfil</button>
+                <button onClick={createProfile}>Criar perfil</button>
                 </Center>
             </Role>
         </Container>
