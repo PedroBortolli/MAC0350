@@ -83,7 +83,7 @@ function Login() {
             </Field>
             <button onClick={attemptLogin}>Login</button>
             <Response>
-                {loading && <img src={loadingGif} />}
+                {loading && <img alt="" src={loadingGif} />}
                 {!success && <p style={{color: 'red'}}>Login falhou</p>}
             </Response>
         </Container>

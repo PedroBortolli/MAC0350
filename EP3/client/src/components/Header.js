@@ -13,7 +13,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-around;
     border-bottom: 5px solid black;
-    > a {
+    > a, p {
         font-size: 22px;
         color: #ffffff;
         cursor: pointer;
@@ -35,7 +35,7 @@ function Header() {
         <Link to='/dashboard'>Matérias</Link>
         {session && <Link to='/profile'>Perfil</Link>}
         {session ?
-            <a onClick={logoff}>Logout</a>
+            <p onClick={logoff}>Logout</p>
             :
             <Link to='/login'>Login</Link>
         }

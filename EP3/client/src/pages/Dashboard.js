@@ -131,7 +131,7 @@ function Dashboard() {
     const liv = doneCourses.length * 2
     return (
         !courses.length ?
-        <Container><img src={loadingGif} width={120} height={120} /></Container>
+        <Container><img alt="" src={loadingGif} width={120} height={120} /></Container>
         :
         <Container style={{opacity: modalInfo.open ? 0.25 : 1}}>
             <Progress title="Obrigatórias" done={obg} total={111} color="green" />
