@@ -1,10 +1,6 @@
-DROP TABLE IF EXISTS curriculo;
-DROP TABLE IF EXISTS modulo;
-DROP TABLE IF EXISTS trilha;
-DROP TABLE IF EXISTS requisito;
-DROP TABLE IF EXISTS disciplina;
-DROP TABLE IF EXISTS rel_mod_dis;
-DROP TABLE IF EXISTS rel_cur_tri;
+DROP DATABASE IF EXISTS mod_cur;
+CREATE DATABASE mod_cur;
+\c mod_cur;
 
 
 CREATE TABLE curriculo (
