@@ -8,7 +8,7 @@ const Course = styled.div`
     grid-template-areas: "code  code  code"
                          "name  name  name"
                          "ca  .  ct";
-    border: 1px solid rgb(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
     border-radius: 8px;
     transition: transform 0.15s;
     > div {
