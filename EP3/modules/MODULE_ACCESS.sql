@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS rel_pf_se (
 DROP FUNCTION IF EXISTS cria_usuario(VARCHAR(50), VARCHAR(100), VARCHAR(50));
 DROP FUNCTION IF EXISTS seleciona_usuario(VARCHAR(50));
 DROP FUNCTION IF EXISTS atualiza_usuario_email(VARCHAR(50), VARCHAR(100));
+DROP FUNCTION IF EXISTS remove_usuario(VARCHAR(50));
 
 CREATE OR REPLACE FUNCTION cria_usuario (VARCHAR(50), VARCHAR(100), VARCHAR(50)) RETURNS VOID
 LANGUAGE plpgsql
@@ -70,9 +71,50 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION remove_usuario (VARCHAR(50)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM usuario WHERE login = $1; 
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION cria_perfil (VARCHAR(50), text) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO perfil (papel, descricao) VALUES ($1, $2);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION seleciona_perfil (VARCHAR(50))
+RETURNS TABLE(
+    papel VARCHAR(50),
+    descricao VARCHAR(100),
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM perfil WHERE perfil.papel=$1;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION cria_servico (VARCHAR(50), text) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO servico (tipo, descricao) VALUES ($1, $2);
+END;
+$$;
+
 -- POPULAR O BANCO (isso n fica nesse arquivo, mas né... foda-se)
 
 SELECT cria_usuario ('admin', 'admin@admin.com', 'password');
 SELECT cria_usuario ('cef', 'cef@ime.usp.br', 'euamoacris');
+SELECT cria_usuario ('pedroteosousa', 'pedro.teotonio.sousa@usp.br', 'senhasenhasenha')
 
-SELECT atualiza_usuario_email ('admin', 'newadmin@admin.com');
+SELECT cria_perfil ('aluno', 'tem acesso a comandos de selecionar e mudar coisas relacionadas ao seu usuário');
+
+SELECT cria_servico ('remoção', 'permite remover campos no db');
+SELECT cria_servico ('criação', 'permite criar campos no db');
+SELECT cria_servico ('atualização', 'permite atualizar campos no db');
