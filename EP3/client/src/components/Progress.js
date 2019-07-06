@@ -6,6 +6,9 @@ const ProgressContainer = styled.div`
     display: grid;
     grid-template-columns: 130px 200px 50px; 
     align-items: center;
+    > svg {
+        width: 200px;
+    }
 `
 const Title = styled.span`
     text-align: end;
