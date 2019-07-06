@@ -32,7 +32,8 @@ function Header() {
 
     return <Container>
         <Link to='/'>Home</Link>
-        <Link to='/dashboard'>Dashboard</Link>
+        <Link to='/dashboard'>Matérias</Link>
+        {session && <Link to='/profile'>Perfil</Link>}
         {session ?
             <a onClick={logoff}>Logout</a>
             :
