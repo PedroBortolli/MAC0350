@@ -4,15 +4,17 @@ const client = require('../database')
 
 router.post('/login', (req, res) => {
     client.query({
-        name: 'get user',
-        text: 'SELECT * FROM usuario WHERE login=$1 AND senha=$2;',
-        values: [req.body.auth.login, req.body.auth.senha],
+        text: 'SELECT * FROM seleciona_usuario ($1);',
+        values: [req.body.auth.login],
     }).then(({ rows }) => {
-        if (rows.length === 0) {
+        if (rows.length === 1 && rows[0].senha !== req.body.auth.senha) {
             res.sendStatus(403)
         } else {
-            res.sendStatus(200)
+            res.send(rows[0]).status(200)
         }
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
     })
 })
 
