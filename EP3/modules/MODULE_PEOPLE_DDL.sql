@@ -1,7 +1,6 @@
-DROP TABLE IF EXISTS aluno;
-DROP TABLE IF EXISTS professor;
-DROP TABLE IF EXISTS administrador;
-DROP TABLE IF EXISTS pessoa;
+DROP DATABASE IF EXISTS mod_peo;
+CREATE DATABASE mod_peo;
+\c mod_peo;
 
 CREATE TABLE pessoa (
 	id_pessoa SERIAL PRIMARY KEY,

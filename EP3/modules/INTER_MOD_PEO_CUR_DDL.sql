@@ -64,7 +64,5 @@ CREATE TABLE planeja (
 	id_aluno integer,
 	codigo varchar(7),
 	semestre integer,
-	PRIMARY KEY (id_aluno, codigo),
-	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
+	PRIMARY KEY (id_aluno, codigo)
 );
