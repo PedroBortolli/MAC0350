@@ -69,7 +69,7 @@ const CurrentCourses = styled.div`
     width: 265px;
     > div {
         flex: 1;
-        border-left: 2px solid rgb(0, 0, 0, 0.25);
+        border-left: 2px solid rgba(0, 0, 0, 0.25);
         padding: 8 0 0 40;
         
         > div {
