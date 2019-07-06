@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS mod_acc_peo;
-CREATE DATABASE mod_acc_peo;
-\c mod_acc_peo;
+DROP DATABASE IF EXISTS mod_peo_cur;
+CREATE DATABASE mod_peo_cur;
+\c mod_peo_cur;
 
 CREATE EXTENSION postgres_fdw;
 
