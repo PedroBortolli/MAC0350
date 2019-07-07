@@ -36,7 +36,9 @@ DROP FUNCTION IF EXISTS remove_rel_cur_tri(INTEGER, INTEGER);
 
 DROP FUNCTION IF EXISTS cria_rel_mod_dis(INTEGER, VARCHAR(7), BIT);
 DROP FUNCTION IF EXISTS seleciona_rel_mod_dis(INTEGER, VARCHAR(7));
-DROP FUNCTION IF EXISTS atualiza_rel_mod_dis(INTEGER, VARCHAR(7), BIT);
+DROP FUNCTION IF EXISTS atualiza_rel_mod_dis_modulo(INTEGER, VARCHAR(7));
+DROP FUNCTION IF EXISTS atualiza_rel_mod_dis_disciplina(INTEGER, VARCHAR(7));
+DROP FUNCTION IF EXISTS atualiza_obrigatoriedade_disciplina(INTEGER, VARCHAR(7), BIT);
 DROP FUNCTION IF EXISTS remove_rel_mod_dis(INTEGER, VARCHAR(7));
 
 -- CURRICULO
@@ -129,7 +131,7 @@ CREATE OR REPLACE FUNCTION cria_modulo(INTEGER, VARCHAR(50), VARCHAR(255), INTEG
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	INSERT INTO modulo(id_trilha, nome, descricao, quant_disc) VALUES ($1, $2, $3);
+	INSERT INTO modulo(id_trilha, nome, descricao, quant_disc) VALUES ($1, $2, $3, $4);
 END
 $$;
 
@@ -277,7 +279,7 @@ CREATE OR REPLACE FUNCTION cria_rel_cur_tri(INTEGER, INTEGER) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	INSERT INTO requisito(codigo, id_trilha) VALUES ($1, $2);
+	INSERT INTO rel_cur_tri(codigo, id_trilha) VALUES ($1, $2);
 END
 $$;
 
@@ -323,7 +325,7 @@ CREATE OR REPLACE FUNCTION cria_rel_mod_dis(INTEGER, VARCHAR(7), BIT) RETURNS VO
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	INSERT INTO requisito(id_modulo, codigo, obrigatoria) VALUES ($1, $2, $3);
+	INSERT INTO rel_mod_dis(id_modulo, codigo, obrigatoria) VALUES ($1, $2, $3);
 END
 $$;
 
@@ -335,7 +337,27 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION atualiza_rel_mod_dis(INTEGER, VARCHAR(7), BIT) RETURNS VOID
+CREATE OR REPLACE FUNCTION atualiza_rel_mod_dis_modulo(INTEGER, VARCHAR(7)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	UPDATE rel_mod_dis
+	SET id_modulo = $2
+	WHERE id_modulo = $1 AND codigo = $2;
+END
+$$;
+
+CREATE OR REPLACE FUNCTION atualiza_rel_mod_dis_disciplina(INTEGER, VARCHAR(7)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	UPDATE rel_mod_dis
+	SET codigo = $2
+	WHERE id_modulo = $1 AND codigo = $2;
+END
+$$;
+
+CREATE OR REPLACE FUNCTION atualiza_obrigatoriedade_disciplina(INTEGER, VARCHAR(7), BIT) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN

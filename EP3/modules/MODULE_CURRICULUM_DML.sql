@@ -1,15 +1,15 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
-SELECT cria_curriculo(45, 'Bacharelado em Ciência da Computação', 0);
-SELECT cria_curriculo(46, 'Bacharelado em Ciência da Computação 2', 0);
-SELECT cria_curriculo(50, 'Matemática Pura', 0);
-SELECT cria_curriculo(60, 'Matemática Aplicada', 0);
-SELECT cria_curriculo(61, 'Matemática Aplicada e Computacional', 0);
-SELECT cria_curriculo(70, 'Estatística', 0);
-SELECT cria_curriculo(80, 'Licenciatura em Matemática', 0);
-SELECT cria_curriculo(81, 'Licenciatura em Matemática 2', 0);
-SELECT cria_curriculo(82, 'Licenciatura em Matemática 3', 0);
-SELECT cria_curriculo(83, 'Licenciatura em Matemática 4', 0);
+SELECT cria_curriculo(45, 'Bacharelado em Ciência da Computação');
+SELECT cria_curriculo(46, 'Bacharelado em Ciência da Computação 2');
+SELECT cria_curriculo(50, 'Matemática Pura');
+SELECT cria_curriculo(60, 'Matemática Aplicada');
+SELECT cria_curriculo(61, 'Matemática Aplicada e Computacional');
+SELECT cria_curriculo(70, 'Estatística');
+SELECT cria_curriculo(80, 'Licenciatura em Matemática');
+SELECT cria_curriculo(81, 'Licenciatura em Matemática 2');
+SELECT cria_curriculo(82, 'Licenciatura em Matemática 3');
+SELECT cria_curriculo(83, 'Licenciatura em Matemática 4');
 
 SELECT cria_trilha('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 12);
 SELECT cria_trilha('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 16);
