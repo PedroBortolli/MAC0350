@@ -25,7 +25,7 @@ const mod_peo = new Pool({
     ...postgres_setup,
     database: 'mod_peo',
 })
-mod_cur.connect()
+mod_peo.connect()
 
 const mod_acc_peo = new Pool({
     ...postgres_setup,
