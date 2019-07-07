@@ -40,7 +40,7 @@ router.patch('/', (req, res) => {
     if (!cpf) {
         return res.sendStatus(400)
     }
-    if (nome !== null) {
+    if (nome !== undefined) {
         client.mod_peo.query({
             text: 'SELECT atualiza_pessoa_nome ($1, $2);',
             values: [cpf, nome],

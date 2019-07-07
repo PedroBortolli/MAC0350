@@ -40,7 +40,7 @@ router.patch('/', (req, res) => {
     if (!cpf) {
         return res.sendStatus(400)
     }
-    if (area_formacao !== null) {
+    if (area_formacao !== undefined) {
         client.mod_peo.query({
             text: 'SELECT atualiza_professor_area_formacao ($1, $2);',
             values: [cpf, area_formacao],

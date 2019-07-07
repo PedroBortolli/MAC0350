@@ -43,13 +43,13 @@ router.patch('/', (req, res) => {
         return res.sendStatus(400)
     }
     const promises = []
-    if (inicio !== null) {
+    if (inicio !== undefined) {
         promises.push(client.mod_peo.query({
             text: 'SELECT atualiza_administrador_inicio ($1, $2);',
             values: [cpf, inicio],
         }))
     }
-    if (fim !== null) {
+    if (fim !== undefined) {
         promises.push(client.mod_peo.query({
             text: 'SELECT atualiza_administrador_fim ($1, $2);',
             values: [cpf, fim],

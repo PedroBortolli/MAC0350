@@ -42,7 +42,7 @@ router.patch('/', (req, res) => {
     if (!nusp) {
         return res.sendStatus(400)
     }
-    if (ano_ingresso !== null) {
+    if (ano_ingresso !== undefined) {
         client.mod_peo.query({
             text: 'SELECT atualiza_aluno_ano_ingresso ($1, $2);',
             values: [nusp, ano_ingresso],
