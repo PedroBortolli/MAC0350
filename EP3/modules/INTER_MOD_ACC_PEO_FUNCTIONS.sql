@@ -12,14 +12,14 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION deleta_rel_pe_us(_cpf VARCHAR(11), _login varchar(50)) RETURNS VOID AS $$
 	BEGIN
-	    DELETE FROM rel_us_pf WHERE cpf = _cpf and login = _login;
+	    DELETE FROM rel_pe_us WHERE cpf = _cpf and login = _login;
 	END
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION seleciona_rel_pe_us(_cpf VARCHAR(11), _login varchar(50)) RETURNS TABLE(cpf_ VARCHAR(11), login_ varchar(50)) AS $$
 	BEGIN
 	    IF (EXISTS (SELECT 1 FROM pessoa_foreign WHERE cpf = _cpf) AND EXISTS (SELECT 1 FROM usuario_foreign WHERE login = _login)) THEN
-    		RETURN QUERY SELECT * FROM rel_us_pf WHERE cpf = _cpf and login = _login;
+    		RETURN QUERY SELECT * FROM rel_pe_us WHERE cpf = _cpf and login = _login;
     	END IF;
 	END
 $$ LANGUAGE plpgsql;
