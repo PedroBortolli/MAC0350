@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import fetchApi from '../utils/fetchApi'
 
 const Container = styled.div`
     display: flex;
@@ -57,11 +58,23 @@ const Center = styled.div`
 function Profile() {
     const [password, changePassword] = useState({})
     const [email, changeEmail] = useState({})
-    const [profile, changeProfile] = useState({
-        modificarDisciplina: false,
-        removerUsuario: false,
-        modificarTrilha: false
-    })
+    const [profile, changeProfile] = useState({})
+    const [servicos, changeServicos] = useState({})
+
+    useEffect(() => {
+        const fetchServicos = async () => {
+            const servicos = await fetchApi('GET', 'http://localhost:5000/api/servicos')
+            let servicosState = {}
+            Object.keys(servicos).forEach(id => {
+                if (typeof servicos[id] === 'object')
+                    servicosState = {...servicosState, [servicos[id].tipo]: false}
+            })
+            changeProfile(servicosState)
+            changeServicos(servicos)
+        }
+
+        fetchServicos()
+    }, [])
 
     const updPassword = () => {
         // TODO - api request
@@ -81,20 +94,16 @@ function Profile() {
             <h1>Perfil</h1>
             <Info>
                 <div>
-                    <span>Senha antiga</span>
-                    <input type="text" onChange={e => changePassword({...password, senhaAntiga: e.target.value})} />
-                    <span>Senha nova</span>
+                    <span>Nova senha</span>
                     <input type="text" onChange={e => changePassword({...password, senhaNova: e.target.value})} />
-                    <span>Confirme a senha nova</span>
+                    <span>Confirme a nova senha</span>
                     <input type="text" onChange={e => changePassword({...password, senhaNovaCheck: e.target.value})} />
                     <button onClick={updPassword}>Atualizar senha</button>
                 </div>
                 <div>
-                    <span>E-mail antigo</span>
-                    <input type="text" onChange={e => changeEmail({...email, emailAntigo: e.target.value})} />
-                    <span>E-mail novo</span>
+                    <span>Novo e-mail</span>
                     <input type="text" onChange={e => changeEmail({...email, emailNovo: e.target.value})} />
-                    <span>Confirme o e-mail novo</span>
+                    <span>Confirme o novo e-mail</span>
                     <input type="text" onChange={e => changeEmail({...email, emailNovoCheck: e.target.value})} />
                     <button onClick={updEmail}>Atualizar e-mail</button>
                 </div>
@@ -113,21 +122,18 @@ function Profile() {
                     <input type="text" onChange={e => changeProfile({...profile, descricao: e.target.value})} style={{marginLeft: 45.8}} />
                 </div>
 
-                <Center style={{marginTop: 32}}>
-                    <input type="checkbox" onClick={e => changeProfile({...profile, modificarDisciplina: e.target.checked})} />
-                    <span>Modificar disciplina</span>
-                </Center>
-
-                <Center>
-                    <input type="checkbox" onClick={e => changeProfile({...profile, removerUsuario: e.target.checked})} />
-                    <span>Remover usuário</span>
-                </Center>
-
-                <Center>
-                    <input type="checkbox" onClick={e => changeProfile({...profile, modificarTrilha: e.target.checked})} />
-                    <span>Modificar trilha</span>
-                </Center>
-                
+                {Object.keys(servicos).map(id => {
+                    if (typeof servicos[id] === 'object') {
+                        const st = {marginTop: id === '0' ? 24 : 0}
+                        return (
+                            <Center key={id} style={st}>
+                                <input type="checkbox" onClick={e => changeProfile({...profile, [servicos[id].tipo]: e.target.checked})} />
+                                <span>{servicos[id].tipo}:&nbsp;&nbsp;</span>
+                                <span>{servicos[id].descricao}</span> 
+                            </Center>
+                        )
+                    }
+                })}
                 
                 <Center style={{marginTop: 32}}>
                 <button onClick={createProfile}>Criar perfil</button>
