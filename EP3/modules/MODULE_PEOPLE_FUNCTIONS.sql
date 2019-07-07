@@ -16,6 +16,7 @@ DROP FUNCTION IF EXISTS atualiza_administrador_fim(VARCHAR(11), DATE);
 
 DROP FUNCTION IF EXISTS seleciona_pessoa(VARCHAR(11));
 DROP FUNCTION IF EXISTS seleciona_aluno(INTEGER);
+DROP FUNCTION IF EXISTS seleciona_aluno_cpf(VARCHAR(11));
 DROP FUNCTION IF EXISTS seleciona_professor(VARCHAR(11));
 DROP FUNCTION IF EXISTS seleciona_administrador(VARCHAR(11));
 
@@ -150,7 +151,7 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	RETURN QUERY SELECT * FROM pessoa WHERE cpf = $1;
+	RETURN QUERY SELECT * FROM pessoa WHERE pessoa.cpf = $1;
 END;
 $$;
 
@@ -163,7 +164,20 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	RETURN QUERY SELECT * FROM aluno WHERE nusp = $1;
+	RETURN QUERY SELECT * FROM aluno WHERE aluno.nusp = $1;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION seleciona_aluno_cpf(VARCHAR(11))
+RETURNS TABLE(
+	nusp INTEGER,
+	cpf VARCHAR(11),
+	ano_ingresso INTEGER
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	RETURN QUERY SELECT * FROM aluno WHERE aluno.cpf = $1;
 END;
 $$;
 
@@ -175,7 +189,7 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	RETURN QUERY SELECT * FROM professor WHERE cpf = $1;
+	RETURN QUERY SELECT * FROM professor WHERE professor.cpf = $1;
 END;
 $$;
 
@@ -188,6 +202,6 @@ RETURNS TABLE(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	RETURN QUERY SELECT * FROM administrador WHERE cpf = $1;
+	RETURN QUERY SELECT * FROM administrador WHERE administrador.cpf = $1;
 END;
 $$;
