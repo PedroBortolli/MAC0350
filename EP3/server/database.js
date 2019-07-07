@@ -21,9 +21,16 @@ const mod_cur = new Pool({
 })
 mod_cur.connect()
 
+const mod_peo = new Pool({
+    ...postgres_setup,
+    database: 'mod_peo',
+})
+mod_cur.connect()
+
 const client = {
     mod_acc,
     mod_cur,
+    mod_peo,
 }
 
 module.exports = client
