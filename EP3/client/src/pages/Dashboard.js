@@ -130,7 +130,7 @@ function Dashboard() {
     const ele = doneCourses.length * 4
     const liv = doneCourses.length * 2
     return (
-        !courses.length ?
+        !courses || !courses.length ?
         <Container><img alt="" src={loadingGif} width={120} height={120} /></Container>
         :
         <Container style={{opacity: modalInfo.open ? 0.25 : 1}}>
