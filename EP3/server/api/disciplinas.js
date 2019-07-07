@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
         return res.sendStatus(400)
     }
     const { codigo, nome, creditos_aula, creditos_trabalho, instituto } = req.body.disciplina;
-    if ([codigo, nome, creditos_aula, creditos_trabalho, instituto].includes(null)) {
+    if ([codigo, nome, creditos_aula, creditos_trabalho, instituto].includes(undefined)) {
         return res.sendStatus(400)
     }
     client.mod_cur.query({
