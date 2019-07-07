@@ -13,11 +13,11 @@ SELECT cria_servico ('remoção', 'permite remover campos no db');
 SELECT associa_perfil ('pedroteosousa', 'aluno');
 SELECT associa_perfil ('cef', 'administrador');
 
-SELECT associa_servicos ('aluno', 'visualização');
-SELECT associa_servicos ('administrador', 'visualização');
-SELECT associa_servicos ('administrador', 'atualização');
-SELECT associa_servicos ('administrador', 'criação');
-SELECT associa_servicos ('administrador', 'remoção');
+SELECT associa_servico ('aluno', 'visualização');
+SELECT associa_servico ('administrador', 'visualização');
+SELECT associa_servico ('administrador', 'atualização');
+SELECT associa_servico ('administrador', 'criação');
+SELECT associa_servico ('administrador', 'remoção');
 
 -- SELECT * FROM seleciona_perfis ('pedroteosousa');
 -- SELECT * FROM seleciona_perfis ('cef');
