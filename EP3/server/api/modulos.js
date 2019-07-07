@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const authorize = require('./common/authorize')
 
 router.get('/', (req, res) => {
     client.mod_cur.query({
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', authorize('criação'), (req, res) => {
     if (!req.body.modulo) {
         return res.sendStatus(400)
     }
