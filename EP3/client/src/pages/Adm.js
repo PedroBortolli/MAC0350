@@ -144,8 +144,24 @@ function Adm() {
         const res = await fetchApi('DELETE', 'http://localhost:5000/api/usuarios', {usuario: {login: userToRemove}})
     }
     const vincular = async () => {
-        // TODO - api request
-        console.log("Vinculando serviços à perfil :" ,perfilServico)
+        let promises = [], perfil
+        Object.keys(perfilServico).forEach(id => {
+            if (typeof perfilServico[id] === 'string') perfil = perfilServico[id]
+        })
+        Object.keys(perfilServico).forEach(id => {
+            if (typeof perfilServico[id] === 'boolean' && perfilServico[id]) {
+                promises.push(fetchApi('POST', 'http://localhost:5000/api/perfis/servico', {
+                    perfil: {papel: perfil},
+                    servico: {tipo: id}
+                }))
+            }
+        })
+        const res = await Promise.all(promises)
+        let ok = true
+        res.forEach(r => {
+            if (!r.ok) ok = false
+        })
+        changeSuccess(ok)
     }
 
     
