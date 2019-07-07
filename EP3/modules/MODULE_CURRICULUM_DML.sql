@@ -44,16 +44,18 @@ SELECT cria_disciplina('MAT2453', 'Cálculo Diferencial e Integral I', 6, 0, 'IM
 SELECT cria_disciplina('MAT2454', 'Cálculo Diferencial e Integral II', 4, 0, 'IME');
 SELECT cria_disciplina('MAT0236', 'Funções Diferenciáveis e Séries', 4, 0, 'IME');
 
-SELECT cria_requisito('MAC0323', 'MAC0121');
-SELECT cria_requisito('MAT2454', 'MAT2453');
-SELECT cria_requisito('MAT0236', 'MAT2454');
-SELECT cria_requisito('MAC0350', 'MAC0323');
-SELECT cria_requisito('MAC0470', 'MAC0121');
-SELECT cria_requisito('MAC0470', 'MAC0350');
-SELECT cria_requisito('MAT0236', 'MAT0122');
-SELECT cria_requisito('MAC0121', 'MAC0110');
-SELECT cria_requisito('MAC0323', 'MAC0105');
-SELECT cria_requisito('MAT0236', 'MAC0105');
+SELECT cria_requisito('MAC0323', 'MAC0121', 46);
+SELECT cria_requisito('MAT2454', 'MAT2453', 45);
+SELECT cria_requisito('MAT2454', 'MAT2453', 46);
+SELECT cria_requisito('MAT2454', 'MAT2453', 50);
+SELECT cria_requisito('MAT0236', 'MAT2454', 46);
+SELECT cria_requisito('MAC0350', 'MAC0323', 46);
+SELECT cria_requisito('MAC0470', 'MAC0121', 46);
+SELECT cria_requisito('MAC0470', 'MAC0350', 46);
+SELECT cria_requisito('MAT0236', 'MAT0122', 46);
+SELECT cria_requisito('MAC0121', 'MAC0110', 46);
+SELECT cria_requisito('MAC0323', 'MAC0105', 46);
+SELECT cria_requisito('MAT0236', 'MAC0105', 46);
 
 SELECT cria_rel_cur_tri(45, 1);
 SELECT cria_rel_cur_tri(45, 2);

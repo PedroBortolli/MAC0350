@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS disciplina (
 CREATE TABLE IF NOT EXISTS requisito (
 	codigo_disc varchar(7),
 	codigo_req varchar(7),
-	PRIMARY KEY (codigo_disc, codigo_req),
+	codigo_cur integer,
+	PRIMARY KEY (codigo_disc, codigo_req, codigo_cur),
 	CONSTRAINT fk_codigo_disc FOREIGN KEY (codigo_disc) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_codigo_req FOREIGN KEY (codigo_req) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );

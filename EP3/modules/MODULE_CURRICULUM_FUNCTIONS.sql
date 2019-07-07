@@ -23,10 +23,9 @@ DROP FUNCTION IF EXISTS atualiza_creds_trabalho_disciplina(VARCHAR(7), INTEGER);
 DROP FUNCTION IF EXISTS atualiza_instituto_disciplina(VARCHAR(7), VARCHAR(50));
 DROP FUNCTION IF EXISTS remove_disciplina(VARCHAR(7));
 
-DROP FUNCTION IF EXISTS cria_requisito(VARCHAR(7), VARCHAR(7));
-DROP FUNCTION IF EXISTS seleciona_requisito(VARCHAR(7), VARCHAR(7));
-DROP FUNCTION IF EXISTS atualiza_requisito(VARCHAR(7), VARCHAR(7), VARCHAR(7));
-DROP FUNCTION IF EXISTS remove_requisito(VARCHAR(7), VARCHAR(7));
+DROP FUNCTION IF EXISTS cria_requisito(VARCHAR(7), VARCHAR(7), integer);
+DROP FUNCTION IF EXISTS seleciona_requisito(VARCHAR(7), VARCHAR(7), integer);
+DROP FUNCTION IF EXISTS remove_requisito(VARCHAR(7), VARCHAR(7), integer);
 
 DROP FUNCTION IF EXISTS cria_rel_cur_tri(INTEGER, INTEGER);
 DROP FUNCTION IF EXISTS seleciona_rel_cur_tri(INTEGER, _id_trilha INTEGER);
@@ -244,37 +243,27 @@ $$;
 
 -- REQUISITO
 
-CREATE OR REPLACE FUNCTION cria_requisito(VARCHAR(7), VARCHAR(7)) RETURNS VOID
+CREATE OR REPLACE FUNCTION cria_requisito(VARCHAR(7), VARCHAR(7), integer) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	INSERT INTO requisito(codigo_disc, codigo_req) VALUES ($1, $2);
+	INSERT INTO requisito(codigo_disc, codigo_req, codigo_cur) VALUES ($1, $2, $3);
 END
 $$;
 
-CREATE OR REPLACE FUNCTION seleciona_requisito(VARCHAR(7), VARCHAR(7)) RETURNS TABLE(codigo_disc VARCHAR(7), codigo_req VARCHAR(7))
+CREATE OR REPLACE FUNCTION seleciona_requisito(VARCHAR(7), VARCHAR(7), integer) RETURNS TABLE(codigo_disc VARCHAR(7), codigo_req VARCHAR(7), codigo_cur integer)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM requisito WHERE codigo_disc = $1 AND codigo_req = $2;
+    RETURN QUERY SELECT * FROM requisito WHERE codigo_disc = $1 AND codigo_req = $2 AND codigo_cur = $3;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION atualiza_requisito(VARCHAR(7), VARCHAR(7), VARCHAR(7)) RETURNS VOID
+CREATE OR REPLACE FUNCTION remove_requisito(VARCHAR(7), VARCHAR(7), integer) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	UPDATE requisito
-	SET codigo_req = $3
-	WHERE codigo_disc = $1 AND codigo_req = $2;
-END
-$$;
-
-CREATE OR REPLACE FUNCTION remove_requisito(VARCHAR(7), VARCHAR(7)) RETURNS VOID
-LANGUAGE plpgsql
-AS $$
-BEGIN
-	DELETE FROM requisito WHERE codigo_disc = $1 AND codigo_req = $2;
+	DELETE FROM requisito WHERE codigo_disc = $1 AND codigo_req = $2 AND codigo_cur = $3;
 END
 $$;
 
