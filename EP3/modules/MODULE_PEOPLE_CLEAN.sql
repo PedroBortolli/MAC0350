@@ -1,4 +1,4 @@
-DELETE FROM aluno;
-DELETE FROM professor;
-DELETE FROM administrador;
-DELETE FROM pessoa;
+DROP TABLE aluno;
+DROP TABLE professor;
+DROP TABLE administrador;
+DROP TABLE pessoa;

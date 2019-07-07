@@ -1,23 +1,21 @@
 CREATE TABLE pessoa (
-	id_pessoa SERIAL PRIMARY KEY,
-	nome varchar(100)
+	cpf VARCHAR(11) PRIMARY KEY CHECK (char_length(cpf) = 11),
+	nome VARCHAR(100)
 );
 
 CREATE TABLE aluno (
-	id_aluno integer PRIMARY KEY,
-	ano_ingresso integer,
-	CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
+	nusp INTEGER PRIMARY KEY,
+	cpf VARCHAR(11) REFERENCES pessoa(cpf) ON DELETE CASCADE ON UPDATE CASCADE,
+	ano_ingresso INTEGER CHECK (ano_ingresso >= 1934)
 );
 
 CREATE TABLE professor (
-	id_professor integer PRIMARY KEY,
-	formacao_area varchar(50),
-	CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
+	cpf VARCHAR(11) PRIMARY KEY REFERENCES pessoa(cpf) ON DELETE CASCADE ON UPDATE CASCADE,
+	area_formacao VARCHAR(50)
 );
 
 CREATE TABLE administrador (
-	id_adm integer PRIMARY KEY,
-	inicio date,
-	fim date,
-	CONSTRAINT fk_adm FOREIGN KEY (id_adm) REFERENCES pessoa(id_pessoa) ON DELETE CASCADE ON UPDATE CASCADE
+	cpf VARCHAR(11) PRIMARY KEY REFERENCES pessoa(cpf) ON DELETE CASCADE ON UPDATE CASCADE,
+	inicio DATE,
+	fim DATE
 );

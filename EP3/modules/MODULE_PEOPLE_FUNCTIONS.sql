@@ -1,181 +1,193 @@
-DROP FUNCTION IF EXISTS cria_pessoa(VARCHAR(100));
-DROP FUNCTION IF EXISTS cria_aluno(VARCHAR(100), INTEGER);
-DROP FUNCTION IF EXISTS cria_professor(VARCHAR(100), VARCHAR(50));
-DROP FUNCTION IF EXISTS cria_administrador(VARCHAR(100), DATE, DATE);
+DROP FUNCTION IF EXISTS cria_pessoa(VARCHAR(11), VARCHAR(100));
+DROP FUNCTION IF EXISTS cria_aluno(INTEGER, VARCHAR(11), INTEGER);
+DROP FUNCTION IF EXISTS cria_professor(VARCHAR(11), VARCHAR(50));
+DROP FUNCTION IF EXISTS cria_administrador(VARCHAR(11), DATE, DATE);
 
-CREATE OR REPLACE FUNCTION cria_pessoa(VARCHAR(100)) RETURNS VOID
+DROP FUNCTION IF EXISTS remove_pessoa(VARCHAR(11));
+DROP FUNCTION IF EXISTS remove_aluno(INTEGER);
+DROP FUNCTION IF EXISTS remove_professor(VARCHAR(11));
+DROP FUNCTION IF EXISTS remove_administrador(VARCHAR(11));
+
+DROP FUNCTION IF EXISTS atualiza_pessoa_nome(VARCHAR(11), VARCHAR(100));
+DROP FUNCTION IF EXISTS atualiza_aluno_ano_ingresso(INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS atualiza_professor_area_formacao(VARCHAR(11), VARCHAR(50));
+DROP FUNCTION IF EXISTS atualiza_administrador_inicio(VARCHAR(11), DATE);
+DROP FUNCTION IF EXISTS atualiza_administrador_fim(VARCHAR(11), DATE);
+
+DROP FUNCTION IF EXISTS seleciona_pessoa(VARCHAR(11));
+DROP FUNCTION IF EXISTS seleciona_aluno(INTEGER);
+DROP FUNCTION IF EXISTS seleciona_professor(VARCHAR(11));
+DROP FUNCTION IF EXISTS seleciona_administrador(VARCHAR(11));
+
+-- CRIA
+
+CREATE OR REPLACE FUNCTION cria_pessoa(VARCHAR(11), VARCHAR(100)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	INSERT INTO pessoa (nome) VALUES ($1);
+	INSERT INTO pessoa (cpf, nome) VALUES ($1, $2);
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION cria_aluno(VARCHAR(100), INTEGER) RETURNS VOID
+CREATE OR REPLACE FUNCTION cria_aluno(INTEGER, VARCHAR(11), INTEGER) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	INSERT INTO aluno (id_aluno, ano_ingresso) VALUES (_id, $2);
+	INSERT INTO aluno (nusp, cpf, ano_ingresso) VALUES ($1, $2, $3);
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION cria_professor(VARCHAR(100), VARCHAR(50)) RETURNS VOID
+CREATE OR REPLACE FUNCTION cria_professor(VARCHAR(11), VARCHAR(50)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	INSERT INTO professor (id_professor, formacao_area) VALUES (_id, $2);
+	INSERT INTO professor (cpf, area_formacao) VALUES ($1, $2);
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION cria_administrador(VARCHAR(100), DATE, DATE) RETURNS VOID 
+CREATE OR REPLACE FUNCTION cria_administrador(VARCHAR(11), DATE, DATE) RETURNS VOID 
 LANGUAGE plpgsql
 AS $$
-DECLARE _id integer;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	INSERT INTO administrador(id_adm, inicio, fim) VALUES (_id, $2, $3);
+	INSERT INTO administrador(cpf, inicio, fim) VALUES ($1, $2, $3);
 END;
 $$;
 
-DROP FUNCTION IF EXISTS remove_pessoa(VARCHAR(100));
-DROP FUNCTION IF EXISTS remove_aluno(VARCHAR(100));
-DROP FUNCTION IF EXISTS remove_professor(VARCHAR(100));
-DROP FUNCTION IF EXISTS remove_administrador(VARCHAR(100));
+-- REMOVE
 
-CREATE OR REPLACE FUNCTION remove_pessoa(VARCHAR(100)) RETURNS VOID
+CREATE OR REPLACE FUNCTION remove_pessoa(VARCHAR(11)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	DELETE FROM pessoa WHERE nome = $1;
+	DELETE FROM pessoa WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION remove_aluno(VARCHAR(100)) RETURNS VOID
+CREATE OR REPLACE FUNCTION remove_aluno(INTEGER) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE id INTEGER;
 BEGIN
-	id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	DELETE FROM aluno WHERE id_aluno = id;
+	DELETE FROM aluno WHERE nusp = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION remove_professor(VARCHAR(100)) RETURNS VOID
+CREATE OR REPLACE FUNCTION remove_professor(VARCHAR(11)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE id INTEGER;
 BEGIN
-	id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	DELETE FROM professor WHERE id_professor = id;
+	DELETE FROM professor WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION remove_administrador(VARCHAR(100)) RETURNS VOID
+CREATE OR REPLACE FUNCTION remove_administrador(VARCHAR(11)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	DELETE FROM administrador WHERE id_adm = _id;
+	DELETE FROM administrador WHERE cpf = $1;
 END;
 $$;
 
-DROP FUNCTION IF EXISTS atualiza_pessoa(VARCHAR(100), VARCHAR(100));
-DROP FUNCTION IF EXISTS atualiza_aluno(VARCHAR(100), INTEGER);
-DROP FUNCTION IF EXISTS atualiza_professor(VARCHAR(100), VARCHAR(50));
-DROP FUNCTION IF EXISTS atualiza_administrador(VARCHAR(100), DATE, DATE);
+-- ATUALIZA
 
-CREATE OR REPLACE FUNCTION atualiza_pessoa(VARCHAR(100), VARCHAR(100)) RETURNS VOID
+CREATE OR REPLACE FUNCTION atualiza_pessoa_nome(VARCHAR(11), VARCHAR(100)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id integer;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
 	UPDATE pessoa
-	SET nome=$2
-	WHERE id_pessoa=_id;
+	SET nome = $2
+	WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION atualiza_aluno(VARCHAR(100), INTEGER) RETURNS VOID
+CREATE OR REPLACE FUNCTION atualiza_aluno_ano_ingresso(INTEGER, INTEGER) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
 	UPDATE aluno
-	SET ano_ingresso=$2
-	WHERE id_aluno=_id;
+	SET ano_ingresso = $2
+	WHERE nusp = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION atualiza_professor(VARCHAR(100), VARCHAR(50)) RETURNS VOID
+CREATE OR REPLACE FUNCTION atualiza_professor_area_formacao(VARCHAR(11), VARCHAR(50)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
 	UPDATE professor
-	SET formacao_area=$2
-	WHERE id_professor=_id;
+	SET area_formacao = $2
+	WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION atualiza_administrador(VARCHAR(100), DATE, DATE) RETURNS VOID
+CREATE OR REPLACE FUNCTION atualiza_administrador_inicio(VARCHAR(11), DATE) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-    _id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
 	UPDATE administrador
-	SET inicio=$2, fim=$3
-	WHERE id_adm=_id;
+	SET inicio = $2
+	WHERE cpf = $1;
 END;
 $$;
 
-DROP FUNCTION IF EXISTS seleciona_pessoa(VARCHAR(100));
-DROP FUNCTION IF EXISTS seleciona_aluno(VARCHAR(100));
-DROP FUNCTION IF EXISTS seleciona_professor(VARCHAR(100));
-DROP FUNCTION IF EXISTS seleciona_administrador(VARCHAR(100));
-
-CREATE OR REPLACE FUNCTION seleciona_pessoa(VARCHAR(100)) RETURNS TABLE(id INTEGER, nome_pessoa VARCHAR(100))
+CREATE OR REPLACE FUNCTION atualiza_administrador_fim(VARCHAR(11), DATE) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-	RETURN QUERY SELECT * FROM pessoa WHERE nome = $1;
+	UPDATE administrador
+	SET fim = $2
+	WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION seleciona_aluno(VARCHAR(100)) RETURNS TABLE(id INTEGER, ano_ingresso INTEGER)
+-- SELECIONA
+
+CREATE OR REPLACE FUNCTION seleciona_pessoa(VARCHAR(11))
+RETURNS TABLE(
+	cpf VARCHAR(11),
+	nome VARCHAR(100)
+)
 LANGUAGE plpgsql
 AS $$
-DECLARE id INTEGER;
 BEGIN
-	id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	RETURN QUERY SELECT * FROM aluno WHERE id_aluno = id;
+	RETURN QUERY SELECT * FROM pessoa WHERE cpf = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION seleciona_professor(VARCHAR(100)) RETURNS TABLE(id INTEGER, formacao_area VARCHAR(50))
+CREATE OR REPLACE FUNCTION seleciona_aluno(INTEGER)
+RETURNS TABLE(
+	nusp INTEGER,
+	cpf VARCHAR(11),
+	ano_ingresso INTEGER
+)
 LANGUAGE plpgsql
 AS $$
-DECLARE id INTEGER;
 BEGIN
-	id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	RETURN QUERY SELECT * FROM professor WHERE id_professor = id;
+	RETURN QUERY SELECT * FROM aluno WHERE nusp = $1;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION seleciona_administrador(VARCHAR(100)) RETURNS TABLE(id INTEGER, inicio DATE, fim DATE)
+CREATE OR REPLACE FUNCTION seleciona_professor(VARCHAR(11))
+RETURNS TABLE(
+	cpf VARCHAR(11),
+	area_formacao VARCHAR(50)
+)
 LANGUAGE plpgsql
 AS $$
-DECLARE _id INTEGER;
 BEGIN
-	_id := (SELECT id_pessoa FROM pessoa WHERE nome = $1);
-	RETURN QUERY SELECT * FROM administrador WHERE id_adm = _id;
+	RETURN QUERY SELECT * FROM professor WHERE cpf = $1;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION seleciona_administrador(VARCHAR(11))
+RETURNS TABLE(
+	cpf VARCHAR(11),
+	inicio DATE,
+	fim DATE
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	RETURN QUERY SELECT * FROM administrador WHERE cpf = $1;
 END;
 $$;
