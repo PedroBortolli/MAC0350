@@ -35,6 +35,28 @@ router.post('/create', (req, res) => {
 })
 
 // lembrar de ver se o cara pode fazer isso
+// essa rota associa um usuario a um perfil
+router.post('/perfil', (req, res) => {
+    if (!req.body.usuario || !req.body.perfil) {
+        return res.sendStatus(400)
+    }
+    const { login } = req.body.usuario
+    const { papel } = req.body.perfil
+    if (!login || !papel) {
+        return res.sendStatus(400)
+    }
+    client.mod_acc.query({
+        text: 'SELECT associa_perfil ($1, $2);',
+        values: [login, papel],
+    }).then(() => {
+        res.sendStatus(200)
+    }).catch(err => {
+        console.error(err)
+        return res.sendStatus(500)
+    })
+})
+
+// lembrar de ver se o cara pode fazer isso
 router.delete('/', (req, res) => {
     if (!req.body.usuario) {
         return res.sendStatus(400)
