@@ -1,4 +1,4 @@
-DROP TABLE aluno;
-DROP TABLE professor;
-DROP TABLE administrador;
-DROP TABLE pessoa;
+DROP TABLE IF EXISTS aluno;
+DROP TABLE IF EXISTS professor;
+DROP TABLE IF EXISTS administrador;
+DROP TABLE IF EXISTS pessoa;

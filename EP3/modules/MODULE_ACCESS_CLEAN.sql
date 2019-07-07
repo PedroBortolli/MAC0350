@@ -1,5 +1,5 @@
-DROP TABLE rel_us_pf;
-DROP TABLE rel_pf_se;
-DROP TABLE usuario;
-DROP TABLE perfil;
-DROP TABLE servico;
+DROP TABLE IF EXISTS rel_us_pf;
+DROP TABLE IF EXISTS rel_pf_se;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS perfil;
+DROP TABLE IF EXISTS servico;
