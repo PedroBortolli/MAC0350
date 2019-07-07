@@ -1,36 +1,29 @@
 CREATE TABLE curriculo (
-	codigo integer PRIMARY KEY,
-	nome varchar(50),
-	id_adm integer
-	-- CONSTRAINT fk_curriculo FOREIGN KEY (id_adm) REFERENCES administrador(id_adm) ON DELETE CASCADE ON UPDATE CASCADE
+	codigo INTEGER PRIMARY KEY,
+	nome VARCHAR(50)
 );
 
 CREATE TABLE trilha (
 	id_trilha SERIAL PRIMARY KEY,
-	nome varchar(50) not NULL UNIQUE,
-	descricao varchar(255),
-	quant_mod integer,
-	CONSTRAINT check_quant_mod check (quant_mod > 0)
+	nome VARCHAR(50) NOT NULL UNIQUE,
+	descricao VARCHAR(255),
+	quant_mod INTEGER CHECK (quant_mod > 0)
 );
 
 CREATE TABLE modulo (
 	id_modulo SERIAL PRIMARY KEY,
-	id_trilha integer,
-	nome varchar(50) not NULL UNIQUE,
-	descricao varchar(255),
-	quant_disc integer,
-	CONSTRAINT check_quant_disc check (quant_disc > 0),
-	CONSTRAINT fk_trilha FOREIGN KEY (id_trilha) references trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
+	nome VARCHAR(50) NOT NULL UNIQUE,
+	descricao VARCHAR(255),
+	quant_disc INTEGER CHECK (quant_disc > 0),
+	id_trilha INTEGER REFERENCES trilha(id_trilha) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE disciplina (
-	codigo varchar(7) PRIMARY KEY,
-	nome varchar(100),
-	creditos_aula integer,
-	creditos_trabalho integer,
-	instituto varchar(50),
-	CONSTRAINT check_codigo check (char_length(codigo)=7 AND codigo ~ '^[A-Z]{3}[0-9]{4}$'),
-	CONSTRAINT check_creditos check (creditos_aula >= 0 AND creditos_trabalho >= 0)
+	codigo VARCHAR(7) PRIMARY KEY CHECK (char_length(codigo)=7 AND codigo ~ '^[A-Z]{3}[0-9]{4}$'),
+	nome VARCHAR(100),
+	creditos_aula INTEGER CHECK (creditos_aula >= 0),
+	creditos_trabalho INTEGER CHECK (creditos_trabalho >= 0),
+	instituto VARCHAR(50)
 );
 
 CREATE TABLE requisito (
