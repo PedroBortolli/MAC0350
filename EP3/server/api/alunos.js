@@ -2,6 +2,8 @@ const router = require('express').Router()
 
 const client = require('../database')
 
+// maybe this route should return a name, but since it returns a cpf,
+// we can get all people and get the name that way
 router.get('/', (req, res) => {
     client.mod_peo.query({
         text: 'SELECT * FROM aluno;',
