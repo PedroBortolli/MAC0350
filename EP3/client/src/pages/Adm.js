@@ -59,6 +59,8 @@ function Adm() {
     const [updateTrilha, updUpdateTrilha] = useState({})
     const [profile, changeProfile] = useState({})
     const [servicos, changeServicos] = useState({})
+    const [usuario, changeUsuario] = useState({})
+    const [success, changeSuccess] = useState(null)
 
     useEffect(() => {
         const fetchServicos = async () => {
@@ -75,30 +77,42 @@ function Adm() {
         fetchServicos()
     }, [])
 
-    const addCourse = () => {
+    const addCourse = async () => {
         // TODO - api request
         console.log("Adicionando disciplina: ", newCourse)
     }
-    const updCourse = () => {
+    const updCourse = async () => {
         // TODO - api request
         console.log("Atualizando disciplina: ", updateCourse)
     }
-    const addTrilha = () => {
+    const addTrilha = async () => {
         // TODO - api request
         console.log("Adicionando trilha: ", newTrilha)
     }
-    const updTrilha = () => {
+    const updTrilha = async () => {
         // TODO - api request
         console.log("Atualizando trilha: ", updateTrilha)
     }
-    const createProfile = () => {
+    const createProfile = async () => {
         // TODO - api request
         console.log("Criando perfil: ", profile)
+    }
+    const createUser = async () => {
+        const res = await fetchApi('POST', 'http://localhost:5000/api/usuarios', {usuario})
+        changeSuccess(res.ok)
     }
 
     return (
         <Container>
             <h1>Administrar sistema</h1>
+            {success !== null ?
+                success === true ?
+                    <p style={{color: 'green'}}>Request feito com sucesso!</p>
+                    :
+                    <p style={{color: 'red'}}>Request falhou...</p>
+                :
+                null
+            } 
             <div>
                 <div>
                     <h2>Adicionar disciplina</h2>
@@ -147,6 +161,17 @@ function Adm() {
                     <input onChange={e => updUpdateTrilha({...updateTrilha, novaQntdDisciplinas: Number(e.target.value)})} />
                     <br/>
                     <button onClick={updTrilha}>Atualizar trilha</button>
+                </div>
+                <div>
+                    <h2>Criar usuário</h2>
+                    <p>Login</p>
+                    <input onChange={e => changeUsuario({...usuario, login: e.target.value})} />
+                    <p>Senha</p>
+                    <input type="password" onChange={e => changeUsuario({...usuario, senha: e.target.value})} />
+                    <p>Email</p>
+                    <input onChange={e => changeUsuario({...usuario, email: e.target.value})} />
+                    <br/>
+                    <button onClick={createUser}>Criar usuário</button>
                 </div>
             </div>
 
