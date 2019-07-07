@@ -76,3 +76,16 @@ SELECT cria_rel_mod_dis(7, 'MAT0122', '1');
 SELECT cria_rel_mod_dis(8, 'MAT2453', '0');
 SELECT cria_rel_mod_dis(9, 'MAT2454', '0');
 SELECT cria_rel_mod_dis(10, 'MAT0236', '1');
+
+SELECT cria_rel_dis_cur('MAC0350', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAC0470', 46, 'eletiva');
+SELECT cria_rel_dis_cur('MAC0105', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAC0110', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAC0121', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAC0323', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAT0122', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAT2453', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAT2454', 46, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAT0236', 46, 'eletiva');
+SELECT cria_rel_dis_cur('MAT0236', 50, 'obrigatoria');
+SELECT cria_rel_dis_cur('MAC0110', 50, 'obrigatoria');

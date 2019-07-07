@@ -50,3 +50,12 @@ CREATE TABLE IF NOT EXISTS rel_mod_dis (
 	CONSTRAINT fk_modulo FOREIGN KEY (id_modulo) REFERENCES modulo(id_modulo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_disciplina FOREIGN KEY (codigo) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS rel_dis_cur (
+    codigo_dis varchar(7),
+    codigo_cur INTEGER,
+    rel VARCHAR(11) CHECK ((rel = 'eletiva') OR (rel = 'obrigatoria')),
+    PRIMARY KEY (codigo_dis, codigo_cur),
+    CONSTRAINT fk_codigo_disc FOREIGN KEY (codigo_dis) REFERENCES disciplina(codigo) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT fk_codigo_cur FOREIGN KEY (codigo_cur) REFERENCES curriculo(codigo) ON DELETE CASCADE ON UPDATE CASCADE
+);

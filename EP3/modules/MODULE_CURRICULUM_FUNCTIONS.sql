@@ -41,6 +41,11 @@ DROP FUNCTION IF EXISTS atualiza_rel_mod_dis_disciplina(INTEGER, VARCHAR(7));
 DROP FUNCTION IF EXISTS atualiza_obrigatoriedade_disciplina(INTEGER, VARCHAR(7), BIT);
 DROP FUNCTION IF EXISTS remove_rel_mod_dis(INTEGER, VARCHAR(7));
 
+DROP FUNCTION IF EXISTS cria_rel_dis_cur(VARCHAR(7), integer, VARCHAR(11));
+DROP FUNCTION IF EXISTS seleciona_rel_dis_cur(VARCHAR(7), integer);
+DROP FUNCTION IF EXISTS atualiza_rel_dis_cur(VARCHAR(7), integer, VARCHAR(11));
+DROP FUNCTION IF EXISTS remove_rel_dis_cur(VARCHAR(7), integer);
+
 -- CURRICULO
 
 CREATE OR REPLACE FUNCTION cria_curriculo(INTEGER, VARCHAR(50)) RETURNS VOID
@@ -372,5 +377,41 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
 	DELETE FROM rel_mod_dis WHERE id_modulo = $1 AND codigo = $2;
+END
+$$;
+
+-- rel_dis_cur
+
+CREATE OR REPLACE FUNCTION cria_rel_dis_cur(VARCHAR(7), integer, VARCHAR(11)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	INSERT INTO rel_dis_cur(codigo_dis, codigo_cur, rel) VALUES ($1, $2, $3);
+END
+$$;
+
+CREATE OR REPLACE FUNCTION seleciona_rel_dis_cur(VARCHAR(7), integer) RETURNS TABLE(codigo_dis VARCHAR(7), codigo_cur INTEGER, relacao VARCHAR(11))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM rel_dis_cur WHERE codigo_dis = $1 and codigo_cur = $2;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION atualiza_rel_dis_cur(VARCHAR(7), integer, VARCHAR(11)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	UPDATE rel_dis_cur
+	SET rel = $3
+	WHERE codigo_dis = $1 AND codigo_cur = $2;
+END
+$$;
+
+CREATE OR REPLACE FUNCTION remove_rel_dis_cur(VARCHAR(7), integer) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	DELETE FROM rel_dis_cur WHERE codigo_disc = $1 AND codigo_cur = $2;
 END
 $$;

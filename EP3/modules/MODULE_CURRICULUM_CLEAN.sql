@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS rel_mod_dis;
 DROP TABLE IF EXISTS rel_cur_tri;
+DROP TABLE IF EXISTS rel_dis_cur;
 DROP TABLE IF EXISTS requisito;
 DROP TABLE IF EXISTS disciplina;
 DROP TABLE IF EXISTS modulo;
