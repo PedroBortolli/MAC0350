@@ -1,12 +1,16 @@
 const Pool = require('pg').Pool
 
-const client = new Pool({
+const mod_acc = new Pool({
     user: 'postgres',
     password: 'postgres',
     host: 'localhost',
     port: 5432,
-    database: 'postgres'
+    database: 'mod_acc'
 })
-client.connect()
+mod_acc.connect()
+
+const client = {
+    mod_acc,
+}
 
 module.exports = client

@@ -4,7 +4,7 @@ const client = require('../database')
 
 // lembrar de ver se o cara pode fazer isso
 router.get('/', (req, res) => {
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT * FROM servico;',
     }).then(({ rows }) => {
         res.send(rows || []).status(200)
@@ -23,7 +23,7 @@ router.post('/create', (req, res) => {
     if (!tipo || !descricao) {
         return res.sendStatus(400)
     }
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT cria_servico ($1, $2);',
         values: [tipo, descricao],
     }).then(() => {
@@ -43,7 +43,7 @@ router.delete('/', (req, res) => {
     if (!tipo) {
         return res.sendStatus(400)
     }
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT remove_servico ($1);',
         values: [tipo],
     }).then(() => {

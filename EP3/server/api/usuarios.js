@@ -4,7 +4,7 @@ const client = require('../database')
 
 // lembrar de ver se o cara pode fazer isso
 router.get('/', (req, res) => {
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT * FROM usuario;',
     }).then(({ rows }) => {
         res.send(rows || []).status(200)
@@ -23,7 +23,7 @@ router.post('/create', (req, res) => {
     if (!login || !email || !senha) {
         return res.sendStatus(400)
     }
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT cria_usuario ($1, $2, $3);',
         values: [login, email, senha],
     }).then(() => {
@@ -43,7 +43,7 @@ router.delete('/', (req, res) => {
     if (!login) {
         return res.sendStatus(400);
     }
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT remove_usuario ($1);',
         values: [login],
     }).then(() => {

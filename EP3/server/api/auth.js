@@ -3,7 +3,7 @@ const router = require('express').Router()
 const client = require('../database')
 
 router.post('/login', (req, res) => {
-    client.query({
+    client.mod_acc.query({
         text: 'SELECT * FROM seleciona_usuario ($1);',
         values: [req.body.auth.login],
     }).then(({ rows }) => {
