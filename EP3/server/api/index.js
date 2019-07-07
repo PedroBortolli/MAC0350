@@ -12,7 +12,9 @@ router.use('/perfis', perfis)
 router.use('/servicos', servicos)
 
 // MOD_CUR
+const trilhas = require('./trilhas')
 const disciplinas = require('./disciplinas')
+router.use('/trilhas', trilhas)
 router.use('/disciplinas', disciplinas)
 
 // MOD_PEO
