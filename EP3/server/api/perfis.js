@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
     }
     const { papel, descricao } = req.body.perfil;
     if (!papel || !descricao) {
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
     client.mod_acc.query({
         text: 'SELECT cria_perfil ($1, $2);',
@@ -60,7 +60,7 @@ router.post('/servico', (req, res) => {
     const { papel } = req.body.perfil;
     const { tipo } = req.body.servico;
     if (!papel || !tipo) {
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
     client.mod_acc.query({
         text: 'SELECT associa_servico ($1, $2);',
@@ -76,7 +76,7 @@ router.post('/servico', (req, res) => {
 // lembrar de ver se o cara pode fazer isso
 router.delete('/', (req, res) => {
     if (!req.body.perfil) {
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
     const { papel } = req.body.perfil
     if (!papel) {
