@@ -1,15 +1,18 @@
 const router = require('express').Router()
 
-const authRoutes = require('./auth')
-const disciplinasRoutes = require('./disciplinas')
-const servicosRoutes = require('./servicos')
-const usuariosRoutes = require('./usuarios')
-const perfisRoutes = require('./perfis')
+const auth = require('./auth')
+router.use('/auth', auth)
 
-router.use('/auth', authRoutes)
-router.use('/disciplinas', disciplinasRoutes)
-router.use('/servicos', servicosRoutes)
-router.use('/usuarios', usuariosRoutes)
-router.use('/perfis', perfisRoutes)
+// MOD_ACC
+const usuarios = require('./usuarios')
+const perfis = require('./perfis')
+const servicos = require('./servicos')
+router.use('/usuarios', usuarios)
+router.use('/perfis', perfis)
+router.use('/servicos', servicos)
+
+// MOD_CUR
+const disciplinas = require('./disciplinas')
+router.use('/disciplinas', disciplinas)
 
 module.exports = router
