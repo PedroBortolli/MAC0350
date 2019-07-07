@@ -19,8 +19,10 @@ router.use('/disciplinas', disciplinas)
 const pessoas = require('./pessoas')
 const alunos = require('./alunos')
 const professores = require('./professores')
+const administradores = require('./administradores')
 router.use('/pessoas', pessoas)
 router.use('/alunos', alunos)
 router.use('/professores', professores)
+router.use('/administradores', administradores)
 
 module.exports = router
