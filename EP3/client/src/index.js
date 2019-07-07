@@ -4,7 +4,6 @@ import Header from './components/Header'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
-import Profile from './pages/Profile'
 import Adm from './pages/Adm'
 import User from './pages/User'
 import NotFound from './pages/NotFound'
@@ -17,7 +16,6 @@ const routing = (
             <Route exact path="/" component={Home} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/login" component={Login} />
-            <Route path="/profile" component={Profile} />
             <Route path="/adm" component={Adm} />
             <Route path="/user" component={User} />
             <Route component={NotFound} />

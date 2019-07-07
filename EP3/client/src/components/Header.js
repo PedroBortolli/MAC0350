@@ -33,7 +33,6 @@ function Header() {
     return <Container>
         <Link to='/'>Home</Link>
         <Link to='/dashboard'>Matérias</Link>
-        {session && <Link to='/profile'>Perfil</Link>}
         {session && <Link to='/user'>Usuário</Link>}
         {session && <Link to='/adm'>Administração</Link>}
         {session ?
