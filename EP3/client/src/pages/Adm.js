@@ -124,12 +124,12 @@ function Adm() {
         console.log("Atualizando disciplina: ", updateCourse)
     }
     const addTrilha = async () => {
-        // TODO - api request
-        console.log("Adicionando trilha: ", newTrilha)
+        const res = await fetchApi('POST', 'http://localhost:5000/api/trilhas', {trilha: newTrilha})
+        changeSuccess(res.ok)
     }
     const updTrilha = async () => {
-        // TODO - api request
-        console.log("Atualizando trilha: ", updateTrilha)
+        const res = await fetchApi('PATCH', 'http://localhost:5000/api/trilhas', {trilha: updateTrilha})
+        changeSuccess(res.ok)
     }
     const createProfile = async () => {
         // TODO - api request
@@ -209,8 +209,10 @@ function Adm() {
                     <h2>Adicionar trilha</h2>
                     <p>Nome</p>
                     <input onChange={e => updNewTrilha({...newTrilha, nome: e.target.value})} />
-                    <p>Quantidade de disciplinas</p>
-                    <input type="number" onChange={e => updNewTrilha({...newTrilha, qntdDisciplinas: Number(e.target.value)})} />
+                    <p>Descrição</p>
+                    <input onChange={e => updNewTrilha({...newTrilha, descricao: e.target.value})} />
+                    <p>Quantidade de módulos</p>
+                    <input type="number" onChange={e => updNewTrilha({...newTrilha, 'quant_mod': Number(e.target.value)})} />
                     <br/>
                     <button onClick={addTrilha}>Adicionar trilha</button>
                 </div>
@@ -218,10 +220,10 @@ function Adm() {
                     <h2>Atualizar trilha</h2>
                     <p>Nome</p>
                     <input onChange={e => updUpdateTrilha({...updateTrilha, nome: e.target.value})} />
-                    <p>Novo nome</p>
-                    <input onChange={e => updUpdateTrilha({...updateTrilha, novoNome: e.target.value})} />
-                    <p>Quantidade de disciplinas</p>
-                    <input onChange={e => updUpdateTrilha({...updateTrilha, novaQntdDisciplinas: Number(e.target.value)})} />
+                    <p>Descrição</p>
+                    <input onChange={e => updUpdateTrilha({...updateTrilha, descricao: e.target.value})} />
+                    <p>Quantidade de módulos</p>
+                    <input type="number" onChange={e => updUpdateTrilha({...updateTrilha, 'quant_mod': Number(e.target.value)})} />
                     <br/>
                     <button onClick={updTrilha}>Atualizar trilha</button>
                 </div>
