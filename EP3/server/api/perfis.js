@@ -14,16 +14,16 @@ router.get('/', (req, res) => {
 })
 
 router.get('/servicos', (req, res) => {
-    if (!req.body.usuario) {
+    if (!req.body.perfil) {
         return res.sendStatus(400)
     }
-    const { login } = req.body.usuario;
-    if (!login) {
+    const { papel } = req.body.perfil;
+    if (!papel) {
         return res.sendStatus(400)
     }
     client.mod_acc.query({
         text: 'SELECT * FROM seleciona_servicos ($1);',
-        values: [login],
+        values: [papel],
     }).then(({ rows }) => {
         res.send(rows || []).status(200)
     }).catch(err => {
