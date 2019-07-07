@@ -1,7 +1,10 @@
 #!/bin/bash
-PGPASSWORD=postgres psql -U postgres -f modules/CREATE_DATABASES.sql
+USERNAME="postgres"
+PASSWORD="postgres"
 
-PGPASSWORD=postgres psql -U postgres mod_acc -f modules/MODULE_ACCESS_CLEAN.sql
-PGPASSWORD=postgres psql -U postgres mod_acc -f modules/MODULE_ACCESS_DDL.sql
-PGPASSWORD=postgres psql -U postgres mod_acc -f modules/MODULE_ACCESS_FUNCTIONS.sql
-PGPASSWORD=postgres psql -U postgres mod_acc -f modules/MODULE_ACCESS_DML.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME -f modules/CREATE_DATABASES.sql
+
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_acc -f modules/MODULE_ACCESS_CLEAN.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_acc -f modules/MODULE_ACCESS_DDL.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_acc -f modules/MODULE_ACCESS_FUNCTIONS.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_acc -f modules/MODULE_ACCESS_DML.sql
