@@ -13,8 +13,21 @@ FOREIGN DATA WRAPPER postgres_fdw
 OPTIONS (host 'localhost', port '5432', dbname 'mod_peo');
 
 CREATE FOREIGN TABLE pessoa_foreign (
-    id_pessoa SERIAL PRIMARY KEY,
+    id_pessoa SERIAL,
 	nome varchar(100)
 )
-SERVER pessoa_server
+SERVER peo_server
 OPTIONS (table_name 'pessoa');
+
+CREATE FOREIGN TABLE usuario_foreign (
+    login VARCHAR(50),
+    email VARCHAR(100),
+    senha VARCHAR(50)
+)
+SERVER acc_server
+OPTIONS (table_name 'usuario');
+
+CREATE TABLE rel_pe_us (
+    id_pessoa SERIAL,
+    login VARCHAR(50)
+);

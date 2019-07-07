@@ -1,21 +1,25 @@
-DROP FUNCTION IF EXISTS cria_rel_us_pf(integer, varchar(20));
-DROP FUNCTION IF EXISTS deleta_rel_us_pf(integer, varchar(20));
-DROP FUNCTION IF EXISTS seleciona_rel_us_pf(integer, varchar(20));
+DROP FUNCTION IF EXISTS cria_rel_pe_us(integer, varchar(50));
+DROP FUNCTION IF EXISTS deleta_rel_pe_us(integer, varchar(50));
+DROP FUNCTION IF EXISTS seleciona_rel_pe_us(integer, varchar(50));
 
-CREATE OR REPLACE FUNCTION cria_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION cria_rel_pe_us(_id_pessoa integer, _login varchar(50)) RETURNS VOID AS $$
 	BEGIN
-		INSERT INTO rel_us_pf(login, id_perfil) VALUES (_login, _id_perfil);
+	    IF (EXISTS (SELECT 1 FROM pessoa_foreign WHERE id_pessoa = _id_pessoa) AND EXISTS (SELECT 1 FROM usuario_foreign WHERE login = _login)) THEN
+    		INSERT INTO rel_pe_us(id_pessoa, login) VALUES (_id_pessoa, _login);
+    	END IF;
 	END
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION deleta_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION deleta_rel_pe_us(_id_pessoa integer, _login varchar(50)) RETURNS VOID AS $$
 	BEGIN
-	    DELETE FROM rel_us_pf WHERE id_perfil = _id_perfil and login = _login;
+	    DELETE FROM rel_us_pf WHERE id_pessoa = _id_pessoa and login = _login;
 	END
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION seleciona_rel_us_pf(_id_perfil integer, _login varchar(20)) RETURNS TABLE(login_ varchar(20), id_usuario_ integer) AS $$
+CREATE OR REPLACE FUNCTION seleciona_rel_pe_us(_id_pessoa integer, _login varchar(50)) RETURNS TABLE(id_pessoa_ integer, login_ varchar(50)) AS $$
 	BEGIN
-	    RETURN QUERY SELECT * FROM rel_us_pf WHERE id_perfil = _id_perfil and login = _login;
+	    IF (EXISTS (SELECT 1 FROM pessoa_foreign WHERE id_pessoa = _id_pessoa) AND EXISTS (SELECT 1 FROM usuario_foreign WHERE login = _login)) THEN
+    		RETURN QUERY SELECT * FROM rel_us_pf WHERE id_pessoa = _id_pessoa and login = _login;
+    	END IF;
 	END
 $$ LANGUAGE plpgsql;
