@@ -3,8 +3,6 @@ CREATE DATABASE mod_acc;
 \c mod_acc;
 
 CREATE TABLE IF NOT EXISTS usuario (
-    -- aqui precisa da chave de pessoa eventualmente, mas tem que pegar de outra db
-    -- nao pode pegar de outro db, esse tem que ser auto contido
     login VARCHAR(50) PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL CHECK (email ~* '^.+\@.+\..+$'),
     senha VARCHAR(50) CHECK (char_length(senha) >= 8)

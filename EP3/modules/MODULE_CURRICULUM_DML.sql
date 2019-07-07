@@ -1,16 +1,15 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
-INSERT INTO curriculo(codigo, nome) VALUES
-	(45, 'Bacharelado em Ciência da Computação'),
-	(46, 'Bacharelado em Ciência da Computação 2'),
-	(50, 'Matemática Pura'),
-	(60, 'Matemática Aplicada'),
-	(61, 'Matemática Aplicada e Computacional'),
-	(70, 'Estatística'),
-	(80, 'Licenciatura em Matemática'),
-	(81, 'Licenciatura em Matemática 2'),
-	(82, 'Licenciatura em Matemática 3'),
-	(83, 'Licenciatura em Matemática 4');
+SELECT cria_curriculo(45, 'Bacharelado em Ciência da Computação', 0);
+SELECT cria_curriculo(46, 'Bacharelado em Ciência da Computação 2', 0);
+SELECT cria_curriculo(50, 'Matemática Pura', 0);
+SELECT cria_curriculo(60, 'Matemática Aplicada', 0);
+SELECT cria_curriculo(61, 'Matemática Aplicada e Computacional', 0);
+SELECT cria_curriculo(70, 'Estatística', 0);
+SELECT cria_curriculo(80, 'Licenciatura em Matemática', 0);
+SELECT cria_curriculo(81, 'Licenciatura em Matemática 2', 0);
+SELECT cria_curriculo(82, 'Licenciatura em Matemática 3', 0);
+SELECT cria_curriculo(83, 'Licenciatura em Matemática 4', 0);
 
 INSERT INTO trilha(nome, descricao, quant_mod) VALUES
 	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 12),

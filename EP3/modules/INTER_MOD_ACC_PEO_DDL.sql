@@ -28,6 +28,6 @@ SERVER acc_server
 OPTIONS (table_name 'usuario');
 
 CREATE TABLE rel_pe_us (
-    id_pessoa SERIAL,
-    login VARCHAR(50)
+    id_pessoa SERIAL UNIQUE,
+    login VARCHAR(50) UNIQUE
 );
