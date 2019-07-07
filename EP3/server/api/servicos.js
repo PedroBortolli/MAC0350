@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 })
 
 // lembrar de ver se o cara pode fazer isso
-router.post('/create', (req, res) => {
+router.post('/', (req, res) => {
     if (!req.body.servico) {
         return res.sendStatus(400)
     }
