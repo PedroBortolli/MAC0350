@@ -2,7 +2,6 @@ const router = require('express').Router()
 
 const client = require('../database')
 
-// lembrar de ver se o cara pode fazer isso
 router.get('/', (req, res) => {
     client.mod_acc.query({
         text: 'SELECT * FROM usuario;',
