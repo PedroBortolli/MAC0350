@@ -6,4 +6,3 @@ DROP TABLE IF EXISTS planeja;
 DROP TABLE IF EXISTS oferecimento;
 DROP SERVER IF EXISTS cur_server;
 DROP SERVER IF EXISTS peo_server;
-DROP EXTENSION IF EXISTS postgres_fdw;

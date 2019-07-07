@@ -23,3 +23,7 @@ PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MA
 PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_PEO_CUR_DDL.sql
 PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_PEO_CUR_FUNCTIONS.sql
 PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_PEO_CUR_DML.sql
+
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_ACC_PEO_CLEAN.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_ACC_PEO_DDL.sql
+PGPASSWORD=$PASSWORD psql -U $USERNAME mod_peo -f /home/lucas/Desktop/MAC0350/MAC0350/EP3/modules/INTER_MOD_ACC_PEO_FUNCTIONS.sql
