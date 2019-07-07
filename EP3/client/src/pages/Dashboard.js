@@ -79,7 +79,7 @@ const CurrentCourses = styled.div`
 `
 
 function Dashboard() {
-    const [courses, setCourses] = useState([])
+    const [courses, setCourses] = useState({})
     const [currentCourses, changeCurrentCourses] = useState([])
     const [scheduledCourses, changeScheduledCourses] = useState([])
     const [doneCourses, changeDoneCourses] = useState([])
@@ -90,7 +90,7 @@ function Dashboard() {
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-            setCourses((await fetchApi('GET', 'http://localhost:5000/api/disciplinas')).data)
+            setCourses(await fetchApi('GET', 'http://localhost:5000/api/disciplinas'))
         }
 
         const session = sessionStorage.getItem('auth')
@@ -130,7 +130,7 @@ function Dashboard() {
     const ele = doneCourses.length * 4
     const liv = doneCourses.length * 2
     return (
-        !courses || !courses.length ?
+        Object.keys(courses).length === 0 ?
         <Container><img alt="" src={loadingGif} width={120} height={120} /></Container>
         :
         <Container style={{opacity: modalInfo.open ? 0.25 : 1}}>
@@ -148,8 +148,10 @@ function Dashboard() {
                     <h1>Matérias disponíveis</h1>
                     <input placeholder="Procure por uma disciplina..." onChange={e => changeFilter(e.target.value)} />
                     <CardsContainer columns={columns}>
-                        {courses.map(course => {
-                            if (!display(course)) return null
+                        {Object.keys(courses).map(id => {
+                            const course = courses[id]
+                            console.log(course)
+                            if (typeof course !== 'object' || !display(course)) return null
                             return <Card key={course.codigo} course={course} status="available" set={changeModal}  />
                         })}
                     </CardsContainer>
