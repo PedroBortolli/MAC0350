@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS mod_acc;
-CREATE DATABASE mod_acc;
-\c mod_acc;
-
 CREATE TABLE IF NOT EXISTS usuario (
     login VARCHAR(50) PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL CHECK (email ~* '^.+\@.+\..+$'),
