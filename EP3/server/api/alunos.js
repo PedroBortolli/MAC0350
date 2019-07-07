@@ -15,6 +15,25 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/curriculo', (req, res) => {
+    if (!req.body.aluno) {
+        return res.sendStatus(400)
+    }
+    const { nusp } = req.body.aluno
+    if (!nusp) {
+        return res.sendStatus(400)
+    }
+    client.mod_peo_cur.query({
+        text: 'SELECT * FROM seleciona_cursa_curriculo ($1);',
+        values: [nusp],
+    }).then(({ rows }) => {
+        res.send(rows || []).status(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 router.post('/', (req, res) => {
     if (!req.body.aluno) {
         return res.sendStatus(400)
