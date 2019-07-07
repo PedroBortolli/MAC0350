@@ -37,7 +37,6 @@ router.patch('/', (req, res) => {
         return res.sendStatus(400)
     }
     const { codigo, nome, creditos_aula, creditos_trabalho, instituto } = req.body.disciplina;
-    console.log({ codigo, nome, creditos_aula, creditos_trabalho, instituto })
     if (!codigo) {
         return res.sendStatus(400)
     }
