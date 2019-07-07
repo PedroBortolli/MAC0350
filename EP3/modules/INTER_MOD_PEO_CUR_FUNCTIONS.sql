@@ -101,10 +101,14 @@ CREATE OR REPLACE FUNCTION seleciona_planeja(_nusp_aluno integer, _codigo varcha
 	END
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION seleciona_cursa_curriculo(_nusp_aluno integer) RETURNS TABLE (codigo_ integer, nusp_ integer) AS $$
+CREATE OR REPLACE FUNCTION seleciona_cursa_curriculo(_nusp_aluno integer)
+RETURNS TABLE (
+	codigo integer,
+	nusp integer
+) AS $$
 	BEGIN
-	    IF EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
-	        RETURN QUERY SELECT * FROM cursa_curriculo WHERE nusp = _nusp_aluno;
+	    IF EXISTS (SELECT 1 FROM aluno_foreign WHERE aluno_foreign.nusp = _nusp_aluno) THEN
+	        RETURN QUERY SELECT * FROM cursa_curriculo WHERE cursa_curriculo.nusp = _nusp_aluno;
 	    END IF;
 	END
 $$ LANGUAGE plpgsql;
