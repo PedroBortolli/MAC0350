@@ -150,7 +150,6 @@ function Dashboard() {
                     <CardsContainer columns={columns}>
                         {Object.keys(courses).map(id => {
                             const course = courses[id]
-                            console.log(course)
                             if (typeof course !== 'object' || !display(course)) return null
                             return <Card key={course.codigo} course={course} status="available" set={changeModal}  />
                         })}
