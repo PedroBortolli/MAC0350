@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS mod_peo;
-CREATE DATABASE mod_peo;
-\c mod_peo;
-
 CREATE TABLE pessoa (
 	id_pessoa SERIAL PRIMARY KEY,
 	nome varchar(100)
