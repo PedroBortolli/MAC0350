@@ -103,7 +103,7 @@ function Dashboard() {
             doneCourses.some(c => c.codigo === course.codigo) ||
             scheduledCourses.some(c => c.codigo === course.codigo)) return false
         if (!filter || course.codigo.toLowerCase().indexOf(filter.toLowerCase()) > -1 ||
-            course.titulo.toLowerCase().indexOf(filter.toLowerCase()) > -1) return true
+            course.nome.toLowerCase().indexOf(filter.toLowerCase()) > -1) return true
         return false
     }
 

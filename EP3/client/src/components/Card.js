@@ -45,9 +45,9 @@ function Card({course, status, set}) {
     return (
         <Course onClick={setModal}>
             <Code>{course.codigo}</Code>
-            <Name>{course.titulo}</Name>
-            <CA>+{course.creditos.aula || 0} CA</CA>
-            <CT>+{course.creditos.trabalho || 0} CT</CT>
+            <Name>{course.nome}</Name>
+            <CA>+{course.creditos_aula || 0} CA</CA>
+            <CT>+{course.creditos_trabalho || 0} CT</CT>
         </Course>
     )
 }
