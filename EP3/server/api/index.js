@@ -17,6 +17,8 @@ router.use('/disciplinas', disciplinas)
 
 // MOD_PEO
 const pessoas = require('./pessoas')
+const alunos = require('./alunos')
 router.use('/pessoas', pessoas)
+router.use('/alunos', alunos)
 
 module.exports = router
