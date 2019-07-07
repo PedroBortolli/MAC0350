@@ -116,12 +116,12 @@ function Adm() {
     }, [])
 
     const addCourse = async () => {
-        // TODO - api request
-        console.log("Adicionando disciplina: ", newCourse)
+        const res = await fetchApi('POST', 'http://localhost:5000/api/disciplinas', {disciplina: newCourse})
+        changeSuccess(res.ok)
     }
     const updCourse = async () => {
-        // TODO - api request
-        console.log("Atualizando disciplina: ", updateCourse)
+        const res = await fetchApi('PATCH', 'http://localhost:5000/api/disciplinas', {disciplina: updateCourse})
+        changeSuccess(res.ok)
     }
     const addTrilha = async () => {
         const res = await fetchApi('POST', 'http://localhost:5000/api/trilhas', {trilha: newTrilha})
@@ -132,7 +132,6 @@ function Adm() {
         changeSuccess(res.ok)
     }
     const createProfile = async () => {
-        // TODO - api request
         const res = await fetchApi('POST', 'http://localhost:5000/api/perfis', {perfil: profile})
         changeSuccess(res.ok)
     }
@@ -142,6 +141,7 @@ function Adm() {
     }
     const removeUser = async () => {
         const res = await fetchApi('DELETE', 'http://localhost:5000/api/usuarios', {usuario: {login: userToRemove}})
+        changeSuccess(res.ok)
     }
     const vincular = async () => {
         let promises = [], perfil
@@ -179,29 +179,31 @@ function Adm() {
             <div>
                 <div>
                     <h2>Adicionar disciplina</h2>
-                    <p>Sigla</p>
-                    <input onChange={e => updNewCourse({...newCourse, sigla: e.target.value})}/>
+                    <p>Código</p>
+                    <input onChange={e => updNewCourse({...newCourse, codigo: e.target.value})}/>
                     <p>Nome</p>
                     <input onChange={e => updNewCourse({...newCourse, nome: e.target.value})}/>
                     <p>Créditos-aula</p>
-                    <input type="number" onChange={e => updNewCourse({...newCourse, creditosAula: Number(e.target.value)})}/>
+                    <input type="number" onChange={e => updNewCourse({...newCourse, 'creditos_aula': Number(e.target.value)})}/>
                     <p>Créditos-trabalho</p>
-                    <input type="number" onChange={e => updNewCourse({...newCourse, creditosTrabalho: Number(e.target.value)})}/>
+                    <input type="number" onChange={e => updNewCourse({...newCourse, 'creditos_trabalho': Number(e.target.value)})}/>
+                    <p>Instituto</p>
+                    <input onChange={e => updNewCourse({...newCourse, instituto: e.target.value})}/>
                     <br/>
                     <button onClick={addCourse}>Adicionar disciplina</button>
                 </div>
                 <div>
                     <h2>Atualizar disciplina</h2>
-                    <p>Sigla</p>
-                    <input onChange={e => updUpdateCourse({...updateCourse, sigla: e.target.value})} />
-                    <p>Nova sigla</p>
-                    <input onChange={e => updUpdateCourse({...updateCourse, novaSigla: e.target.value})} />
-                    <p>Novo nome</p>
-                    <input onChange={e => updUpdateCourse({...updateCourse, novoNome: e.target.value})} />
-                    <p>Novo créditos-aula</p>
-                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, novoCreditosAula: Number(e.target.value)})} />
-                    <p>Novo créditos-trabalho</p>
-                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, novoCreditosTrabalho: Number(e.target.value)})} />
+                    <p>Código</p>
+                    <input onChange={e => updUpdateCourse({...updateCourse, codigo: e.target.value})} />
+                    <p>Nome</p>
+                    <input onChange={e => updUpdateCourse({...updateCourse, nome: e.target.value})} />
+                    <p>Créditos-aula</p>
+                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, 'creditos_aula': Number(e.target.value)})} />
+                    <p>Créditos-trabalho</p>
+                    <input type="number" onChange={e => updUpdateCourse({...updateCourse, 'creditos_trabalho': Number(e.target.value)})} />
+                    <p>Instituto</p>
+                    <input onChange={e => updUpdateCourse({...updateCourse, instituto: e.target.value})} />
                     <br/>
                     <button onClick={updCourse}>Atualizar disciplina</button>
                 </div>
