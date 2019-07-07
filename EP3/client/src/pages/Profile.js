@@ -12,30 +12,7 @@ const Container = styled.div`
         color: #074bb8;
     }
 `
-
-const Info = styled.div`
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    width: 600px;
-    height: 300px;
-    display: flex;
-    justify-content: space-between;
-    > div {
-        width: 200px;
-        height: 200px;
-        padding: 25px;
-        > input {
-            width: 100%;
-            height: 30px;
-            margin-bottom: 20px;
-        }
-        > button {
-            margin-top: 8px;
-        }
-    }
-`
 const Role = styled.div`
-    padding-top: 60px;
     > h1 {
         padding-bottom: 16px;
         text-align: center;
@@ -56,8 +33,6 @@ const Center = styled.div`
 `
 
 function Profile() {
-    const [password, changePassword] = useState({})
-    const [email, changeEmail] = useState({})
     const [profile, changeProfile] = useState({})
     const [servicos, changeServicos] = useState({})
 
@@ -76,14 +51,6 @@ function Profile() {
         fetchServicos()
     }, [])
 
-    const updPassword = () => {
-        // TODO - api request
-        console.log("Atualizando senha: ", password)
-    }
-    const updEmail = () => {
-        // TODO - api request
-        console.log("Atualizando email: ", email)
-    }
     const createProfile = () => {
         // TODO - api request
         console.log("Criando perfil: ", profile)
@@ -91,24 +58,6 @@ function Profile() {
 
     return (
         <Container>
-            <h1>Perfil</h1>
-            <Info>
-                <div>
-                    <span>Nova senha</span>
-                    <input type="text" onChange={e => changePassword({...password, senhaNova: e.target.value})} />
-                    <span>Confirme a nova senha</span>
-                    <input type="text" onChange={e => changePassword({...password, senhaNovaCheck: e.target.value})} />
-                    <button onClick={updPassword}>Atualizar senha</button>
-                </div>
-                <div>
-                    <span>Novo e-mail</span>
-                    <input type="text" onChange={e => changeEmail({...email, emailNovo: e.target.value})} />
-                    <span>Confirme o novo e-mail</span>
-                    <input type="text" onChange={e => changeEmail({...email, emailNovoCheck: e.target.value})} />
-                    <button onClick={updEmail}>Atualizar e-mail</button>
-                </div>
-            </Info>
-
             <Role>
                 <h1>Criar perfil</h1>
 
