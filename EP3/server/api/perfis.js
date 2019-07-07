@@ -37,7 +37,7 @@ router.post('/create', (req, res) => {
     if (!req.body.perfil) {
         return res.sendStatus(400)
     }
-    const { papel, descricao } = req.body.servico;
+    const { papel, descricao } = req.body.perfil;
     if (!papel || !descricao) {
         res.sendStatus(400)
     }
