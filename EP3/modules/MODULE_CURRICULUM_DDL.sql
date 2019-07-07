@@ -1,12 +1,7 @@
-DROP DATABASE IF EXISTS mod_cur;
-CREATE DATABASE mod_cur;
-\c mod_cur;
-
-
 CREATE TABLE curriculo (
 	codigo integer PRIMARY KEY,
 	nome varchar(50),
-	id_adm integer,
+	id_adm integer
 	-- CONSTRAINT fk_curriculo FOREIGN KEY (id_adm) REFERENCES administrador(id_adm) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
