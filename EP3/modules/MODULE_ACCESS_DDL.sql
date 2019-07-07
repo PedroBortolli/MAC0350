@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS mod_acc;
-CREATE DATABASE mod_acc;
-\c mod_acc;
-
 CREATE TABLE IF NOT EXISTS usuario (
     -- aqui precisa da chave de pessoa eventualmente, mas tem que pegar de outra db
     -- nao pode pegar de outro db, esse tem que ser auto contido

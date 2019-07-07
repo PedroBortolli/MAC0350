@@ -110,8 +110,6 @@ BEGIN
 END;
 $$;
 
-
-
 CREATE OR REPLACE FUNCTION seleciona_servico (VARCHAR(50))
 RETURNS TABLE(
     tipo VARCHAR(50),
