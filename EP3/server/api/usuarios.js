@@ -13,6 +13,45 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/perfis', (req, res) => {
+    if (!req.body.usuario) {
+        return res.sendStatus(400)
+    }
+    const { login } = req.body.usuario;
+    if (!login) {
+        return res.sendStatus(400)
+    }
+    client.mod_acc.query({
+        text: 'SELECT * FROM seleciona_perfis ($1);',
+        values: [login],
+    }).then(({ rows }) => {
+        res.send(rows || []).status(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
+router.get('/servicos', (req, res) => {
+    if (!req.body.usuario) {
+        return res.sendStatus(400)
+    }
+    const { login } = req.body.usuario;
+    if (!login) {
+        return res.sendStatus(400)
+    }
+    client.mod_acc.query({
+        text: 'SELECT * FROM seleciona_servicos_usuario ($1);',
+        values: [login],
+    }).then(({ rows }) => {
+        console.log(rows)
+        res.send(rows || []).status(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 // lembrar de ver se o cara pode fazer isso
 router.post('/create', (req, res) => {
     if (!req.body.usuario) {
