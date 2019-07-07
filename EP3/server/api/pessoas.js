@@ -32,6 +32,27 @@ router.post('/', (req, res) => {
     })
 })
 
+// associa uma pessoa a um usuario
+router.post('/usuario', (req, res) => {
+    if (!req.body.pessoa || !req.body.usuario) {
+        return res.sendStatus(400)
+    }
+    const { cpf } = req.body.pessoa;
+    const { login } = req.body.usuario
+    if (cpf === undefined || login === undefined) {
+        return res.sendStatus(400)
+    }
+    client.mod_acc_peo.query({
+        text: 'SELECT cria_rel_pe_us ($1, $2);',
+        values: [cpf, login],
+    }).then(() => {
+        res.sendStatus(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 router.patch('/', (req, res) => {
     if (!req.body.pessoa) {
         return res.sendStatus(400)
