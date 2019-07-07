@@ -1,8 +1,7 @@
 export default async (method, url, body) => {
     const session = sessionStorage.getItem('auth')
-    if (session && method === 'POST') {
+    if (session && method !== 'GET') {
         const auth = JSON.parse(sessionStorage.getItem('auth'))
-        console.log(auth)
         body = {...body, ...{
             auth: {
                 login: auth.username,

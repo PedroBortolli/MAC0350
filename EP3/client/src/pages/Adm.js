@@ -61,6 +61,8 @@ function Adm() {
     const [servicos, changeServicos] = useState({})
     const [usuario, changeUsuario] = useState({})
     const [success, changeSuccess] = useState(null)
+    const [usuarios, changeUsuarios] = useState([])
+    const [userToRemove, changeUserToRemove] = useState(null)
 
     useEffect(() => {
         const fetchServicos = async () => {
@@ -74,7 +76,17 @@ function Adm() {
             changeServicos(servicos)
         }
 
+        const fetchUsuarios = async () => {
+            const users = await fetchApi('GET', 'http://localhost:5000/api/usuarios')
+            let usuarios = []
+            Object.keys(users).forEach(id => {
+                if (typeof users[id] === 'object') usuarios.push(users[id])
+            })
+            changeUsuarios(usuarios)
+        }
+
         fetchServicos()
+        fetchUsuarios()
     }, [])
 
     const addCourse = async () => {
@@ -100,6 +112,9 @@ function Adm() {
     const createUser = async () => {
         const res = await fetchApi('POST', 'http://localhost:5000/api/usuarios', {usuario})
         changeSuccess(res.ok)
+    }
+    const removeUser = async () => {
+        const res = await fetchApi('DELETE', 'http://localhost:5000/api/usuarios', {usuario: {login: userToRemove}})
     }
 
     return (
@@ -172,6 +187,15 @@ function Adm() {
                     <input onChange={e => changeUsuario({...usuario, email: e.target.value})} />
                     <br/>
                     <button onClick={createUser}>Criar usuário</button>
+                </div>
+                <div>
+                    <h2>Remover usuário</h2>
+                    <select style={{marginTop: 10}} onChange={e => changeUserToRemove(e.target.value)}>
+                        <option disabled selected value>Escolha um usuário</option>
+                        {usuarios.map(u => <option value={u.login}>{u.login}</option>)}
+                    </select>
+                    <br/>
+                    <button onClick={removeUser}>Remover usuário</button>
                 </div>
             </div>
 
