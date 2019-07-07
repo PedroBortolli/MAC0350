@@ -1,18 +1,22 @@
 DROP FUNCTION IF EXISTS cria_oferecimento(VARCHAR(11), varchar(7), integer, integer, varchar(50), integer);
 DROP FUNCTION IF EXISTS cria_cursa(VARCHAR(11), varchar(7), integer, varchar(2), integer);
 DROP FUNCTION IF EXISTS cria_planeja(integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS cria_cursa_curriculo(integer, integer);
 DROP FUNCTION IF EXISTS deleta_oferecimento(VARCHAR(11), varchar(7));
 DROP FUNCTION IF EXISTS deleta_cursa(VARCHAR(11), varchar(7), integer);
 DROP FUNCTION IF EXISTS deleta_planeja(integer, varchar(7));
+DROP FUNCTION IF EXISTS deleta_cursa_curriculo(integer);
 DROP FUNCTION IF EXISTS seleciona_oferecimento(VARCHAR(11), varchar(7));
 DROP FUNCTION IF EXISTS seleciona_cursa(VARCHAR(11), varchar(7), integer);
 DROP FUNCTION IF EXISTS seleciona_planeja(integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_cursa_curriculo(integer);
 DROP FUNCTION IF EXISTS atualiza_ano_oferecimento(VARCHAR(11), varchar(7), integer);
 DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(VARCHAR(11), varchar(7), integer, integer);
 DROP FUNCTION IF EXISTS atualiza_instituto_oferecimento(VARCHAR(11), varchar(7), varchar(50));
 DROP FUNCTION IF EXISTS atualiza_status_cursa(VARCHAR(11), varchar(7), integer, varchar(2));
 DROP FUNCTION IF EXISTS atualiza_media_cursa(VARCHAR(11), varchar(7), integer, integer);
 DROP FUNCTION IF EXISTS atualiza_planeja(integer, varchar(7), integer);
+DROP FUNCTION IF EXISTS atualiza_cursa_curriculo(integer, integer);
 
 CREATE OR REPLACE FUNCTION cria_oferecimento(_cpf_professor VARCHAR(11), _codigo varchar(7), _ano integer, _duracao integer, _instituto varchar(50), _periodo integer) RETURNS VOID AS $$
 	BEGIN
@@ -39,6 +43,14 @@ CREATE OR REPLACE FUNCTION cria_planeja(_nusp_aluno integer, _codigo varchar(7),
 	END
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION cria_cursa_curriculo(_nusp_aluno integer, _codigo integer) RETURNS VOID AS $$
+	BEGIN
+		IF EXISTS (SELECT 1 FROM curriculo_foreign WHERE codigo = _codigo) AND EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
+	        INSERT INTO cursa_curriculo(codigo, nusp) VALUES (_codigo, _nusp_aluno);
+	    END IF;
+	END
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION deleta_oferecimento(_cpf_professor VARCHAR(11), _codigo varchar(7)) RETURNS VOID AS $$
 	BEGIN
 	    DELETE FROM oferecimento WHERE cpf_professor = _cpf_professor and codigo = _codigo;
@@ -56,6 +68,13 @@ CREATE OR REPLACE FUNCTION deleta_planeja(_nusp_aluno integer, _codigo varchar(7
 	    DELETE FROM planeja WHERE nusp_aluno = _nusp_aluno and codigo = _codigo;
 	END
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION deleta_cursa_curriculo(_nusp_aluno integer) RETURNS VOID AS $$
+	BEGIN
+		DELETE FROM cursa_curriculo WHERE nusp = _nusp_aluno;
+	END
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION seleciona_oferecimento(_cpf_professor VARCHAR(11), _codigo varchar(7)) RETURNS TABLE(cpf_professor_ VARCHAR(11), codigo_ varchar(7), ano integer, duracao integer, instituto varchar(50), periodo integer) AS $$
 	BEGIN
@@ -78,6 +97,14 @@ CREATE OR REPLACE FUNCTION seleciona_planeja(_nusp_aluno integer, _codigo varcha
 	BEGIN
 	    IF EXISTS (SELECT 1 FROM disciplina_foreign WHERE codigo = _codigo) AND EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
 	        RETURN QUERY SELECT * FROM planeja WHERE nusp_aluno = _nusp_aluno and codigo = _codigo;
+	    END IF;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION seleciona_cursa_curriculo(_nusp_aluno integer) RETURNS TABLE (codigo_ integer, nusp_ integer) AS $$
+	BEGIN
+	    IF EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
+	        RETURN QUERY SELECT * FROM cursa_curriculo WHERE nusp = _nusp_aluno;
 	    END IF;
 	END
 $$ LANGUAGE plpgsql;
@@ -140,6 +167,16 @@ CREATE OR REPLACE FUNCTION atualiza_planeja(_nusp_aluno integer, _codigo varchar
 	        UPDATE planeja
 		    SET semestre = _semestre
 		    WHERE nusp_aluno = _nusp_aluno and codigo = _codigo;
+	    END IF;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION atualiza_cursa_curriculo(_nusp_aluno integer, _codigo integer) RETURNS VOID AS $$
+	BEGIN
+		IF EXISTS (SELECT 1 FROM curriculo_foreign WHERE codigo = _codigo) AND EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
+	        UPDATE cursa_curricculo
+	        SET codigo = _codigo
+	        WHERE nusp = _nusp_aluno;
 	    END IF;
 	END
 $$ LANGUAGE plpgsql;

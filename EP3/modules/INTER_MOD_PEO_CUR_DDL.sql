@@ -26,6 +26,13 @@ CREATE FOREIGN TABLE disciplina_foreign (
 SERVER cur_server
 OPTIONS (table_name 'disciplina');
 
+CREATE FOREIGN TABLE curriculo_foreign (
+	codigo INTEGER,
+	nome VARCHAR(50)
+)
+SERVER cur_server
+OPTIONS (table_name 'curriculo');
+
 CREATE FOREIGN TABLE aluno_foreign (
 	nusp integer,
 	cpf VARCHAR(11),
@@ -62,7 +69,9 @@ CREATE TABLE cursa (
 	PRIMARY KEY (nusp_aluno, cpf_professor, codigo),
 	CONSTRAINT fk_oferecimento FOREIGN KEY (cpf_professor, codigo) REFERENCES oferecimento(cpf_professor, codigo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT check_media check (media_final >= 0 AND media_final <= 100),
-	CONSTRAINT check_status check (status='A' OR status='RN' OR status='MA' OR status='T')
+	CONSTRAINT check_status check (status='A' OR status='RN' OR status='MA' OR status='T'),
+	CONSTRAINT check_aprov check (not status='A' or media_final >= 50),
+	CONSTRAINT check_repr check (not status='RN' or media_final < 50)
 );
 
 CREATE TABLE planeja (
@@ -70,4 +79,10 @@ CREATE TABLE planeja (
 	codigo varchar(7),
 	semestre integer,
 	PRIMARY KEY (nusp_aluno, codigo)
+);
+
+CREATE TABLE cursa_curriculo (
+    codigo INTEGER NOT NULL,
+    nusp INTEGER,
+    PRIMARY KEY (nusp)
 );
