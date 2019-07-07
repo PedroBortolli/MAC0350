@@ -94,8 +94,9 @@ function CustomModal({close, info, addCurrent, remove, addScheduled, addDone, sc
                     </Title>
                     <Info>
                         <p>Disciplina <b>{info.course.categoria || 'obrigatória'}</b></p>
-                        <p>Créditos-aula: <b>{info.course.ca || 4}</b></p>
-                        <p>Créditos-trabalho: <b>{info.course.ct || 2}</b></p>
+                        <p>Créditos-aula: <b>{info.course.creditos_aula || 0}</b></p>
+                        <p>Créditos-trabalho: <b>{info.course.creditos_trabalho || 0}</b></p>
+                        <p>Instituto: <b>{info.course.instituto}</b></p>
                     </Info>
                     {actions}
                 </div>
