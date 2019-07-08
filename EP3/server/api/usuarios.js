@@ -72,6 +72,35 @@ router.post('/', (req, res) => {
     })
 })
 
+router.patch('/', (req, res) => {
+    if (!req.body.usuario) {
+        return res.sendStatus(400)
+    }
+    const { login, email, senha } = req.body.usuario;
+    if (login === undefined) {
+        return res.sendStatus(400)
+    }
+    const promises = []
+    if (email !== undefined) {
+        promises.push(client.mod_acc.query({
+            text: 'SELECT atualiza_usuario_email ($1, $2);',
+            values: [login, email],
+        }))
+    }
+    if (senha !== undefined) {
+        promises.push(client.mod_acc.query({
+            text: 'SELECT atualiza_usuario_senha ($1, $2);',
+            values: [login, senha],
+        }))
+    }
+    Promise.all(promises).then(() => {
+        res.sendStatus(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 // lembrar de ver se o cara pode fazer isso
 // essa rota associa um usuario a um perfil
 router.post('/perfil', (req, res) => {
