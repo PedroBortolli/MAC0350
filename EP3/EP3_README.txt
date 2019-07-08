@@ -7,7 +7,7 @@ Lucas Moretto - No USP:
 
 Inicialmente, incluímos na pasta raiz do EP3 um arquivo shell denominado "setup_db.sh".
 Este script tem como função criar todas as tabelas (bem como populá-las), relacionamentos e funções que serão utilizadas no projeto.
-Para rodar este script, executar em seu diretório:
+Para rodar este script, basta mudar usuario e senha no script e executar em seu diretório:
 
 sh setup_db.sh
 
