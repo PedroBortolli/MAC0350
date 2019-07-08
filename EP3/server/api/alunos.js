@@ -15,11 +15,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/curriculo', (req, res) => {
-    if (!req.body.aluno) {
+router.get('/:nusp/curriculo', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { nusp } = req.body.aluno
+    const { nusp } = req.params
     if (!nusp) {
         return res.sendStatus(400)
     }
@@ -34,11 +34,11 @@ router.get('/curriculo', (req, res) => {
     })
 })
 
-router.get('/planeja', (req, res) => {
-    if (!req.body.aluno) {
+router.get('/:nusp/planeja', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { nusp } = req.body.aluno
+    const { nusp } = req.params
     if (!nusp) {
         return res.sendStatus(400)
     }
