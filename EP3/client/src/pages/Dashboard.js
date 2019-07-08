@@ -173,7 +173,15 @@ function Dashboard() {
             }
         })
     }
-    const removeCourse = (course) => {
+    const removeCourse = async (course) => {
+        await fetchApi('DELETE', 'http://localhost:5000/api/alunos/planeja', {
+            aluno: {
+                nusp: auth.nusp
+            }, 
+            disciplina: {
+                codigo: course.codigo
+            }
+        })
         if (currentCourses.some(c => c.codigo === course.codigo)) {
             let pos = currentCourses.findIndex(c => c.codigo === course.codigo)
             changeCurrentCourses([...currentCourses.slice(0, pos), ...currentCourses.slice(pos+1, currentCourses.length)])
