@@ -88,6 +88,9 @@ function Dashboard() {
     const [width] = useScreenSize()
     const columns = Math.min(Math.floor((width-330)/270), 3)
 
+    let session = sessionStorage.getItem('auth'), auth = null
+    if (session) auth = JSON.parse(sessionStorage.getItem('auth'))
+
     useEffect(() => {
         const fetchDisciplinas = async () => {
             setCourses(await fetchApi('GET', 'http://localhost:5000/api/disciplinas'))

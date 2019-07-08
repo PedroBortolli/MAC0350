@@ -58,7 +58,7 @@ function Login() {
             }
         })
         if (response.ok) {
-            const auth = {username: login, senha: password}
+            const auth = {username: login, senha: password, nusp: response.nusp}
             sessionStorage.setItem('auth', JSON.stringify(auth))
             window.location = '/dashboard'
         }
