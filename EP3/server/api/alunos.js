@@ -133,4 +133,24 @@ router.delete('/', (req, res) => {
     })
 })
 
+router.delete('/planeja', (req, res) => {
+    if (!req.body.aluno || !req.body.disciplina) {
+        return res.sendStatus(400)
+    }
+    const { nusp } = req.body.aluno
+    const { codigo } = req.body.disciplina
+    if ([nusp, codigo].includes(undefined)) {
+        return res.sendStatus(400)
+    }
+    client.mod_peo_cur.query({
+        text: 'SELECT deleta_planeja ($1, $2);',
+        values: [nusp, codigo],
+    }).then(() => {
+        res.sendStatus(200)
+    }).catch(err => {
+        console.error(err)
+        return res.sendStatus(500)
+    })
+})
+
 module.exports = router
