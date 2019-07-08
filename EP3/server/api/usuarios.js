@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const { authorize_middleware, TYPE } = require('./common/authorize')
 
 router.get('/', (req, res) => {
     client.mod_acc.query({
@@ -13,11 +14,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/perfis', (req, res) => {
-    if (!req.body.usuario) {
+router.get('/:login/perfis', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { login } = req.body.usuario;
+    const { login } = req.params;
     if (!login) {
         return res.sendStatus(400)
     }
@@ -32,11 +33,11 @@ router.get('/perfis', (req, res) => {
     })
 })
 
-router.get('/servicos', (req, res) => {
-    if (!req.body.usuario) {
+router.get('/:login/servicos', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { login } = req.body.usuario;
+    const { login } = req.params;
     if (!login) {
         return res.sendStatus(400)
     }
@@ -52,8 +53,7 @@ router.get('/servicos', (req, res) => {
     })
 })
 
-// lembrar de ver se o cara pode fazer isso
-router.post('/', (req, res) => {
+router.post('/', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.usuario) {
         return res.sendStatus(400)
     }
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.patch('/', (req, res) => {
+router.patch('/', authorize_middleware(TYPE.UPDATE, true), (req, res) => {
     if (!req.body.usuario) {
         return res.sendStatus(400)
     }
@@ -101,9 +101,7 @@ router.patch('/', (req, res) => {
     })
 })
 
-// lembrar de ver se o cara pode fazer isso
-// essa rota associa um usuario a um perfil
-router.post('/perfil', (req, res) => {
+router.post('/perfil', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.usuario || !req.body.perfil) {
         return res.sendStatus(400)
     }
@@ -123,8 +121,7 @@ router.post('/perfil', (req, res) => {
     })
 })
 
-// lembrar de ver se o cara pode fazer isso
-router.delete('/', (req, res) => {
+router.delete('/', authorize_middleware(TYPE.DELETE), (req, res) => {
     if (!req.body.usuario) {
         return res.sendStatus(400)
     }
