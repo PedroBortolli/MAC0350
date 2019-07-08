@@ -71,7 +71,7 @@ router.post('/', authorize_middleware(TYPE.CREATE), (req, res) => {
     })
 })
 
-router.post('/planeja', authorize_middleware(TYPE.CREATE), (req, res) => {
+router.post('/planeja', (req, res) => {
     if (!req.body.aluno || !req.body.disciplina || !req.body.planeja) {
         return res.sendStatus(400)
     }
@@ -132,7 +132,7 @@ router.delete('/', authorize_middleware(TYPE.DELETE), (req, res) => {
     })
 })
 
-router.delete('/planeja', authorize_middleware(TYPE.DELETE), (req, res) => {
+router.delete('/planeja', (req, res) => {
     if (!req.body.aluno || !req.body.disciplina) {
         return res.sendStatus(400)
     }
