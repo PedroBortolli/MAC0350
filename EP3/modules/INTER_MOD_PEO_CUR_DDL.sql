@@ -55,7 +55,7 @@ CREATE TABLE oferecimento (
 	duracao integer,
 	instituto varchar(50),
 	periodo integer,
-	PRIMARY KEY (cpf_professor, codigo),
+	PRIMARY KEY (cpf_professor, codigo, ano, periodo),
 	CONSTRAINT check_ano check (ano > 0),
 	CONSTRAINT check_duracao_periodo check (periodo>0 AND ((duracao=6 AND periodo<=2) OR (duracao=3 AND periodo<=4)))
 );
@@ -63,15 +63,15 @@ CREATE TABLE oferecimento (
 CREATE TABLE cursa (
 	cpf_professor VARCHAR(11),
 	codigo varchar(7),
+	ano integer,
+	periodo integer,
 	nusp_aluno integer,
 	status varchar(2) NOT NULL,
 	media_final integer,
-	PRIMARY KEY (nusp_aluno, cpf_professor, codigo),
-	CONSTRAINT fk_oferecimento FOREIGN KEY (cpf_professor, codigo) REFERENCES oferecimento(cpf_professor, codigo) ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY (nusp_aluno, cpf_professor, codigo, ano, periodo),
+	CONSTRAINT fk_oferecimento FOREIGN KEY (cpf_professor, codigo, ano, periodo) REFERENCES oferecimento(cpf_professor, codigo, ano, periodo) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT check_media check (media_final >= 0 AND media_final <= 100),
-	CONSTRAINT check_status check (status='A' OR status='RN' OR status='MA' OR status='T'),
-	CONSTRAINT check_aprov check (not status='A' or media_final >= 50),
-	CONSTRAINT check_repr check (not status='RN' or media_final < 50)
+	CONSTRAINT check_status check (status='A' OR status='RN' OR status='MA' OR status='T')
 );
 
 CREATE TABLE planeja (
