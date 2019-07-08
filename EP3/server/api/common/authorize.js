@@ -1,6 +1,6 @@
 const client = require('../../database')
 
-module.exports = (tipo) => (req, res, next) => {
+const authorize_middleware = (tipo, userRelated = false) => (req, res, next) => {
     if (!req.body.auth) {
         return res.sendStatus(401)
     }
@@ -24,7 +24,11 @@ module.exports = (tipo) => (req, res, next) => {
             if (permissions.includes(tipo)) {
                 next()
             } else {
-                return res.sendStatus(403)
+                if (userRelated && req.body.usuario.login === req.body.auth.login) {
+                    next()
+                } else {
+                    return res.sendStatus(403)
+                }
             }
         }).catch(err => {
             console.error(err)
@@ -34,4 +38,14 @@ module.exports = (tipo) => (req, res, next) => {
         console.error(err)
         res.sendStatus(500)
     })
+}
+
+module.exports = {
+    authorize_middleware,
+    TYPE: {
+        GET: 'visualização',
+        CREATE: 'criação',
+        UPDATE: 'atualização',
+        DELETE: 'remoção',
+    },
 }
