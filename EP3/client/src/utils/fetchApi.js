@@ -9,7 +9,6 @@ export default async (method, url, body) => {
             }
         }}
     }
-    console.log(body)
     const response = await fetch(url, {
         method: method,
         headers: {

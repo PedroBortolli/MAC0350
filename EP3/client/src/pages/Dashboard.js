@@ -93,7 +93,26 @@ function Dashboard() {
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-            setCourses(await fetchApi('GET', 'http://localhost:5000/api/disciplinas'))
+            const courses = await fetchApi('GET', 'http://localhost:5000/api/disciplinas')
+            setCourses(courses)
+            const plans = await fetchApi('GET', `http://localhost:5000/api/alunos/${auth.nusp}/planeja`)
+            let done = [], current = [], scheduled = []
+            Object.keys(plans).forEach(id => {
+                if (typeof plans[id] === 'object') {
+                    let courseToAdd = null
+                    Object.keys(courses).forEach(i => {
+                        if (typeof courses[i] === 'object' && courses[i].codigo === plans[id].codigo) {
+                            courseToAdd = courses[i]
+                        }
+                    })
+                    if (plans[id].semestre === 0) done.push(courseToAdd)
+                    else if (plans[id].semestre === 1) current.push(courseToAdd)
+                    else if (plans[id].semestre === 2) scheduled.push(courseToAdd)
+                }
+            })
+            changeCurrentCourses(current)
+            changeScheduledCourses(scheduled)
+            changeDoneCourses(done)
         }
 
         const session = sessionStorage.getItem('auth')
