@@ -13,12 +13,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/requisitos', (req, res) => {
-    if (!req.body.disciplina || !req.body.curriculo) {
+router.get('/:codigo_disc/requisitos/:codigo_cur', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { codigo: codigo_disc } = req.body.disciplina
-    const { codigo: codigo_cur } = req.body.curriculo
+    const { codigo_disc, codigo_cur } = req.body.params
     if ([codigo_disc, codigo_cur].includes(undefined)) {
         return res.sendStatus(400)
     }

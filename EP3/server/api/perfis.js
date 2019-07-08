@@ -13,11 +13,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/servicos', (req, res) => {
-    if (!req.body.perfil) {
+router.get('/:papel/servicos', (req, res) => {
+    if (!req.params) {
         return res.sendStatus(400)
     }
-    const { papel } = req.body.perfil;
+    const { papel } = req.params;
     if (!papel) {
         return res.sendStatus(400)
     }
