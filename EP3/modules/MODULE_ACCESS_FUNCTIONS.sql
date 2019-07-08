@@ -52,6 +52,16 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION atualiza_usuario_senha (VARCHAR(50), VARCHAR(50)) RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE usuario
+    SET senha = $2
+    WHERE login = $1;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION remove_usuario (VARCHAR(50)) RETURNS VOID
 LANGUAGE plpgsql
 AS $$
