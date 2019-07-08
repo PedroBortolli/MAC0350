@@ -9,6 +9,7 @@ DROP FUNCTION IF EXISTS deleta_cursa_curriculo(integer);
 DROP FUNCTION IF EXISTS seleciona_oferecimento(VARCHAR(11), varchar(7));
 DROP FUNCTION IF EXISTS seleciona_cursa(VARCHAR(11), varchar(7), integer);
 DROP FUNCTION IF EXISTS seleciona_planeja(integer, varchar(7));
+DROP FUNCTION IF EXISTS seleciona_planeja_aluno (INTEGER);
 DROP FUNCTION IF EXISTS seleciona_cursa_curriculo(integer);
 DROP FUNCTION IF EXISTS atualiza_ano_oferecimento(VARCHAR(11), varchar(7), integer);
 DROP FUNCTION IF EXISTS atualiza_duracao_periodo_oferecimento(VARCHAR(11), varchar(7), integer, integer);
@@ -97,6 +98,20 @@ CREATE OR REPLACE FUNCTION seleciona_planeja(_nusp_aluno integer, _codigo varcha
 	BEGIN
 	    IF EXISTS (SELECT 1 FROM disciplina_foreign WHERE codigo = _codigo) AND EXISTS (SELECT 1 FROM aluno_foreign WHERE nusp = _nusp_aluno) THEN
 	        RETURN QUERY SELECT * FROM planeja WHERE nusp_aluno = _nusp_aluno and codigo = _codigo;
+	    END IF;
+	END
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION seleciona_planeja_aluno (INTEGER)
+RETURNS TABLE(
+	nusp INTEGER,
+	codigo VARCHAR(7),
+	semestre INTEGER
+)
+AS $$
+	BEGIN
+	    IF EXISTS (SELECT 1 FROM aluno_foreign WHERE aluno_foreign.nusp = $1) THEN
+	        RETURN QUERY SELECT * FROM planeja WHERE nusp_aluno = $1;
 	    END IF;
 	END
 $$ LANGUAGE plpgsql;
