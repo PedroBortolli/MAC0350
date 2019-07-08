@@ -9,6 +9,7 @@ SELECT cria_cursa('05749138151', 'MAC0350', 9999998, 'A', 51);
 SELECT cria_cursa('79766797161', 'MAC0121', 9999997, 'A', 70);
 
 SELECT cria_planeja(9999996, 'MAC0470', 8);
+SELECT cria_planeja(9793648, 'MAC0350', 2);
 
 SELECT cria_cursa_curriculo(9999997, 46);
 SELECT cria_cursa_curriculo(9793648, 45);
