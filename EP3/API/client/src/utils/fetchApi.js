@@ -5,7 +5,7 @@ export default async (method, url, body) => {
         body = {...body, ...{
             auth: {
                 login: auth.username,
-                password: auth.senha
+                senha: auth.senha
             }
         }}
     }
