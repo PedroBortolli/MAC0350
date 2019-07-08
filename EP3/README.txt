@@ -61,3 +61,22 @@ E finalmente levante o cliente rodando:
 yarn start
 
 O client já estará rodando na porta 3000 do localhost (http://localhost:3000).
+
+
+
+
+
+
+Login:
+
+Criamos dois usuários no sistema.
+O primeiro é um administrador, que tem poder de editar/criar certas coisas no servidor. Seu login e senha são, respectivamente:
+
+admin
+password
+
+
+Também criamos um usuário comum que é um aluno, que consegue salvar/excluir suas disciplinas no sistema. Seu login e senha são, respectivamente:
+
+pedroteosousa
+senhasenhasenha
