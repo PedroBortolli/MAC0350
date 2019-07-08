@@ -34,6 +34,25 @@ router.get('/curriculo', (req, res) => {
     })
 })
 
+router.get('/planeja', (req, res) => {
+    if (!req.body.aluno) {
+        return res.sendStatus(400)
+    }
+    const { nusp } = req.body.aluno
+    if (!nusp) {
+        return res.sendStatus(400)
+    }
+    client.mod_peo_cur.query({
+        text: 'SELECT * FROM seleciona_planeja_aluno ($1);',
+        values: [nusp],
+    }).then(({ rows }) => {
+        res.send(rows || []).status(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 router.post('/', (req, res) => {
     if (!req.body.aluno) {
         return res.sendStatus(400)
@@ -47,6 +66,27 @@ router.post('/', (req, res) => {
         values: [nusp, cpf, ano_ingresso],
     }).then(() => {
         res.sendStatus(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
+router.post('/planeja', (req, res) => {
+    if (!req.body.aluno || !req.body.disciplina || !req.body.planeja) {
+        return res.sendStatus(400)
+    }
+    const { nusp } = req.body.aluno
+    const { codigo } = req.body.disciplina
+    const { semestre } = req.body.planeja
+    if ([nusp, codigo, semestre].includes(undefined)) {
+        return res.sendStatus(400)
+    }
+    client.mod_peo_cur.query({
+        text: 'SELECT cria_planeja ($1, $2, $3);',
+        values: [nusp, codigo, semestre],
+    }).then(() => {
+        res.sendStatus(201)
     }).catch(err => {
         console.error(err)
         res.sendStatus(500)
