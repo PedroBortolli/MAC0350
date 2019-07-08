@@ -25,6 +25,7 @@ DROP FUNCTION IF EXISTS remove_disciplina(VARCHAR(7));
 
 DROP FUNCTION IF EXISTS cria_requisito(VARCHAR(7), VARCHAR(7), integer);
 DROP FUNCTION IF EXISTS seleciona_requisito(VARCHAR(7), VARCHAR(7), integer);
+DROP FUNCTION IF EXISTS seleciona_requisito(VARCHAR(7), INTEGER);
 DROP FUNCTION IF EXISTS remove_requisito(VARCHAR(7), VARCHAR(7), integer);
 
 DROP FUNCTION IF EXISTS cria_rel_cur_tri(INTEGER, INTEGER);
@@ -256,6 +257,19 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY SELECT * FROM requisito WHERE codigo_disc = $1 AND codigo_req = $2 AND codigo_cur = $3;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION seleciona_requisito(VARCHAR(7), INTEGER)
+RETURNS TABLE(
+	codigo_disc VARCHAR(7),
+	codigo_req VARCHAR(7),
+	codigo_cur INTEGER
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM requisito WHERE requisito.codigo_disc = $1 AND requisito.codigo_cur = $2;
 END;
 $$;
 
