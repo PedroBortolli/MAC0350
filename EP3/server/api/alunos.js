@@ -1,9 +1,8 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const { authorize_middleware, TYPE } = require('./common/authorize')
 
-// maybe this route should return a name, but since it returns a cpf,
-// we can get all people and get the name that way
 router.get('/', (req, res) => {
     client.mod_peo.query({
         text: 'SELECT * FROM aluno;',
@@ -53,7 +52,7 @@ router.get('/:nusp/planeja', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.aluno) {
         return res.sendStatus(400)
     }
@@ -72,7 +71,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.post('/planeja', (req, res) => {
+router.post('/planeja', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.aluno || !req.body.disciplina || !req.body.planeja) {
         return res.sendStatus(400)
     }
@@ -93,7 +92,7 @@ router.post('/planeja', (req, res) => {
     })
 })
 
-router.patch('/', (req, res) => {
+router.patch('/', authorize_middleware(TYPE.UPDATE), (req, res) => {
     if (!req.body.aluno) {
         return res.sendStatus(400)
     }
@@ -114,7 +113,7 @@ router.patch('/', (req, res) => {
     }
 })
 
-router.delete('/', (req, res) => {
+router.delete('/', authorize_middleware(TYPE.DELETE), (req, res) => {
     if (!req.body.aluno) {
         return res.sendStatus(400)
     }
@@ -133,7 +132,7 @@ router.delete('/', (req, res) => {
     })
 })
 
-router.delete('/planeja', (req, res) => {
+router.delete('/planeja', authorize_middleware(TYPE.DELETE), (req, res) => {
     if (!req.body.aluno || !req.body.disciplina) {
         return res.sendStatus(400)
     }

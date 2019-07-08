@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const { authorize_middleware, TYPE } = require('./common/authorize')
 
 router.get('/', (req, res) => {
     client.mod_cur.query({
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.trilha) {
         return res.sendStatus(400)
     }
@@ -32,7 +33,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.patch('/', (req, res) => {
+router.patch('/', authorize_middleware(TYPE.UPDATE), (req, res) => {
     if (!req.body.trilha) {
         return res.sendStatus(400)
     }
@@ -61,7 +62,7 @@ router.patch('/', (req, res) => {
     })
 })
 
-router.delete('/', (req, res) => {
+router.delete('/', authorize_middleware(TYPE.DELETE), (req, res) => {
     if (!req.body.trilha) {
         res.sendStatus(400)
     }

@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const { authorize_middleware, TYPE } = require('./common/authorize')
 
 router.get('/', (req, res) => {
     client.mod_acc.query({
@@ -13,8 +14,7 @@ router.get('/', (req, res) => {
     })
 })
 
-// lembrar de ver se o cara pode fazer isso
-router.post('/', (req, res) => {
+router.post('/', authorize_middleware(TYPE.CREATE), (req, res) => {
     if (!req.body.servico) {
         return res.sendStatus(400)
     }
@@ -33,8 +33,7 @@ router.post('/', (req, res) => {
     })
 })
 
-// lembrar de ver se o cara pode fazer isso
-router.delete('/', (req, res) => {
+router.delete('/', authorize_middleware(TYPE.DELETE), (req, res) => {
     if (!req.body.servico) {
         return res.sendStatus(400)
     }

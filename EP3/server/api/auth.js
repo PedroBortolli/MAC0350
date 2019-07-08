@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const client = require('../database')
+const { authorize_middleware, TYPE } = require('./common/authorize')
 
 router.post('/login', (req, res) => {
     client.mod_acc.query({
