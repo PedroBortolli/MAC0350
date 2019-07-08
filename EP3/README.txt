@@ -28,6 +28,9 @@ sudo apt-get update
 sudo apt-get install nodejs
 sudo apt-get install npm
 
+OBS: A versão da npm que foi testada durante o desenvolvimento foi a 6.2.0.
+OBS2: A versão do node que foi testada durante durante o desenvolvimento foi a v10.9.0.
+
 Agora, instale as dependências do servidor rodando:
 
 npm install
@@ -51,6 +54,8 @@ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update
 sudo apt-get install yarn
+
+OBS: A versão do yarn que foi testada durante o desenvolvimento foi a 1.9.4.
 
 Agora, instale as dependências:
 
