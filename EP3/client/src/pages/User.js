@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import fetchApi from '../utils/fetchApi'
 
 const Container = styled.div`
     padding-top: 60px;
@@ -15,7 +16,7 @@ const Info = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.25);
     border-radius: 8px;
     width: 600px;
-    height: 230px;
+    height: 290px;
     display: flex;
     justify-content: space-between;
     > div {
@@ -36,14 +37,33 @@ const Info = styled.div`
 function User() {
     const [password, changePassword] = useState({})
     const [email, changeEmail] = useState({})
+    const [success, changeSuccess] = useState(null)
 
-    const updPassword = () => {
-        // TODO - api request
-        console.log("Atualizando senha: ", password)
+    const updPassword = async () => {
+        if (password.senhaNova === password.senhaNovaCheck) {
+            const res = await fetchApi('PATCH', 'http://localhost:5000/api/usuarios', {
+                usuario: {
+                    login: password.login,
+                    senha: password.senhaNova
+                }
+            })
+            if (res.ok) changeSuccess(true)
+            else changeSuccess(false)
+        }
+        else changeSuccess(false)
     }
-    const updEmail = () => {
-        // TODO - api request
-        console.log("Atualizando email: ", email)
+    const updEmail = async () => {
+        if (email.emailNovo === email.emailNovoCheck) {
+            const res = await fetchApi('PATCH', 'http://localhost:5000/api/usuarios', {
+                usuario: {
+                    login: email.login,
+                    email: email.emailNovo
+                }
+            })
+            if (res.ok) changeSuccess(true)
+            else changeSuccess(false)
+        }
+        else changeSuccess(false)
     }
 
     return (
@@ -51,6 +71,8 @@ function User() {
             <h1>Usuário</h1>
             <Info>
                 <div>
+                    <span>Login</span>
+                    <input onChange={e => changePassword({...password, login: e.target.value})} />
                     <span>Nova senha</span>
                     <input type="password" onChange={e => changePassword({...password, senhaNova: e.target.value})} />
                     <span>Confirme a nova senha</span>
@@ -58,6 +80,8 @@ function User() {
                     <button onClick={updPassword}>Atualizar senha</button>
                 </div>
                 <div>
+                    <span>Login</span>
+                    <input onChange={e => changeEmail({...email, login: e.target.value})} />
                     <span>Novo e-mail</span>
                     <input type="text" onChange={e => changeEmail({...email, emailNovo: e.target.value})} />
                     <span>Confirme o novo e-mail</span>
@@ -65,6 +89,12 @@ function User() {
                     <button onClick={updEmail}>Atualizar e-mail</button>
                 </div>
             </Info>
+            {typeof success === 'boolean' ?
+                success ?
+                    <p style={{color: 'green'}}>Request bem sucedido!</p>
+                :
+                    <p style={{color: 'red'}}>Request falhou...</p>
+            : null}
         </Container>
     )
 }
