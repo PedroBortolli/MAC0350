@@ -13,11 +13,31 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/requisitos', (req, res) => {
+    if (!req.body.disciplina || !req.body.curriculo) {
+        return res.sendStatus(400)
+    }
+    const { codigo: codigo_disc } = req.body.disciplina
+    const { codigo: codigo_cur } = req.body.curriculo
+    if ([codigo_disc, codigo_cur].includes(undefined)) {
+        return res.sendStatus(400)
+    }
+    client.mod_cur.query({
+        text: 'SELECT * FROM seleciona_requisito ($1, $2);',
+        values: [codigo_disc, codigo_cur],
+    }).then(({ rows }) => {
+        res.send(rows || []).status(200)
+    }).catch(err => {
+        console.error(err)
+        res.sendStatus(500)
+    })
+})
+
 router.post('/', (req, res) => {
     if (!req.body.disciplina) {
         return res.sendStatus(400)
     }
-    const { codigo, nome, creditos_aula, creditos_trabalho, instituto } = req.body.disciplina;
+    const { codigo, nome, creditos_aula, creditos_trabalho, instituto } = req.body.disciplina
     if ([codigo, nome, creditos_aula, creditos_trabalho, instituto].includes(undefined)) {
         return res.sendStatus(400)
     }
