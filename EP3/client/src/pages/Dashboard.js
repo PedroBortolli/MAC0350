@@ -129,9 +129,50 @@ function Dashboard() {
         return false
     }
 
-    const addCurrent = (course) => changeCurrentCourses([...currentCourses, course])
-    const addScheduled = (course) => changeScheduledCourses([...scheduledCourses, course])
-    const addDone = (course) => changeDoneCourses([...doneCourses, course])
+    const addCurrent = async (course) => {
+        changeCurrentCourses([...currentCourses, course])
+        changeScheduledCourses([...scheduledCourses, course])
+        await fetchApi('POST', 'http://localhost:5000/api/alunos/planeja', {
+            aluno: {
+                nusp: auth.nusp
+            }, 
+            disciplina: {
+                codigo: course.codigo
+            },
+            planeja: {
+                semestre: 1
+            }
+        })
+    }
+    const addScheduled = async (course) => {
+        changeScheduledCourses([...scheduledCourses, course])
+        await fetchApi('POST', 'http://localhost:5000/api/alunos/planeja', {
+            aluno: {
+                nusp: auth.nusp
+            }, 
+            disciplina: {
+                codigo: course.codigo
+            },
+            planeja: {
+                semestre: 2
+            }
+        })
+    }
+    const addDone = async (course) => {
+        changeDoneCourses([...doneCourses, course])
+        changeScheduledCourses([...scheduledCourses, course])
+        await fetchApi('POST', 'http://localhost:5000/api/alunos/planeja', {
+            aluno: {
+                nusp: auth.nusp
+            }, 
+            disciplina: {
+                codigo: course.codigo
+            },
+            planeja: {
+                semestre: 0
+            }
+        })
+    }
     const removeCourse = (course) => {
         if (currentCourses.some(c => c.codigo === course.codigo)) {
             let pos = currentCourses.findIndex(c => c.codigo === course.codigo)
