@@ -42,7 +42,6 @@ npm start
 O servidor já estará rodando na porta 5000 do localhost (http://localhost:5000).
 
 
-
 Client:
 
 O cliente foi escrito também em javascript utilizando React.
