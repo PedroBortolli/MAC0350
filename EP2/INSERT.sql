@@ -42,7 +42,9 @@ INSERT INTO curriculo(codigo, nome) VALUES
 	(45, 'Bacharelado em Ciência da Computação');  -- usando utf8... pode? aqui deu bom
 
 
--- INSERT INTO perfil(papel, descricao) VALUES  -- nao sei o que inserir aqui
+INSERT INTO perfil(papel, descricao) VALUES
+	('Professor', 'Tem total acesso ao sistema'),
+	('Aluno', 'Tem acesso apenas a visualização');
 
 
 INSERT INTO servico(tipo, descricao) VALUES
@@ -51,10 +53,10 @@ INSERT INTO servico(tipo, descricao) VALUES
 	('alteracao', 'Permite que um usuário faça alterações em matérias escolhidas');
 
 
-INSERT INTO trilha(nome, descricao, quant_disc) VALUES
-	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 12), -- checar numero de disciplinas
-	('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 16), -- checar numero de disciplinas
-	('ia', 'Inteligência artificial, machine learning, etc.', 6); -- checar numero de disciplinas
+INSERT INTO trilha(nome, descricao, quant_mod) VALUES
+	('teoria', 'Teoria da computação, matemática discreta, algoritmos, etc.', 3), -- checar numero de modulos
+	('sistemas', 'Sistemas de software, banco de dados, programação paralela, etc.', 3), -- checar numero de modulos
+	('ia', 'Inteligência artificial, machine learning, etc.', 4); -- checar numero de modulos
 
 
 INSERT INTO modulo(id_trilha, nome, descricao, quant_disc) VALUES
@@ -79,15 +81,19 @@ INSERT INTO disciplina(codigo, nome, creditos_aula, creditos_trabalho, instituto
 
 -- TODO: Insert rows on table 'oferecimento' once its Create query is properly working
 
-INSERT INTO oferecimento(id_professor, 	id_aluno, codigo, ano, duracao, instituto, periodo) VALUES
-    (7, 1, 'MAC0121', 2016, 6, 'IME', 2);
+INSERT INTO oferecimento(id_professor, codigo, ano, duracao, instituto, periodo) VALUES
+    (7, 'MAC0121', 2016, 6, 'IME', 2);
+
+INSERT INTO cursa(id_aluno, id_professor, codigo, status, media_final) VALUES
+	(1, 7, 'MAC0121', 'MA', NULL);
 
 -- TODO: Insert rows on table 'rel_us_pf' once its Create query is properly working
 
-INSERT INTO rel_us_pf(id_usuario, login) VALUES
-    (1, 'bortolli');
+INSERT INTO rel_us_pf(login, id_perfil) VALUES
+    ('bortolli', 2);
 
-INSERT INTO rel_pf_se(login, id_servico) VALUES
-	('bortolli', 1),
-	('bortolli', 2),
-	('bortolli', 3);
+INSERT INTO rel_pf_se(id_perfil, id_servico) VALUES
+	(1, 1),
+	(1, 2),
+	(1, 3),
+	(2, 1);
